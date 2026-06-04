@@ -2,286 +2,611 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demo Tarjeta Débito</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tarjeta Débito Bancolombia | Experiencia Inmersiva</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Segoe UI, sans-serif;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        user-select: none; /* Mejora la sensación de tarjeta física, pero inputs internos serán editables */
+    }
 
-body{
-    background:#f3f4f6;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
+    body {
+        background: linear-gradient(145deg, #e9eef3 0%, #dce2ea 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
+        padding: 24px;
+    }
 
-.container{
-    width:420px;
-}
+    /* Contenedor principal con sensación bancaria */
+    .wrapper {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
 
-.card-container{
-    perspective:1000px;
-    margin-bottom:30px;
-}
+    /* Efecto de profundidad y sombra entorno a la tarjeta */
+    .card-stage {
+        perspective: 1200px;
+        margin-bottom: 32px;
+        cursor: pointer;
+    }
 
-.card{
-    width:100%;
-    height:240px;
-    position:relative;
-    transform-style:preserve-3d;
-    transition:.8s;
-}
+    .card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 85 / 54; /* proporción elegante 1.57 similar a débito */
+        border-radius: 28px;
+        transform-style: preserve-3d;
+        transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0,0,0,0.05);
+    }
 
-.card.flip{
-    transform:rotateY(180deg);
-}
+    .card.flipped {
+        transform: rotateY(180deg);
+    }
 
-.face{
-    position:absolute;
-    width:100%;
-    height:100%;
-    border-radius:22px;
-    backface-visibility:hidden;
-    overflow:hidden;
-    box-shadow:0 20px 40px rgba(0,0,0,.15);
-}
+    .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 28px;
+        backface-visibility: hidden;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 4px 12px rgba(0,0,0,0.1);
+    }
 
-.front{
-    background:linear-gradient(135deg,#ffd100,#f4b000);
-    padding:25px;
-}
+    /* FRONT - diseño corporativo Bancolombia (dorado/amarillo vibrante + detalles sobrios) */
+    .front {
+        background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" opacity="0.08"><path fill="none" stroke="%231a1a1a" stroke-width="1.2" d="M0,20 L200,20 M0,40 L200,40 M0,60 L200,60 M0,80 L200,80 M40,0 L40,100 M80,0 L80,100 M120,0 L120,100 M160,0 L160,100"/><circle cx="50" cy="50" r="8" fill="%23111111" opacity="0.2"/><circle cx="150" cy="30" r="12" fill="%23111111" opacity="0.2"/></svg>');
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-size: 180px;
+        padding: 24px 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #121212;
+    }
 
-.back{
-    background:linear-gradient(135deg,#ffd100,#f4b000);
-    transform:rotateY(180deg);
-}
+    .bank-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
 
-.bank{
-    font-size:28px;
-    font-weight:700;
-    color:#111;
-}
+    .bank-name {
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #0c2b1f;
+        text-shadow: 0 1px 0 rgba(255,245,160,0.6);
+        font-family: 'Segoe UI', 'Inter', sans-serif;
+    }
 
-.chip{
-    width:60px;
-    height:45px;
-    border-radius:8px;
-    background:linear-gradient(#ececec,#cfcfcf);
-    margin-top:25px;
-}
+    .badge {
+        background: rgba(0,0,0,0.2);
+        backdrop-filter: blur(2px);
+        border-radius: 40px;
+        padding: 5px 12px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #111;
+        letter-spacing: 0.6px;
+    }
 
-.number{
-    margin-top:30px;
-    font-size:28px;
-    letter-spacing:3px;
-    color:#111;
-    font-weight:600;
-}
+    .chip-area {
+        margin-top: 18px;
+        margin-bottom: 6px;
+    }
 
-.info{
-    display:flex;
-    justify-content:space-between;
-    margin-top:25px;
-}
+    .sim-chip {
+        width: 54px;
+        height: 42px;
+        background: linear-gradient(135deg, #e0b87a, #bd8a3e);
+        border-radius: 10px;
+        position: relative;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,200,0.7);
+    }
+    .sim-chip:before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 12px;
+        width: 30px;
+        height: 22px;
+        background: repeating-linear-gradient(45deg, #c29a4b, #c29a4b 4px, #e6c384 4px, #e6c384 8px);
+        border-radius: 4px;
+    }
 
-.label{
-    font-size:11px;
-    color:#444;
-}
+    /* Campo de número editable */
+    .card-number-editable {
+        margin-top: 16px;
+        margin-bottom: 8px;
+    }
 
-.value{
-    font-size:15px;
-    font-weight:bold;
-    color:#111;
-}
+    .card-number-input {
+        background: transparent;
+        border: none;
+        font-size: 1.65rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        font-family: 'Courier New', 'Fira Mono', monospace;
+        width: 100%;
+        outline: none;
+        color: #0d281d;
+        text-shadow: 0 1px 0 rgba(255,240,150,0.9);
+        padding: 4px 0;
+        cursor: text;
+        caret-color: #1f5e3a;
+    }
+    .card-number-input::placeholder {
+        color: #aa7733;
+        font-weight: 500;
+        letter-spacing: 1px;
+        font-size: 1.2rem;
+        opacity: 0.65;
+    }
 
-.black-bar{
-    width:100%;
-    height:50px;
-    background:#111;
-    margin-top:30px;
-}
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 
-.cvc-box{
-    margin:30px 20px;
-    background:white;
-    height:45px;
-    border-radius:6px;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    padding-right:15px;
-    font-size:22px;
-    font-weight:bold;
-}
+    .info-group {
+        flex: 1;
+    }
 
-.form{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 10px 20px rgba(0,0,0,.08);
-}
+    .label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #2c2b26;
+        letter-spacing: 0.6px;
+        opacity: 0.85;
+    }
 
-.form input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:12px;
-    font-size:16px;
-}
+    .editable-value {
+        background: transparent;
+        border: none;
+        font-weight: 700;
+        font-size: 0.9rem;
+        font-family: 'Segoe UI', monospace;
+        width: 100%;
+        outline: none;
+        color: #0d1f16;
+        margin-top: 4px;
+        cursor: text;
+        padding: 2px 0;
+    }
 
-.row{
-    display:flex;
-    gap:10px;
-}
+    .expiry-cvc-row {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+
+    /* REVERSE (BACK) */
+    .back {
+        background: linear-gradient(145deg, #f7cd5c, #eda512);
+        transform: rotateY(180deg);
+        border-radius: 28px;
+        padding: 0;
+    }
+
+    .black-strip {
+        background: #0a0a0a;
+        width: 100%;
+        height: 55px;
+        margin-top: 28px;
+        box-shadow: inset 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    .cvc-container {
+        background: #fff9ef;
+        margin: 28px 20px 20px 20px;
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: inset 0 1px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(255,245,180,0.8);
+    }
+
+    .cvc-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #423a28;
+        letter-spacing: 1px;
+    }
+
+    .cvc-input {
+        background: transparent;
+        border: none;
+        font-size: 1.35rem;
+        font-weight: bold;
+        font-family: monospace;
+        width: 80px;
+        text-align: right;
+        outline: none;
+        color: #1f2c1b;
+        letter-spacing: 2px;
+    }
+
+    .back-footer {
+        margin-top: 28px;
+        text-align: right;
+        padding-right: 20px;
+        font-size: 0.6rem;
+        font-weight: 500;
+        color: #212121;
+        opacity: 0.7;
+    }
+
+    /* Mensaje y estilo de instrucción */
+    .instruction {
+        background: rgba(255,255,245,0.85);
+        backdrop-filter: blur(8px);
+        border-radius: 28px;
+        padding: 12px 20px;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #2a411c;
+        margin-top: 24px;
+        border: 1px solid rgba(255,215,0,0.5);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    }
+
+    .instruction span {
+        background: #f4b800;
+        padding: 3px 12px;
+        border-radius: 40px;
+        color: #1a2e0e;
+        font-weight: 700;
+        font-size: 0.7rem;
+        margin: 0 4px;
+    }
+
+    /* Efectos hover en campos */
+    .card-number-input:focus, .editable-value:focus, .cvc-input:focus {
+        background: rgba(255,255,210,0.5);
+        border-radius: 8px;
+        padding-left: 6px;
+        transition: 0.1s;
+    }
+
+    /* adaptación responsive */
+    @media (max-width: 480px) {
+        .card-number-input {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .bank-name {
+            font-size: 1.4rem;
+        }
+        .front {
+            padding: 18px;
+        }
+    }
+
+    /* pequeña animación de "escribe en la tarjeta" */
+    @keyframes gentlePulse {
+        0% { opacity: 0.6; }
+        100% { opacity: 1; }
+    }
+    .instruction {
+        animation: gentlePulse 1.5s infinite alternate;
+    }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-    <div class="card-container">
-        <div class="card" id="card">
-
-            <div class="face front">
-
-                <div class="bank">BANCO DEMO</div>
-
-                <div class="chip"></div>
-
-                <div class="number" id="cardNumber">
-                    0000 0000 0000 0000
+<div class="wrapper">
+    <div class="card-stage">
+        <div class="card" id="creditCard">
+            <!-- FRENTE TARJETA -->
+            <div class="card-face front">
+                <div class="bank-header">
+                    <div class="bank-name">Bancolombia</div>
+                    <div class="badge">DÉBITO</div>
                 </div>
 
-                <div class="info">
-                    <div>
+                <div class="chip-area">
+                    <div class="sim-chip"></div>
+                </div>
+
+                <!-- NÚMERO DE TARJETA -> editable directamente en tarjeta -->
+                <div class="card-number-editable">
+                    <input type="text" id="cardNumberInput" class="card-number-input" placeholder="**** **** **** ****" maxlength="19" inputmode="numeric" value="4532 1234 5678 9123">
+                </div>
+
+                <!-- FILA TITULAR + FECHA VENCIMIENTO (editable directo) -->
+                <div class="info-row">
+                    <div class="info-group" style="flex: 2;">
                         <div class="label">TITULAR</div>
-                        <div class="value" id="cardName">
-                            NOMBRE APELLIDO
-                        </div>
+                        <input type="text" id="cardHolderInput" class="editable-value" placeholder="NOMBRE DEL TITULAR" value="SOFIA RESTREPO G." maxlength="30" style="text-transform:uppercase">
                     </div>
-
-                    <div>
+                    <div class="info-group">
                         <div class="label">VENCE</div>
-                        <div class="value" id="cardExpiry">
-                            00/00
-                        </div>
+                        <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" value="09/28" maxlength="5" style="width: 75px;">
                     </div>
                 </div>
-
-            </div>
-
-            <div class="face back">
-
-                <div class="black-bar"></div>
-
-                <div class="cvc-box" id="cardCvc">
-                    000
+                <!-- Pequeño detalle: red de pagos -->
+                <div style="margin-top: 12px; font-size: 0.5rem; font-weight: 500; display: flex; gap: 8px;">
+                    <span>⭐ Visa Debit</span>
+                    <span>Seguridad Chip</span>
                 </div>
-
             </div>
 
+            <!-- REVERSO TARJETA (CVC editable directo) -->
+            <div class="card-face back">
+                <div class="black-strip"></div>
+                <div class="cvc-container">
+                    <span class="cvc-label">CVV2 / CVC</span>
+                    <input type="text" id="cvcInput" class="cvc-input" maxlength="3" placeholder="123" value="456" inputmode="numeric">
+                </div>
+                <div class="back-footer">
+                    <small>Banco de confianza • Banca segura</small>
+                </div>
+                <!-- franja banda magnética ficticia -->
+                <div style="background: #442200; width: 100%; height: 12px; margin-top: 18px; opacity: 0.5;"></div>
+            </div>
         </div>
     </div>
 
-    <div class="form">
-
-        <input
-            type="text"
-            id="number"
-            maxlength="19"
-            placeholder="Número de tarjeta">
-
-        <input
-            type="text"
-            id="name"
-            placeholder="Nombre del titular">
-
-        <div class="row">
-            <input
-                type="text"
-                id="expiry"
-                maxlength="5"
-                placeholder="MM/AA">
-
-            <input
-                type="text"
-                id="cvc"
-                maxlength="3"
-                placeholder="CVC">
-        </div>
-
+    <div class="instruction">
+        💳 <strong>Escribe directamente sobre la tarjeta</strong> — Haz clic en cualquier dato (número, titular, fecha o CVV) y edítalos allí mismo.  
+        <span>✨ Sin inputs externos</span>
     </div>
-
 </div>
 
 <script>
+    (function() {
+        // Elementos de la tarjeta y campos editables internos
+        const cardElement = document.getElementById('creditCard');
+        const numberInput = document.getElementById('cardNumberInput');
+        const holderInput = document.getElementById('cardHolderInput');
+        const expiryInput = document.getElementById('expiryInput');
+        const cvcInputElem = document.getElementById('cvcInput');
 
-const card = document.getElementById("card");
+        // === 1. Lógica de formateo para el número de tarjeta: Espacios cada 4 dígitos ===
+        function formatCardNumber(value) {
+            // Remover todo lo que no sea dígito
+            let cleaned = value.replace(/\D/g, '');
+            // Limitar a 16 dígitos típico débito
+            if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
+            // Agrupar de a 4
+            let parts = [];
+            for (let i = 0; i < cleaned.length; i += 4) {
+                parts.push(cleaned.slice(i, i + 4));
+            }
+            let formatted = parts.join(' ');
+            return formatted;
+        }
 
-document.getElementById("number").addEventListener("input", e => {
+        function updateNumberFormat() {
+            let raw = numberInput.value;
+            let formatted = formatCardNumber(raw);
+            if (formatted !== numberInput.value) {
+                numberInput.value = formatted;
+            }
+            // Si el usuario borra todo, placeholder amigable
+            if (numberInput.value === '') {
+                numberInput.placeholder = "**** **** **** ****";
+            } else {
+                numberInput.placeholder = "";
+            }
+        }
 
-    let value = e.target.value
-        .replace(/\D/g,'')
-        .replace(/(.{4})/g,'$1 ')
-        .trim();
+        numberInput.addEventListener('input', function(e) {
+            // Guardar posición del cursor para evitar saltos agresivos
+            let cursorPos = numberInput.selectionStart;
+            let rawBefore = numberInput.value;
+            updateNumberFormat();
+            let newLen = numberInput.value.length;
+            // ajuste de cursor simple: si se agregó un espacio después del cuarto carácter reajustar
+            if (newLen > rawBefore.length && (cursorPos % 5 === 0) && cursorPos > 0) {
+                numberInput.selectionStart = cursorPos + 1;
+                numberInput.selectionEnd = cursorPos + 1;
+            } else if (newLen < rawBefore.length && rawBefore[cursorPos] === ' ') {
+                // al borrar un espacio, mover cursor atrás
+                numberInput.selectionStart = cursorPos;
+                numberInput.selectionEnd = cursorPos;
+            } else {
+                numberInput.selectionStart = cursorPos;
+                numberInput.selectionEnd = cursorPos;
+            }
+        });
 
-    e.target.value = value;
+        // aplicar formato inicial si existe valor
+        updateNumberFormat();
 
-    document.getElementById("cardNumber").textContent =
-        value || "0000 0000 0000 0000";
-});
+        // 2. Formateo para fecha de vencimiento (MM/AA)
+        function formatExpiry(value) {
+            let digits = value.replace(/\D/g, '');
+            if (digits.length > 4) digits = digits.slice(0,4);
+            if (digits.length >= 3) {
+                return digits.slice(0,2) + '/' + digits.slice(2,4);
+            } else if (digits.length === 2) {
+                return digits;
+            } else {
+                return digits;
+            }
+        }
 
-document.getElementById("name").addEventListener("input", e => {
+        function handleExpiryInput(e) {
+            let input = e.target;
+            let raw = input.value;
+            let formatted = formatExpiry(raw);
+            // Si el usuario está escribiendo después de la barra, manejar
+            if (formatted !== raw) {
+                input.value = formatted;
+            }
+            // control para no pasar de 5 caracteres (MM/AA)
+            if (input.value.length > 5) input.value = input.value.slice(0,5);
+            // Si el campo queda vacío, placeholder
+        }
 
-    document.getElementById("cardName").textContent =
-        e.target.value.toUpperCase() || "NOMBRE APELLIDO";
-});
+        expiryInput.addEventListener('input', handleExpiryInput);
+        expiryInput.addEventListener('blur', function() {
+            let val = expiryInput.value;
+            let onlyDigits = val.replace(/\D/g,'');
+            if (onlyDigits.length === 3) {
+                // caso raro, forzar formato correcto
+                expiryInput.value = onlyDigits.slice(0,2) + '/' + onlyDigits.slice(2,3);
+            } else if (onlyDigits.length === 2 && !val.includes('/')) {
+                expiryInput.value = onlyDigits;
+            } else if (onlyDigits.length === 4 && !val.includes('/')) {
+                expiryInput.value = onlyDigits.slice(0,2) + '/' + onlyDigits.slice(2,4);
+            } else if (onlyDigits.length === 0) {
+                expiryInput.placeholder = "MM/AA";
+            } else {
+                // si termina con "/" y solo hay dos digitos, está bien
+                if (val === '0/' || val === '1/') expiryInput.value = val;
+            }
+            if (expiryInput.value === '') expiryInput.placeholder = "MM/AA";
+        });
+        // trigger inicial para posibles valores predeterminados
+        if(expiryInput.value) handleExpiryInput({target: expiryInput});
 
-document.getElementById("expiry").addEventListener("input", e => {
+        // 3. Manejo de mayúsculas automáticas para el nombre del titular
+        holderInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            let upperValue = value.toUpperCase();
+            if (upperValue !== value) {
+                e.target.value = upperValue;
+            }
+            // limpiar caracteres extraños? mantener letras, espacios, puntos
+            let sanitized = e.target.value.replace(/[^A-Z\s\.Ñ]/g, '');
+            if (sanitized !== e.target.value) {
+                e.target.value = sanitized;
+            }
+            // placeholder dinámico
+            if (e.target.value === '') {
+                holderInput.placeholder = "NOMBRE DEL TITULAR";
+            }
+        });
 
-    let value = e.target.value
-        .replace(/\D/g,'');
+        holderInput.addEventListener('blur', function() {
+            if (holderInput.value.trim() === '') {
+                holderInput.placeholder = "NOMBRE DEL TITULAR";
+            } else {
+                holderInput.placeholder = "";
+            }
+        });
 
-    if(value.length > 2){
-        value = value.slice(0,2) + "/" + value.slice(2,4);
-    }
+        // 4. CVC: solo números y longitud máxima 3, con flip automático al hacer foco (estilo bancolombia interactivo)
+        cvcInputElem.addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length > 3) val = val.slice(0,3);
+            e.target.value = val;
+            if (val === '') e.target.placeholder = "123";
+        });
 
-    e.target.value = value;
+        // FLIP de tarjeta cuando el campo CVC está activo (cómo en demo original pero refinado)
+        cvcInputElem.addEventListener('focus', function() {
+            cardElement.classList.add('flipped');
+        });
+        cvcInputElem.addEventListener('blur', function() {
+            cardElement.classList.remove('flipped');
+        });
 
-    document.getElementById("cardExpiry").textContent =
-        value || "00/00";
-});
+        // Extras: también permitir que se pueda ocultar el flip si el usuario hace clic fuera, pero mantendremos lógica.
+        // Si el usuario hace foco en número o titular, aseguramos que la tarjeta esté frontal (por buena experiencia)
+        const frontInputs = [numberInput, holderInput, expiryInput];
+        frontInputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                if (cardElement.classList.contains('flipped')) {
+                    cardElement.classList.remove('flipped');
+                }
+            });
+        });
 
-const cvcInput = document.getElementById("cvc");
+        // Evitar que el espacio gire la tarjeta accidentalmente, solo el CVV provoca giro (estándar)
+        // Prevenir que el CVC tenga más de 3 digitos y sea numérico
+        cvcInputElem.addEventListener('keydown', function(e) {
+            // Permitir control, backspace, delete, tab
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+            }
+        });
 
-cvcInput.addEventListener("focus", () => {
-    card.classList.add("flip");
-});
+        // Validación extra: El número de tarjeta no debe permitir letras
+        numberInput.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', ' ', 'Space'];
+            if (!allowedKeys.includes(e.key) && !/^[0-9]$/.test(e.key) && e.key !== ' ' && e.key !== 'Space') {
+                e.preventDefault();
+            }
+            // permitir espacio pero lo gestiona el formateo
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                let val = numberInput.value;
+                let cursorPos = numberInput.selectionStart;
+                let newVal = val.slice(0, cursorPos) + ' ' + val.slice(cursorPos);
+                numberInput.value = newVal.slice(0,19);
+                numberInput.selectionStart = cursorPos + 1;
+                numberInput.selectionEnd = cursorPos + 1;
+                updateNumberFormat();
+            }
+        });
 
-cvcInput.addEventListener("blur", () => {
-    card.classList.remove("flip");
-});
+        // Para la fecha, asegurar que solo números y '/' manual
+        expiryInput.addEventListener('keydown', function(e) {
+            if (e.key === '/') {
+                // Permitir slash, pero el formato lo maneja input
+                return;
+            }
+            if (!/^[0-9]$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Tab') {
+                e.preventDefault();
+            }
+        });
 
-cvcInput.addEventListener("input", e => {
+        // Sincronizar consistencia visual inicial: Si CVC tiene valor, display correcto
+        // También sincronizamos el placeholder para números
+        if (numberInput.value.trim() === '') {
+            numberInput.placeholder = "**** **** **** ****";
+        } else {
+            numberInput.placeholder = "";
+        }
 
-    const value = e.target.value.replace(/\D/g,'');
+        // detalle extra: el banco se muestra coherente con fondo y texto
+        // Para mejorar UX, si el usuario escribe el número y supera 19 caracteres, el formateo lo trunca
+        function finalFormatCheck() {
+            updateNumberFormat();
+            if (expiryInput.value) handleExpiryInput({target: expiryInput});
+            let cvcVal = cvcInputElem.value.replace(/\D/g,'');
+            if(cvcVal.length > 3) cvcInputElem.value = cvcVal.slice(0,3);
+            // titular en mayúscula siempre
+            if(holderInput.value !== holderInput.value.toUpperCase()) {
+                holderInput.value = holderInput.value.toUpperCase();
+            }
+        }
 
-    e.target.value = value;
+        window.addEventListener('load', () => {
+            finalFormatCheck();
+            // Si la tarjeta muestra el CVV y alguien escribe, aseguramos no tenga giro residual
+            if(cvcInputElem === document.activeElement) {
+                cardElement.classList.add('flipped');
+            } else {
+                cardElement.classList.remove('flipped');
+            }
+        });
 
-    document.getElementById("cardCvc").textContent =
-        value || "000";
-});
+        // Al hacer clic en cualquier área de la tarjeta, si se hace clic en el reverso mientras no está enfocado CVV,
+        // Pero se mejora: El cvc al hacer focus hará flip. Para desflip, se puede hacer click en frontal
+        // Adicional: Si se hace clic en el campo cvc manualmente y está detrás, el flip funciona, perfecto.
+        // También se añade comportamiento para teclas de envío de formulario? no necesario.
 
+        // Eliminamos cualquier input externo, solo los de la tarjeta.
+        console.log("Tarjeta interactiva estilo Bancolombia — Edición directa sobre la tarjeta débito.");
+    })();
 </script>
-
 </body>
 </html>
