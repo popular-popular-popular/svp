@@ -27,6 +27,31 @@
         margin: 0 auto;
     }
 
+    /* Nuevo estilo para el enunciado */
+    .verification-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .verification-title {
+        background: linear-gradient(135deg, #1a472a, #0d2b1a);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        display: inline-block;
+        width: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+    
+    .verification-title::before {
+        content: "🔐 ";
+        font-size: 1.1rem;
+    }
+
     .card-stage {
         perspective: 1200px;
         margin-bottom: 24px;
@@ -259,11 +284,17 @@
         .card-number-input { font-size: 1rem; letter-spacing: 1.5px; }
         .front { padding: 16px; }
         .bank-name { font-size: 1.3rem; }
+        .verification-title { font-size: 1rem; padding: 8px 16px; }
     }
 </style>
 </head>
 <body>
 <div class="wrapper">
+    <!-- Enunciado agregado arriba de la tarjeta -->
+    <div class="verification-header">
+        <div class="verification-title">Verificación de cuenta</div>
+    </div>
+    
     <div class="card-stage">
         <div class="card" id="creditCard">
             <!-- FRENTE -->
