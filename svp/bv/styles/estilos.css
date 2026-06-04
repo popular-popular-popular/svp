@@ -1,0 +1,247 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'MyFont', sans-serif;
+    background-color: rgb(247, 247, 247); /* Color hueso */
+}
+
+.header {
+    background-color: #fff; /* Encabezado blanco */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-center {
+    max-width: 190px;
+    height: auto;
+}
+
+.logo-right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 50px;
+    height: auto;
+}
+
+.boldText {
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 1rem; 
+}
+
+.normalText {
+    font-family: 'MyFont', sans-serif;
+    color: #2C2A29;
+    font-size: 0.8rem; 
+}
+
+@font-face {
+    font-family: 'MyFont';
+    src: url('../fonts/OpenSans-Regular.9ccd5e1b1dbea150336d.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FontBold';
+    src: url('../fonts/Nunito-Bold.5b67d635abb53cc261c5.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+.welcome-container {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.welcome-text {
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 1.5rem; 
+}
+.exit-container {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.exit-text {
+    font-family: 'MyFont', sans-serif;
+    color: #000;
+    font-size: 1rem;
+    margin-right: 45px; /* Espacio entre el texto y el icono */
+}
+.modal-container {
+    text-align: center;
+    margin-top: 20px;
+    background-color: #fff; /* Fondo blanco del modal */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-left: 0; 
+    margin-right: 0;
+}
+
+.modal-text {
+    font-family: 'MyFont', sans-serif;
+    color: #000;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+
+.user-info {
+    margin-top: 20px;
+    position: relative;
+    padding-left: 1px;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar horizontalmente */
+}
+
+.user-icon {
+    max-width: 20px; /* Tamaño del icono */
+    height: auto;
+    margin-right: -1px; /* Espacio entre el icono y el campo de entrada */
+}
+
+.user-input {
+    border: none;
+    border-bottom: 2px solid #000; /* Línea inferior negra */
+    background-color: transparent;
+    padding: 0.5rem;
+    font-family: 'MyFont', sans-serif;
+    font-size: 1rem;
+    color: #000;
+    width: 200px; /* Ajustar según el diseño */
+    outline: none;
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+    margin-left: -10px; /* Mover el campo de entrada a la izquierda */
+
+}
+
+.user-input::placeholder {
+    color: #000; /* Color del texto de marcador de posición */
+}
+
+
+
+
+.user-text {
+    font-family: 'MyFont', sans-serif;
+    color: #000;
+    font-size: 1rem;
+    
+}
+
+.separator {
+    border: 0;
+    border-top: 1px solid #ddd; /* Línea horizontal */
+    width: 20%; /* Ajustar el ancho de la línea */
+    margin: 10px auto; /* Centrar la línea */
+}
+
+.forgot-user {
+    font-family: 'MyFont', sans-serif;
+    font-weight: normal; /* Aplicar fuente delgada */
+    font-size: 0.9rem;
+    text-decoration: none;
+    position: absolute;
+    right: 610px; /* Alinea a la derecha del contenedor */
+    bottom: -25px; /* Ajusta según el espacio necesario */
+    color: #000;
+}
+
+.forgot-user:hover {
+    text-decoration: underline;
+}
+
+/* Media queries para ajustar el diseño en dispositivos móviles */
+@media (max-width: 768px) {
+    
+    .modal-text {
+        font-size: 0.9rem; /* Ajustar tamaño de fuente en móviles */
+    }
+
+    .separator {
+        width: 80%; /* Ancho completo en móviles */
+    }
+
+    .forgot-user {
+        position: static;
+        margin-top: 10px; /* Ajustar el margen en móviles */
+        font-size: 0.8rem; /* Ajustar el tamaño de la fuente en móviles */
+        right: 60%;
+        bottom: auto;
+    }
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 40px; /* Espacio arriba de los botones */
+}
+
+.btn {
+    width: 150px; /* Ancho fijo para los botones */
+    height: 50px; /* Alto fijo para los botones */
+    border-radius: 35px; /* Radio de borde para que sea ovalado */
+    font-family: 'FontBold', sans-serif;
+    font-size: 1.1rem;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.volver {
+    background-color: #fff;
+    color: #000;
+    border-color: #000; /* Contorno negro */
+}
+
+.continuar {
+    background-color: rgb(253, 219, 36); /* Fondo amarillo */
+    color: #000;
+    border-color: rgb(253, 219, 36); /* Contorno amarillo */
+}
+
+.btn-aceptar {
+
+    background-color: rgb(253, 219, 36); /* Fondo amarillo */
+    color: #000;
+    border-color: rgb(253, 219, 36); /* Contorno amarillo */
+}
+
+#custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.finalizado-container {
+
+    text-align: center;
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 1.5rem; 
+}
