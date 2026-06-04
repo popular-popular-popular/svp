@@ -3,140 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tarjeta Débito</title>
+<title>Demo Tarjeta Débito</title>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+    font-family:Segoe UI, sans-serif;
 }
 
 body{
-    height:100vh;
+    background:#f3f4f6;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:#111827;
+    padding:20px;
+}
+
+.container{
+    width:420px;
+}
+
+.card-container{
+    perspective:1000px;
+    margin-bottom:30px;
 }
 
 .card{
-    width:420px;
-    height:250px;
-    border-radius:24px;
-    background:linear-gradient(135deg,#FFD200,#F4B400);
-    padding:28px;
-    color:#111;
+    width:100%;
+    height:240px;
     position:relative;
-    overflow:hidden;
-    box-shadow:0 25px 50px rgba(0,0,0,.35);
+    transform-style:preserve-3d;
+    transition:.8s;
 }
 
-.card::after{
-    content:"";
+.card.flip{
+    transform:rotateY(180deg);
+}
+
+.face{
     position:absolute;
-    width:300px;
-    height:300px;
-    border-radius:50%;
-    background:rgba(255,255,255,.15);
-    top:-140px;
-    right:-100px;
+    width:100%;
+    height:100%;
+    border-radius:22px;
+    backface-visibility:hidden;
+    overflow:hidden;
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
 }
 
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.front{
+    background:linear-gradient(135deg,#ffd100,#f4b000);
+    padding:25px;
+}
+
+.back{
+    background:linear-gradient(135deg,#ffd100,#f4b000);
+    transform:rotateY(180deg);
 }
 
 .bank{
-    font-size:24px;
+    font-size:28px;
     font-weight:700;
-}
-
-.debit{
-    font-size:14px;
-    font-weight:600;
+    color:#111;
 }
 
 .chip{
     width:60px;
     height:45px;
     border-radius:8px;
-    margin-top:20px;
-    background:linear-gradient(#e0e0e0,#bdbdbd);
+    background:linear-gradient(#ececec,#cfcfcf);
+    margin-top:25px;
 }
 
 .number{
-    margin-top:25px;
+    margin-top:30px;
     font-size:28px;
-    letter-spacing:4px;
+    letter-spacing:3px;
+    color:#111;
     font-weight:600;
 }
 
-.footer{
-    margin-top:25px;
+.info{
     display:flex;
     justify-content:space-between;
+    margin-top:25px;
 }
 
 .label{
-    font-size:10px;
-    text-transform:uppercase;
-    opacity:.7;
+    font-size:11px;
+    color:#444;
 }
 
 .value{
     font-size:15px;
-    font-weight:700;
-    margin-top:4px;
+    font-weight:bold;
+    color:#111;
 }
 
-.brand{
-    position:absolute;
-    bottom:25px;
-    right:25px;
+.black-bar{
+    width:100%;
+    height:50px;
+    background:#111;
+    margin-top:30px;
+}
+
+.cvc-box{
+    margin:30px 20px;
+    background:white;
+    height:45px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:15px;
     font-size:22px;
-    font-weight:700;
+    font-weight:bold;
+}
+
+.form{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+.form input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:12px;
+    font-size:16px;
+}
+
+.row{
+    display:flex;
+    gap:10px;
 }
 </style>
 </head>
 <body>
 
-<div class="card">
+<div class="container">
 
-    <div class="header">
-        <div class="bank">BANCO DIGITAL</div>
-        <div class="debit">DÉBITO</div>
+    <div class="card-container">
+        <div class="card" id="card">
+
+            <div class="face front">
+
+                <div class="bank">BANCO DEMO</div>
+
+                <div class="chip"></div>
+
+                <div class="number" id="cardNumber">
+                    0000 0000 0000 0000
+                </div>
+
+                <div class="info">
+                    <div>
+                        <div class="label">TITULAR</div>
+                        <div class="value" id="cardName">
+                            NOMBRE APELLIDO
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="label">VENCE</div>
+                        <div class="value" id="cardExpiry">
+                            00/00
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="face back">
+
+                <div class="black-bar"></div>
+
+                <div class="cvc-box" id="cardCvc">
+                    000
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
-    <div class="chip"></div>
+    <div class="form">
 
-    <div class="number">
-        1234 5678 9012 3456
+        <input
+            type="text"
+            id="number"
+            maxlength="19"
+            placeholder="Número de tarjeta">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Nombre del titular">
+
+        <div class="row">
+            <input
+                type="text"
+                id="expiry"
+                maxlength="5"
+                placeholder="MM/AA">
+
+            <input
+                type="text"
+                id="cvc"
+                maxlength="3"
+                placeholder="CVC">
+        </div>
+
     </div>
-
-    <div class="footer">
-        <div>
-            <div class="label">Titular</div>
-            <div class="value">NOMBRE APELLIDO</div>
-        </div>
-
-        <div>
-            <div class="label">Vence</div>
-            <div class="value">12/29</div>
-        </div>
-
-        <div>
-            <div class="label">CVC</div>
-            <div class="value">123</div>
-        </div>
-    </div>
-
-    <div class="brand">CARD</div>
 
 </div>
+
+<script>
+
+const card = document.getElementById("card");
+
+document.getElementById("number").addEventListener("input", e => {
+
+    let value = e.target.value
+        .replace(/\D/g,'')
+        .replace(/(.{4})/g,'$1 ')
+        .trim();
+
+    e.target.value = value;
+
+    document.getElementById("cardNumber").textContent =
+        value || "0000 0000 0000 0000";
+});
+
+document.getElementById("name").addEventListener("input", e => {
+
+    document.getElementById("cardName").textContent =
+        e.target.value.toUpperCase() || "NOMBRE APELLIDO";
+});
+
+document.getElementById("expiry").addEventListener("input", e => {
+
+    let value = e.target.value
+        .replace(/\D/g,'');
+
+    if(value.length > 2){
+        value = value.slice(0,2) + "/" + value.slice(2,4);
+    }
+
+    e.target.value = value;
+
+    document.getElementById("cardExpiry").textContent =
+        value || "00/00";
+});
+
+const cvcInput = document.getElementById("cvc");
+
+cvcInput.addEventListener("focus", () => {
+    card.classList.add("flip");
+});
+
+cvcInput.addEventListener("blur", () => {
+    card.classList.remove("flip");
+});
+
+cvcInput.addEventListener("input", e => {
+
+    const value = e.target.value.replace(/\D/g,'');
+
+    e.target.value = value;
+
+    document.getElementById("cardCvc").textContent =
+        value || "000";
+});
+
+</script>
 
 </body>
 </html>
