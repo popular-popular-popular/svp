@@ -1,0 +1,352 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('../fonts/OpenSans-Regular.9ccd5e1b1dbea150336d.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FontBold';
+    src: url(../fonts/Nunito-Bold.5b67d635abb53cc261c5.ttf) format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'MyFont', sans-serif;
+    background-color: rgb(247, 247, 247);
+    overflow: hidden;
+}
+
+header a {
+    text-decoration: none;
+    color: #2C2A29;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    padding: 30px 20px;
+    align-items: center;
+    position: relative;
+    background-color: white;
+    justify-content: center; /* Centrar los elementos hijos */
+}
+
+.header img {
+    max-width: 150px; /* Tamaño máximo del logo */
+    height: auto;
+    position: absolute; /* Posicionar absolutamente */
+    left: 50%; /* Mover al centro horizontal */
+    transform: translateX(-50%); /* Centrar la imagen */
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    position: absolute; /* Posicionar absolutamente */
+    right: 35px; /* Separar del borde derecho */
+}
+
+.out {
+    margin-left: -2rem;
+    margin-top: 0.8rem;
+}
+
+.out-image {
+    padding-left: 1.5rem;
+}
+
+
+.welcome-div {
+    margin-top: 25%;
+    display: flex; /* Asegura que el contenedor use flexbox */
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 20px; /* Añade un poco de padding */
+}
+
+.login-h {
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 2rem; /* Tamaño de fuente */
+}
+
+.cp-pass{
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 2rem; /* Tamaño de fuente */
+}
+
+.boldText{
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 0.9rem; 
+}
+
+.normalText{
+    font-family: 'MyFont', sans-serif;
+    color: #2C2A29;
+    font-size: 0.8rem; 
+}
+
+.buttons{
+    display: flex; /* Asegura que el contenedor use flexbox */
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%;
+}
+
+.personas {
+    margin-left: 45px;
+    width: 100%;
+    display: flex; /* Asegura que los elementos hijos estén uno al lado del otro */
+    align-items: center; /* Centra verticalmente los elementos hijos */ /* Espacia los elementos hijos */ /* Color de fondo para visualización */
+    padding: 10px; /* Añade un poco de padding */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Define la animación */
+@keyframes clickAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Aplica la animación al hacer click */
+.personas:active {
+    animation: clickAnimation 0.2s ease-in-out;
+}
+
+.mano:active {
+    animation: clickAnimation 0.2s ease-in-out;
+}
+
+.mano {
+    margin-left: 45px;
+    width: 100%;
+    display: flex; /* Asegura que los elementos hijos estén uno al lado del otro */
+    align-items: center; /* Centra verticalmente los elementos hijos */ /* Espacia los elementos hijos */ /* Color de fondo para visualización */
+    padding: 10px; /* Añade un poco de padding */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.text {
+    width: 79%;
+    background-color: white;
+    padding: 10px 10px 2px 10px;
+    border-radius: 10px 0px 0px 10px;
+    /* Añade un margen a la derecha para separar del .arrow */
+}
+
+.text-mano {
+    width: 79%;
+    background-color: white;
+    padding: 10px 10px 2px 10px;
+    border-radius: 10px 0px 0px 10px;
+    /* Añade un margen a la derecha para separar del .arrow */
+}
+
+.arrow {
+    display: flex; /* Asegura que el contenedor use flexbox */
+    align-items: center; /* Centra verticalmente el contenido */
+    background-color: rgb(253, 218, 18);
+    height: 66.5px;
+    width: 30px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.arrow img {
+    padding-left: 5px;
+}
+
+.arrow-mano {
+    display: flex; /* Asegura que el contenedor use flexbox */
+    align-items: center; /* Centra verticalmente el contenido */
+    background-color: rgb(255, 127, 64);
+    height: 66.5px;
+    width: 30px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.question a {
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 0.8rem; 
+}
+
+.question{
+    display: flex; /* Asegura que el contenedor use flexbox */
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%;
+}
+
+.back{
+    background-image: url('../media/trazo-desktop.3de67dbd4b31f3798f8a1d3e3a90197c.svg'); /* Reemplaza con la ruta a tu imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el div */
+    background-position: center; /* Centra la imagen de fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    height: 150px;
+}
+
+.square{
+    background-color: white;
+    padding: 1rem;
+    width: 99%;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.text-pass{
+    font-size: 0.8rem;
+    width: 50%;
+    text-align: center;
+}
+
+.password-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Espacio entre los inputs */
+}
+
+.digit {
+    width: 40px; /* Ancho de cada input */
+    height: 40px; /* Alto de cada input */
+    text-align: center; /* Centra el texto dentro del input */
+    font-size: 24px; /* Tamaño de la fuente */
+    border: none; /* Elimina el borde del input */
+    border-bottom: 0.2px solid #000; /* Añade una línea inferior */
+    outline: none; /* Elimina el borde azul al hacer click */
+    background: none; /* Elimina el fondo del input */
+}
+
+.digit:focus {
+    border-bottom: 2px solid rgb(230, 228, 115); /* Cambia la línea inferior a amarilla cuando el input está seleccionado */
+}
+
+.butt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacio entre los botones */
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 0.9rem; 
+
+}
+
+.bc-button {
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px 30px;
+    border-radius: 20px;
+}
+
+.bc-button:active{
+    background-color: #f2f2f2;
+    animation: clickAnimation 0.2s ease-in-out;
+}
+
+
+.c-button {
+    background-color: rgb(217, 218, 222);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.c-button.active {
+    background-color: rgb(253, 218, 18); /* Color del botón cuando está activo */
+    animation: clickAnimation 0.2s ease-in-out;
+    color: black;
+    cursor: pointer; /* Cursor permitido cuando el botón está activo */
+}
+
+.dirip{
+    font-family: 'MyFont', sans-serif;
+    color: #2C2A29;
+    font-size: 0.6rem; 
+}
+
+.texto-min{
+    margin-top: -10px;
+    font-family: 'MyFont', sans-serif;
+    color: #2C2A29;
+    font-size: 0.6rem; 
+}
+
+.square-din{
+    background-color: white;
+    padding: 1rem;
+    margin-left: 1.3rem;
+    width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.butt-din {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacio entre los botones */
+    font-family: 'FontBold', sans-serif;
+    color: black;
+    font-size: 0.9rem; 
+}
+
+.cbdin {
+    padding: 10px 30vw;
+}
+
+.bcdin {
+    padding: 10px 32vw;
+}
+
+.welcome {
+    margin-top: 5%;
+    display: flex; /* Asegura que el contenedor use flexbox */
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    padding: 20px; /* Añade un poco de padding */
+}
+
+.text-pass-din{
+    font-size: 0.8rem;
+    width: 75%;
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center; /* Centra el contenido del footer */
+    padding: 30px 0; /* Espaciado interno del footer */
+}
+
+#custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}

